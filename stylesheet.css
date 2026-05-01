@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: #333;
+  background-color: #fff;
+}
+
+a {
+  color: #1772d0;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f09228;
+}
+
+#main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* ── Header ── */
+#header {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+#photo {
+  flex-shrink: 0;
+}
+
+#photo img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #eee;
+}
+
+#photo .photo-placeholder {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #e8eef6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1772d0;
+  font-size: 13px;
+  text-align: center;
+  border: 3px solid #d0dcea;
+  line-height: 1.5;
+  padding: 10px;
+}
+
+#info {
+  flex: 1;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.affiliation {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 14px;
+}
+
+.contact-links a {
+  color: #1772d0;
+}
+
+.contact-links a:hover {
+  color: #f09228;
+}
+
+.contact-links span {
+  color: #999;
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  border-bottom: 2px solid #1772d0;
+  padding-bottom: 6px;
+  margin-bottom: 18px;
+}
+
+/* ── About ── */
+.about-text {
+  line-height: 1.75;
+  color: #444;
+}
+
+/* ── Experience & Education rows ── */
+.entry {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.entry-logo {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: #f0f4fb;
+  border: 1px solid #dde5f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #1772d0;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.entry-body {
+  flex: 1;
+}
+
+.entry-org {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+.entry-role {
+  font-size: 14px;
+  color: #555;
+  margin-top: 1px;
+}
+
+.entry-period {
+  font-size: 13px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.entry-desc {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.entry-desc ul {
+  padding-left: 18px;
+  margin-top: 4px;
+}
+
+.entry-desc ul li {
+  margin-bottom: 2px;
+}
+
+/* ── Research ── */
+.research-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.research-item::before {
+  content: "▸";
+  color: #1772d0;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Footer ── */
+#footer {
+  margin-top: 50px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  font-size: 12px;
+  color: #bbb;
+  text-align: center;
+}
+
+#footer a {
+  color: #bbb;
+}
+
+#footer a:hover {
+  color: #f09228;
+}
+
+/* ── Responsive ── */
+@media (max-width: 560px) {
+  #header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-links {
+    justify-content: center;
+  }
+
+  .entry {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
