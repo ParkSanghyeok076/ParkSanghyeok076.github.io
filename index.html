@@ -8,6 +8,13 @@
 </head>
 <body>
 
+<!-- Language Toggle -->
+<div id="lang-toggle">
+  <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+  <span class="lang-divider">|</span>
+  <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">KR</button>
+</div>
+
 <div id="main">
 
   <!-- ── Header ── -->
@@ -17,13 +24,29 @@
     </div>
 
     <div id="info">
-      <div class="name">Sang-hyeok Park</div>
-      <div class="title">HRD Specialist &amp; Researcher</div>
-      <div class="affiliation">
-        YURA Corporation | Human Resource Development<br>
-        Integrated M.S./Ph.D. Candidate, Business Administration<br>
-        Dongguk University
+      <div class="name">
+        <span class="lang-en">Sang-hyeok Park</span>
+        <span class="lang-ko" style="display:none">박상혁</span>
       </div>
+
+      <div class="title">
+        <span class="lang-en">HRD Specialist &amp; Researcher</span>
+        <span class="lang-ko" style="display:none">HRD 담당자 &amp; 연구자</span>
+      </div>
+
+      <div class="affiliation">
+        <span class="lang-en">
+          YURA Corporation | Human Resource Development<br>
+          Integrated M.S./Ph.D. Candidate, Business Administration<br>
+          Dongguk University
+        </span>
+        <span class="lang-ko" style="display:none">
+          유라코퍼레이션 | 인재개발팀<br>
+          경영학 통합석박사과정<br>
+          동국대학교
+        </span>
+      </div>
+
       <div class="contact-links">
         <a href="mailto:psh092929@gmail.com">Email</a>
         <span>/</span>
@@ -36,40 +59,76 @@
 
   <!-- ── About ── -->
   <div class="section">
-    <div class="section-title">About</div>
-    <p class="about-text">
+    <div class="section-title">
+      <span class="lang-en">About</span>
+      <span class="lang-ko" style="display:none">소개</span>
+    </div>
+    <p class="about-text lang-en">
       I am an HR practitioner and researcher specializing in People Analytics and AI applications in HR.
       Currently working at YURA Corporation as an HRD specialist while pursuing an Integrated Master's
       and Doctoral degree in Business Administration (Organization &amp; Human Resource Management) at
       Dongguk University. My research focuses on understanding the cognitive and relational consequences
       of AI adoption in the workplace, and identifying the competencies needed to work effectively alongside AI.
     </p>
+    <p class="about-text lang-ko" style="display:none">
+      People Analytics와 AI x HR 분야를 전문으로 하는 HRD 담당자이자 연구자입니다.
+      현재 유라코퍼레이션에서 인재개발 업무를 담당하면서, 동국대학교 경영학과(조직·인사관리 전공)
+      통합석박사과정에 재학 중입니다. AI 도입이 조직 구성원에게 미치는 인지적·관계적 영향과,
+      AI와 함께 일하기 위해 필요한 역량을 연구하고 있습니다.
+    </p>
   </div>
 
   <!-- ── Research Interests ── -->
   <div class="section">
-    <div class="section-title">Research Interests</div>
-    <div class="research-item">Cognitive and relational dysfunctions caused by AI adoption in organizations</div>
-    <div class="research-item">Changes in ways of working driven by AI — how AI reshapes work processes and routines</div>
-    <div class="research-item">Competencies required to work effectively alongside AI (AI-collaboration readiness)</div>
-    <div class="research-item">People Analytics — data-driven approaches to HR decision-making</div>
+    <div class="section-title">
+      <span class="lang-en">Research Interests</span>
+      <span class="lang-ko" style="display:none">연구 관심사</span>
+    </div>
+
+    <div class="lang-en">
+      <div class="research-item">Cognitive and relational dysfunctions caused by AI adoption in organizations</div>
+      <div class="research-item">Changes in ways of working driven by AI — how AI reshapes work processes and routines</div>
+      <div class="research-item">Competencies required to work effectively alongside AI (AI-collaboration readiness)</div>
+      <div class="research-item">People Analytics — data-driven approaches to HR decision-making</div>
+    </div>
+
+    <div class="lang-ko" style="display:none">
+      <div class="research-item">AI 도입으로 인한 인지적·관계적 역기능</div>
+      <div class="research-item">AI 도입이 일하는 방식에 미치는 변화 — 업무 프로세스 및 루틴의 재편</div>
+      <div class="research-item">AI와 함께 일하기 위해 필요한 역량 (AI 협업 준비도)</div>
+      <div class="research-item">피플 애널리틱스 — 데이터 기반 HR 의사결정</div>
+    </div>
   </div>
 
   <!-- ── Work Experience ── -->
   <div class="section">
-    <div class="section-title">Work Experience</div>
+    <div class="section-title">
+      <span class="lang-en">Work Experience</span>
+      <span class="lang-ko" style="display:none">경력</span>
+    </div>
 
     <div class="entry">
       <div class="entry-logo">YURA</div>
       <div class="entry-body">
-        <div class="entry-org">YURA Corporation</div>
-        <div class="entry-role">HRD Specialist</div>
+        <div class="entry-org">
+          <span class="lang-en">YURA Corporation</span>
+          <span class="lang-ko" style="display:none">유라코퍼레이션</span>
+        </div>
+        <div class="entry-role">
+          <span class="lang-en">HRD Specialist</span>
+          <span class="lang-ko" style="display:none">인재개발 담당</span>
+        </div>
         <div class="entry-period">Mar 2023 – Present</div>
         <div class="entry-desc">
-          <ul>
+          <ul class="lang-en">
             <li>Designing and structuring the corporate education framework</li>
             <li>Planning and operating employee training programs</li>
             <li>Measuring training effectiveness and conducting HR data analysis</li>
+          </ul>
+          <ul class="lang-ko" style="display:none">
+            <li>교육체계 수립</li>
+            <li>교육 기획 및 운영</li>
+            <li>교육 효과성 측정 및 HR 데이터 분석</li>
           </ul>
         </div>
       </div>
@@ -79,12 +138,19 @@
       <div class="entry-logo">MQ</div>
       <div class="entry-body">
         <div class="entry-org">MentorQ</div>
-        <div class="entry-role">Co-Founder</div>
+        <div class="entry-role">
+          <span class="lang-en">Co-Founder</span>
+          <span class="lang-ko" style="display:none">공동창업자</span>
+        </div>
         <div class="entry-period">May 2017 – Nov 2021</div>
         <div class="entry-desc">
-          <ul>
+          <ul class="lang-en">
             <li>Co-founded an EdTech startup focused on career education for youth</li>
             <li>Led product development and program design for career guidance services</li>
+          </ul>
+          <ul class="lang-ko" style="display:none">
+            <li>청소년 진로교육 에듀테크 스타트업 공동 창업</li>
+            <li>진로 탐색 서비스 제품 개발 및 프로그램 기획 주도</li>
           </ul>
         </div>
       </div>
@@ -94,16 +160,26 @@
 
   <!-- ── Education ── -->
   <div class="section">
-    <div class="section-title">Education</div>
+    <div class="section-title">
+      <span class="lang-en">Education</span>
+      <span class="lang-ko" style="display:none">학력</span>
+    </div>
 
     <div class="entry">
       <div class="entry-logo">DGU</div>
       <div class="entry-body">
-        <div class="entry-org">Dongguk University</div>
-        <div class="entry-role">Integrated M.S./Ph.D., Business Administration</div>
+        <div class="entry-org">
+          <span class="lang-en">Dongguk University</span>
+          <span class="lang-ko" style="display:none">동국대학교</span>
+        </div>
+        <div class="entry-role">
+          <span class="lang-en">Integrated M.S./Ph.D., Business Administration</span>
+          <span class="lang-ko" style="display:none">경영학 통합석박사과정</span>
+        </div>
         <div class="entry-period">Mar 2026 – Present</div>
         <div class="entry-desc">
-          Concentration: Organization &amp; Human Resource Management
+          <span class="lang-en">Concentration: Organization &amp; Human Resource Management</span>
+          <span class="lang-ko" style="display:none">전공: 조직·인사관리</span>
         </div>
       </div>
     </div>
@@ -111,8 +187,14 @@
     <div class="entry">
       <div class="entry-logo">CUK</div>
       <div class="entry-body">
-        <div class="entry-org">The Catholic University of Korea</div>
-        <div class="entry-role">B.A., Psychology</div>
+        <div class="entry-org">
+          <span class="lang-en">The Catholic University of Korea</span>
+          <span class="lang-ko" style="display:none">가톨릭대학교</span>
+        </div>
+        <div class="entry-role">
+          <span class="lang-en">B.A., Psychology</span>
+          <span class="lang-ko" style="display:none">심리학과 학사</span>
+        </div>
         <div class="entry-period">Mar 2015 – Feb 2020</div>
       </div>
     </div>
@@ -126,5 +208,24 @@
   </div>
 
 </div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-en').forEach(el => {
+      el.style.display = lang === 'en' ? '' : 'none';
+    });
+    document.querySelectorAll('.lang-ko').forEach(el => {
+      el.style.display = lang === 'ko' ? '' : 'none';
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    localStorage.setItem('lang', lang);
+  }
+
+  const savedLang = localStorage.getItem('lang') || 'en';
+  setLang(savedLang);
+</script>
+
 </body>
 </html>
