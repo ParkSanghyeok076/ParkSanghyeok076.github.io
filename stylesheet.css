@@ -238,6 +238,62 @@ a:hover {
   color: #f09228;
 }
 
+/* ── Research Papers ── */
+.paper-entry {
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.paper-entry:last-child {
+  border-bottom: none;
+}
+
+.paper-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.paper-authors {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.paper-venue {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ── Awards ── */
+.award-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.award-item {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  align-items: baseline;
+}
+
+.award-year {
+  flex-shrink: 0;
+  color: #1772d0;
+  font-weight: 700;
+  font-size: 13px;
+  width: 40px;
+}
+
+.award-desc {
+  color: #444;
+  line-height: 1.6;
+}
+
 /* ── Language Toggle ── */
 #lang-toggle {
   position: fixed;
