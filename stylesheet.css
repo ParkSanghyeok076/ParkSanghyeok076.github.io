@@ -294,6 +294,16 @@ a:hover {
   line-height: 1.6;
 }
 
+.award-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1772d0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
 /* ── Language Toggle ── */
 #lang-toggle {
   position: fixed;
