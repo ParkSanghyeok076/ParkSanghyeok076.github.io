@@ -267,6 +267,92 @@ a:hover {
   color: #888;
 }
 
+/* ── Projects ── */
+.project-card {
+  border: 1px solid #e8eef6;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  background: #fafcff;
+  transition: box-shadow 0.15s;
+}
+
+.project-card:hover {
+  box-shadow: 0 2px 12px rgba(23, 114, 208, 0.08);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.project-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.project-links {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-demo, .btn-github {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-demo {
+  background: #1772d0;
+  color: #fff;
+}
+
+.btn-demo:hover {
+  background: #f09228;
+  color: #fff;
+}
+
+.btn-github {
+  background: #f0f4fb;
+  color: #1772d0;
+  border: 1px solid #d0dcea;
+}
+
+.btn-github:hover {
+  background: #1772d0;
+  color: #fff;
+}
+
+.project-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1772d0;
+  background: #eaf1fb;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
 /* ── Awards ── */
 .award-list {
   display: flex;
