@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YU-rello 데모 — 업무 관리 시스템</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas:        #101010;
+      --canvas-soft:   #1a1a1a;
+      --hairline:      #3d3a39;
+      --primary:       #00d992;
+      --primary-soft:  #2fd6a1;
+      --ink:           #f2f2f2;
+      --ink-strong:    #ffffff;
+      --body:          #bdbdbd;
+      --mute:          #8b949e;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      font-feature-settings: "calt", "rlig";
+      background: var(--canvas);
+      color: var(--ink);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink-strong);
+      letter-spacing: -0.3px;
+    }
+    .header-logo-glyph {
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .header-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--hairline);
+    }
+    .header-board {
+      font-size: 13px;
+      color: var(--body);
+      flex: 1;
+      font-family: var(--font-mono);
+    }
+    .header-back {
+      color: var(--body);
+      text-decoration: none;
+      font-size: 13px;
+      border: 1px solid var(--hairline);
+      padding: 5px 12px;
+      border-radius: 6px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .header-back:hover { color: var(--ink); border-color: var(--mute); }
+
+    /* ── Board ── */
+    .board {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .board::-webkit-scrollbar { height: 6px; }
+    .board::-webkit-scrollbar-track { background: transparent; }
+    .board::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 3px; }
+
+    /* ── List ── */
+    .list {
+      width: 272px;
+      flex-shrink: 0;
+      background: var(--canvas-soft);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 112px);
+    }
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .list-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.1px;
+      cursor: pointer;
+      flex: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .list-title:hover { background: rgba(255,255,255,0.04); }
+    .list-title-input {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      padding: 2px 4px;
+      outline: none;
+      width: 100%;
+      font-family: var(--font-sans);
+    }
+    .list-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--mute);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      padding: 1px 7px;
+      margin-left: 6px;
+    }
+    .cards {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 32px;
+    }
+    .cards::-webkit-scrollbar { width: 4px; }
+    .cards::-webkit-scrollbar-track { background: transparent; }
+    .cards::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
+    .cards.drag-over { background: rgba(0, 217, 146, 0.04); border-radius: 6px; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 11px 12px 11px 15px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .card:last-child { margin-bottom: 0; }
+    .card:hover {
+      border-color: var(--mute);
+      box-shadow: 0 0 15px rgba(92, 88, 85, 0.2);
+    }
+    .card.dragging { opacity: 0.35; }
+    .card-label-bar {
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+    }
+    .card-title {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--mute);
+      margin-top: 5px;
+      line-height: 1.5;
+      font-family: var(--font-mono);
+    }
+
+    /* ── Add card ── */
+    .add-card-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--mute);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 6px 4px;
+      border-radius: 6px;
+      margin-top: 8px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font-sans);
+      transition: color 0.12s, background 0.12s;
+    }
+    .add-card-btn:hover { color: var(--primary); background: rgba(0,217,146,0.06); }
+    .add-card-form { margin-top: 8px; }
+    .add-card-textarea {
+      width: 100%;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      background: var(--canvas);
+      color: var(--ink);
+    }
+    .add-card-textarea::placeholder { color: var(--mute); }
+    .add-card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .btn-add {
+      background: var(--primary);
+      color: #0a1a14;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: opacity 0.12s;
+    }
+    .btn-add:hover { opacity: 0.85; }
+    .btn-cancel {
+      background: none;
+      border: 1px solid var(--hairline);
+      color: var(--body);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .btn-cancel:hover { border-color: var(--mute); color: var(--ink); }
+
+    /* ── Add list ── */
+    .add-list { width: 272px; flex-shrink: 0; }
+    .add-list-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed rgba(79, 93, 117, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      color: var(--mute);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .add-list-btn:hover { color: var(--primary); border-color: rgba(0,217,146,0.3); }
+    .add-list-form {
+      background: var(--canvas-soft);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .add-list-input {
+      width: 100%;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 13px;
+      outline: none;
+      font-family: var(--font-sans);
+      background: var(--canvas);
+      color: var(--ink);
+    }
+    .add-list-input::placeholder { color: var(--mute); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 8px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--mute);
+      background: var(--canvas);
+      border-top: 1px solid var(--hairline);
+      flex-shrink: 0;
+    }
+    .footer-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--primary);
+      border-radius: 9999px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal {
+      background: var(--canvas-soft);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 460px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(148,163,184,0.08) inset;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: none;
+      border: 1px solid var(--hairline);
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--mute);
+      padding: 4px 8px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .modal-close:hover { color: var(--ink); border-color: var(--mute); }
+    .modal-field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--mute);
+      letter-spacing: 2.52px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      margin-top: 18px;
+      font-family: var(--font-sans);
+    }
+    .modal-field-label:first-of-type { margin-top: 0; }
+    .modal-title-input {
+      width: 100%;
+      border: 1px solid var(--hairline);
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 15px;
+      font-weight: 500;
+      outline: none;
+      font-family: var(--font-sans);
+      background: var(--canvas);
+      color: var(--ink-strong);
+      transition: border-color 0.12s;
+    }
+    .modal-title-input:focus { border-color: var(--primary); }
+    .modal-desc-textarea {
+      width: 100%;
+      border: 1px solid var(--hairline);
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 72px;
+      outline: none;
+      font-family: var(--font-mono);
+      line-height: 1.6;
+      background: var(--canvas);
+      color: var(--body);
+      transition: border-color 0.12s;
+    }
+    .modal-desc-textarea::placeholder { color: var(--mute); }
+    .modal-desc-textarea:focus { border-color: var(--primary); }
+    .label-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+    .label-dot {
+      width: 26px; height: 26px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.1s, border-color 0.1s;
+      opacity: 0.75;
+    }
+    .label-dot:hover { transform: scale(1.1); opacity: 1; }
+    .label-dot.selected { border-color: var(--ink-strong); opacity: 1; }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--hairline);
+      gap: 8px;
+    }
+    .btn-delete {
+      background: none;
+      border: 1px solid #3d2020;
+      color: #f87171;
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background 0.12s;
+    }
+    .btn-delete:hover { background: rgba(248,113,113,0.08); }
+    .btn-save {
+      background: var(--primary);
+      color: #0a1a14;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: opacity 0.12s;
+    }
+    .btn-save:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <span class="header-logo-glyph">⚡</span>
+    YU-rello
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-board">업무 관리 시스템</div>
+  <a href="../../index.html" class="header-back">← 포트폴리오</a>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="footer">
+  <span class="footer-dot"></span>
+  demo mode — 저장되지 않으며 새로고침 시 초기화됩니다
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-field-label">Title</div>
+    <input class="modal-title-input" id="modalTitle" type="text">
+    <div class="modal-field-label">Description</div>
+    <textarea class="modal-desc-textarea" id="modalDesc" placeholder="Add a description..."></textarea>
+    <div class="modal-field-label">Label</div>
+    <div class="label-picker" id="labelPicker"></div>
+    <div class="modal-footer">
+      <button class="btn-delete" onclick="deleteCard()">Delete card</button>
+      <button class="btn-save" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const LABELS = [
+    { key: 'green',  color: '#00d992' },
+    { key: 'blue',   color: '#3b82f6' },
+    { key: 'purple', color: '#a855f7' },
+    { key: 'orange', color: '#f97316' },
+    { key: 'red',    color: '#ef4444' },
+    { key: 'gray',   color: '#6b7280' },
+  ];
+
+  let data = {
+    lists: [
+      {
+        id: 'l1', title: '할 일',
+        cards: [
+          { id: 'c1', title: '온보딩 자료 검토', desc: '', label: 'green' },
+          { id: 'c2', title: '팀원 소개 미팅', desc: '월요일 오전 10시', label: 'blue' },
+        ]
+      },
+      {
+        id: 'l2', title: '진행 중',
+        cards: [
+          { id: 'c3', title: '업무 시스템 세팅', desc: '', label: 'orange' },
+        ]
+      },
+      {
+        id: 'l3', title: '완료',
+        cards: [
+          { id: 'c4', title: '인사팀 서류 제출', desc: 'completed', label: 'gray' },
+        ]
+      },
+    ]
+  };
+
+  let idCounter = 10;
+  let dragCardId = null;
+  let dragListId = null;
+  let modalListId = null;
+  let modalCardId = null;
+  let modalLabel = 'green';
+
+  function getLabelColor(key) {
+    return (LABELS.find(l => l.key === key) || LABELS[0]).color;
+  }
+
+  function findCard(cardId) {
+    for (const list of data.lists) {
+      const card = list.cards.find(c => c.id === cardId);
+      if (card) return { list, card };
+    }
+    return null;
+  }
+
+  function render() {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+
+    data.lists.forEach(list => {
+      const listEl = document.createElement('div');
+      listEl.className = 'list';
+      listEl.dataset.listId = list.id;
+
+      listEl.innerHTML = `
+        <div class="list-header">
+          <span class="list-title" id="title-${list.id}" onclick="startEditTitle('${list.id}')">${escHtml(list.title)}</span>
+          <span class="list-count">${list.cards.length}</span>
+        </div>
+        <div class="cards" id="cards-${list.id}"
+          ondragover="handleDragOver(event, '${list.id}')"
+          ondragleave="handleDragLeave(event)"
+          ondrop="handleDrop(event, '${list.id}')">
+        </div>
+        <button class="add-card-btn" id="addCardBtn-${list.id}" onclick="showAddCard('${list.id}')">
+          <span>＋</span> Add card
+        </button>
+        <div class="add-card-form" id="addCardForm-${list.id}" style="display:none">
+          <textarea class="add-card-textarea" id="addCardText-${list.id}" rows="2" placeholder="Card title..."></textarea>
+          <div class="add-card-actions">
+            <button class="btn-add" onclick="addCard('${list.id}')">Add</button>
+            <button class="btn-cancel" onclick="hideAddCard('${list.id}')">Cancel</button>
+          </div>
+        </div>
+      `;
+
+      const cardsEl = listEl.querySelector(`#cards-${list.id}`);
+      list.cards.forEach(card => {
+        cardsEl.appendChild(createCardEl(card, list.id));
+      });
+
+      board.appendChild(listEl);
+    });
+
+    // Add list
+    const addList = document.createElement('div');
+    addList.className = 'add-list';
+    addList.innerHTML = `
+      <button class="add-list-btn" id="addListBtn" onclick="showAddList()">
+        <span>＋</span> Add list
+      </button>
+      <div class="add-list-form" id="addListForm" style="display:none">
+        <input class="add-list-input" id="addListInput" type="text" placeholder="List name...">
+        <div class="add-card-actions" style="margin-top:8px">
+          <button class="btn-add" onclick="addList()">Add</button>
+          <button class="btn-cancel" onclick="hideAddList()">Cancel</button>
+        </div>
+      </div>
+    `;
+    board.appendChild(addList);
+  }
+
+  function createCardEl(card, listId) {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.draggable = true;
+    el.dataset.cardId = card.id;
+    el.dataset.listId = listId;
+    el.innerHTML = `
+      <div class="card-label-bar" style="background:${getLabelColor(card.label)}"></div>
+      <div class="card-title">${escHtml(card.title)}</div>
+      ${card.desc ? `<div class="card-desc">${escHtml(card.desc)}</div>` : ''}
+    `;
+    el.addEventListener('click', () => openModal(listId, card.id));
+    el.addEventListener('dragstart', e => handleDragStart(e, card.id, listId));
+    el.addEventListener('dragend', handleDragEnd);
+    return el;
+  }
+
+  function handleDragStart(e, cardId, listId) {
+    dragCardId = cardId;
+    dragListId = listId;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { e.target.classList.add('dragging'); }, 0);
+  }
+
+  function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+    dragCardId = null;
+    dragListId = null;
+    document.querySelectorAll('.cards').forEach(el => el.classList.remove('drag-over'));
+  }
+
+  function handleDragOver(e, listId) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    document.getElementById(`cards-${listId}`).classList.add('drag-over');
+  }
+
+  function handleDragLeave(e) {
+    if (e.target.classList.contains('cards')) {
+      e.target.classList.remove('drag-over');
+    }
+  }
+
+  function handleDrop(e, targetListId) {
+    e.preventDefault();
+    if (!dragCardId) return;
+    const sourceList = data.lists.find(l => l.id === dragListId);
+    const targetList = data.lists.find(l => l.id === targetListId);
+    if (!sourceList || !targetList) return;
+    const cardIdx = sourceList.cards.findIndex(c => c.id === dragCardId);
+    if (cardIdx === -1) return;
+    const [card] = sourceList.cards.splice(cardIdx, 1);
+    const cardsEl = document.getElementById(`cards-${targetListId}`);
+    const cardEls = [...cardsEl.querySelectorAll('.card:not(.dragging)')];
+    let insertIdx = targetList.cards.length;
+    for (let i = 0; i < cardEls.length; i++) {
+      const rect = cardEls[i].getBoundingClientRect();
+      if (e.clientY < rect.top + rect.height / 2) {
+        const found = targetList.cards.find(c => c.id === cardEls[i].dataset.cardId);
+        if (found) { insertIdx = targetList.cards.indexOf(found); break; }
+      }
+    }
+    targetList.cards.splice(insertIdx, 0, card);
+    render();
+  }
+
+  function showAddCard(listId) {
+    document.getElementById(`addCardBtn-${listId}`).style.display = 'none';
+    document.getElementById(`addCardForm-${listId}`).style.display = 'block';
+    const ta = document.getElementById(`addCardText-${listId}`);
+    ta.value = '';
+    ta.focus();
+    ta.onkeydown = e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addCard(listId); }
+      if (e.key === 'Escape') hideAddCard(listId);
+    };
+  }
+
+  function hideAddCard(listId) {
+    document.getElementById(`addCardBtn-${listId}`).style.display = '';
+    document.getElementById(`addCardForm-${listId}`).style.display = 'none';
+  }
+
+  function addCard(listId) {
+    const ta = document.getElementById(`addCardText-${listId}`);
+    const title = ta.value.trim();
+    if (!title) return;
+    data.lists.find(l => l.id === listId).cards.push({ id: 'c' + (++idCounter), title, desc: '', label: 'green' });
+    render();
+  }
+
+  function showAddList() {
+    document.getElementById('addListBtn').style.display = 'none';
+    document.getElementById('addListForm').style.display = 'block';
+    document.getElementById('addListInput').focus();
+  }
+
+  function hideAddList() {
+    document.getElementById('addListBtn').style.display = '';
+    document.getElementById('addListForm').style.display = 'none';
+  }
+
+  function addList() {
+    const title = document.getElementById('addListInput').value.trim();
+    if (!title) return;
+    data.lists.push({ id: 'l' + (++idCounter), title, cards: [] });
+    render();
+  }
+
+  function startEditTitle(listId) {
+    const span = document.getElementById(`title-${listId}`);
+    const list = data.lists.find(l => l.id === listId);
+    const input = document.createElement('input');
+    input.className = 'list-title-input';
+    input.value = list.title;
+    span.replaceWith(input);
+    input.focus();
+    input.select();
+    const finish = () => { if (input.value.trim()) list.title = input.value.trim(); render(); };
+    input.onblur = finish;
+    input.onkeydown = e => { if (e.key === 'Enter') finish(); if (e.key === 'Escape') render(); };
+  }
+
+  function openModal(listId, cardId) {
+    const { card } = findCard(cardId);
+    modalListId = listId;
+    modalCardId = cardId;
+    modalLabel = card.label;
+    document.getElementById('modalTitle').value = card.title;
+    document.getElementById('modalDesc').value = card.desc;
+    renderLabelPicker();
+    document.getElementById('modalOverlay').style.display = 'flex';
+    document.getElementById('modalTitle').focus();
+  }
+
+  function renderLabelPicker() {
+    document.getElementById('labelPicker').innerHTML = LABELS.map(l => `
+      <div class="label-dot ${l.key === modalLabel ? 'selected' : ''}"
+        style="background:${l.color}"
+        onclick="selectLabel('${l.key}')"></div>
+    `).join('');
+  }
+
+  function selectLabel(key) { modalLabel = key; renderLabelPicker(); }
+
+  function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+  function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+
+  function saveModal() {
+    const title = document.getElementById('modalTitle').value.trim();
+    if (!title) return;
+    const { card } = findCard(modalCardId);
+    card.title = title;
+    card.desc = document.getElementById('modalDesc').value.trim();
+    card.label = modalLabel;
+    closeModal();
+    render();
+  }
+
+  function deleteCard() {
+    const list = data.lists.find(l => l.id === modalListId);
+    list.cards = list.cards.filter(c => c.id !== modalCardId);
+    closeModal();
+    render();
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  render();
+</script>
+</body>
+</html>

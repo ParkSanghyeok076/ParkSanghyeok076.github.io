@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YURA 온보딩 시스템 데모</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas:         #ffffff;
+      --surface-soft:   #f0f2f5;
+      --hairline:       #dddfe2;
+      --hairline-soft:  #e4e6ea;
+      --ink-deep:       #1c1e21;
+      --ink:            #050505;
+      --charcoal:       #606770;
+      --slate:          #8a8d91;
+      --steel:          #b0b3b8;
+      --primary:        #0866ff;
+      --primary-deep:   #0143b5;
+      --ink-button:     #050505;
+      --on-ink-button:  #ffffff;
+      --on-primary:     #ffffff;
+      --success:        #31a24c;
+      --warning:        #f5c518;
+      --font: 'Montserrat', Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--canvas);
+      color: var(--ink-deep);
+      min-height: 100vh;
+    }
+
+    /* ── Promo Banner ── */
+    .promo-banner {
+      background: var(--ink-deep);
+      color: var(--canvas);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+    }
+    .promo-banner a { color: var(--canvas); text-decoration: underline; }
+
+    /* ── Top Nav ── */
+    .top-nav {
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline-soft);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      white-space: nowrap;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--primary); }
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+    }
+    .nav-pill {
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      cursor: pointer;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      color: var(--ink);
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .nav-pill.active {
+      background: var(--ink-deep);
+      color: var(--canvas);
+      border-color: var(--ink-deep);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-back-nav {
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      cursor: pointer;
+      border: 2px solid var(--ink-deep);
+      background: transparent;
+      color: var(--ink-deep);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 30px;
+      border-radius: 100px;
+      background: var(--ink-button);
+      color: var(--on-ink-button);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.12s;
+      font-family: var(--font);
+    }
+    .btn-primary:hover { background: var(--charcoal); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      border-radius: 100px;
+      background: transparent;
+      color: var(--ink-deep);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      border: 2px solid var(--ink-deep);
+      cursor: pointer;
+      transition: background 0.12s;
+      font-family: var(--font);
+    }
+
+    .btn-cobalt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 30px;
+      border-radius: 100px;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.12s;
+      font-family: var(--font);
+    }
+    .btn-cobalt:hover { background: var(--primary-deep); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 100px;
+      background: transparent;
+      color: var(--ink-deep);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      border: 2px solid rgba(10, 19, 23, 0.12);
+      cursor: pointer;
+      font-family: var(--font);
+    }
+
+    /* ── Landing ── */
+    .landing {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+    .landing-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 20px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--surface-soft);
+    }
+    .landing-hero-title {
+      font-size: 56px;
+      font-weight: 500;
+      line-height: 1.16;
+      color: var(--ink-deep);
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      max-width: 640px;
+    }
+    .landing-hero-sub {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.44;
+      color: var(--charcoal);
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .landing-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+    .role-cards-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .role-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 32px;
+      padding: 40px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 32px 32px 0 0;
+    }
+    .role-card.admin::before { background: var(--ink-deep); }
+    .role-card.employee::before { background: var(--primary); }
+    .role-card:hover { box-shadow: rgba(20, 22, 26, 0.3) 0px 1px 4px 0px; border-color: var(--hairline); }
+    .role-card-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .role-card.admin .role-card-badge { background: var(--ink-deep); color: var(--canvas); }
+    .role-card.employee .role-card-badge { background: #e7f0ff; color: var(--primary-deep); }
+    .role-card-icon { font-size: 40px; margin-bottom: 16px; }
+    .role-card-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--ink-deep);
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+    .role-card-desc {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+      letter-spacing: -0.14px;
+    }
+    .role-card-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+    .role-card-features li {
+      font-size: 13px;
+      color: var(--charcoal);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--hairline-soft);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-card-features li:last-child { border-bottom: none; }
+    .role-card-features li::before { content: '→'; color: var(--steel); }
+    .landing-footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--steel);
+      margin-top: 40px;
+    }
+    .landing-footer-note a { color: var(--charcoal); }
+
+    /* ── Sidebar Admin Layout ── */
+    .admin-wrap { display: flex; min-height: calc(100vh - 64px); }
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--canvas);
+      border-right: 1px solid var(--hairline-soft);
+      padding: 24px 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .sidebar-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--slate);
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+      letter-spacing: -0.14px;
+    }
+    .sidebar-item:hover { background: var(--surface-soft); color: var(--ink-deep); }
+    .sidebar-item.active {
+      background: var(--surface-soft);
+      color: var(--ink-deep);
+      font-weight: 700;
+    }
+    .sidebar-item.active::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 3px;
+      height: 32px;
+      background: var(--ink-deep);
+      border-radius: 2px 0 0 2px;
+    }
+    .sidebar-item { position: relative; }
+    .sidebar-user {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      padding: 16px 20px;
+      border-top: 1px solid var(--hairline-soft);
+      background: var(--canvas);
+    }
+    .sidebar-user-name { font-size: 13px; font-weight: 700; color: var(--ink-deep); }
+    .sidebar-user-role { font-size: 12px; color: var(--slate); margin-bottom: 10px; }
+    .admin-main {
+      flex: 1;
+      padding: 40px;
+      background: var(--surface-soft);
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ── Common ── */
+    .page-title {
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--ink-deep);
+      margin-bottom: 28px;
+      letter-spacing: -0.5px;
+      line-height: 1.21;
+    }
+    .page-title strong { font-weight: 500; }
+
+    .card-feature {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--ink-deep);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 12px; color: var(--charcoal); font-weight: 400; letter-spacing: -0.14px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--slate);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--hairline-soft);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--hairline-soft); font-size: 14px; color: var(--ink); letter-spacing: -0.14px; }
+    tr:last-child td { border-bottom: none; }
+
+    .progress-wrap { background: var(--surface-soft); border-radius: 100px; height: 6px; width: 100px; }
+    .progress-bar { height: 6px; border-radius: 100px; background: var(--ink-deep); }
+    .progress-bar.high { background: var(--success); }
+    .progress-bar.low { background: var(--charcoal); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      cursor: pointer;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      color: var(--charcoal);
+      transition: all 0.12s;
+      font-family: var(--font);
+    }
+    .tab-btn.active {
+      background: var(--ink-deep);
+      color: var(--canvas);
+      border-color: var(--ink-deep);
+    }
+
+    /* ABSA */
+    .absa-meta {
+      font-size: 13px;
+      color: var(--slate);
+      margin-bottom: 20px;
+      letter-spacing: -0.14px;
+    }
+    .alert-banner {
+      background: #fff8e6;
+      border: 1px solid #f5c518;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #5f4a00;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.14px;
+    }
+    .sentiment-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .sentiment-name { font-size: 13px; color: var(--charcoal); width: 36px; font-weight: 700; letter-spacing: -0.14px; }
+    .sentiment-track { flex: 1; background: var(--surface-soft); border-radius: 100px; height: 14px; overflow: hidden; }
+    .sentiment-fill { height: 14px; border-radius: 100px; display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 700; color: #fff; }
+    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .score-item {
+      background: var(--surface-soft);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .score-item-label { font-size: 13px; color: var(--charcoal); letter-spacing: -0.14px; }
+    .score-item-value { font-size: 16px; font-weight: 700; color: var(--ink-deep); }
+    .keyword-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .keyword-chip {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--surface-soft);
+      color: var(--charcoal);
+      letter-spacing: -0.14px;
+    }
+    .keyword-chip.warn { background: #fff3cd; color: #7c5800; }
+
+    /* Mail */
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      margin-top: 20px;
+    }
+    .form-label:first-of-type { margin-top: 0; }
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      color: var(--ink-deep);
+      background: var(--canvas);
+      letter-spacing: -0.14px;
+      outline: none;
+    }
+    select:focus, input:focus, textarea:focus { border: 2px solid var(--primary); }
+    textarea { resize: vertical; line-height: 1.6; }
+
+    /* Report */
+    .report-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .report-header {
+      background: var(--ink-deep);
+      color: var(--canvas);
+      padding: 24px 28px;
+    }
+    .report-header-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .report-header-sub { font-size: 13px; color: var(--steel); }
+    .report-body { padding: 24px 28px; }
+    .report-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--hairline-soft);
+      font-size: 14px;
+      letter-spacing: -0.14px;
+    }
+    .report-row:last-child { border-bottom: none; }
+    .report-row-label { color: var(--charcoal); }
+    .report-row-value { color: var(--ink-deep); font-weight: 700; }
+
+    /* Employee */
+    .emp-body { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+    .greeting-section { margin-bottom: 48px; }
+    .greeting-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 12px;
+    }
+    .greeting-title {
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--ink-deep);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      line-height: 1.28;
+    }
+    .greeting-sub {
+      font-size: 16px;
+      color: var(--charcoal);
+      line-height: 1.5;
+      letter-spacing: -0.16px;
+    }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .menu-tile {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 24px;
+      padding: 32px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .menu-tile:hover { box-shadow: rgba(20, 22, 26, 0.3) 0px 1px 4px 0px; border-color: var(--hairline); }
+    .menu-tile-icon { font-size: 32px; margin-bottom: 16px; }
+    .menu-tile-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    .menu-tile-desc { font-size: 13px; color: var(--charcoal); line-height: 1.5; letter-spacing: -0.14px; }
+
+    /* Survey */
+    .section-header { margin-bottom: 32px; }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--charcoal);
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 24px;
+      font-family: var(--font);
+      letter-spacing: -0.14px;
+    }
+    .back-btn:hover { color: var(--ink-deep); }
+    .part-progress { display: flex; gap: 6px; margin-bottom: 24px; }
+    .part-pip { height: 4px; flex: 1; border-radius: 100px; background: var(--hairline-soft); }
+    .part-pip.done { background: var(--ink-deep); }
+    .part-pip.active { background: var(--primary); }
+    .part-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 8px;
+    }
+    .part-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--ink-deep);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    .part-desc { font-size: 14px; color: var(--charcoal); margin-bottom: 28px; line-height: 1.5; letter-spacing: -0.14px; }
+    .question-block { margin-bottom: 24px; }
+    .q-text { font-size: 15px; color: var(--ink-deep); font-weight: 400; margin-bottom: 12px; line-height: 1.5; letter-spacing: -0.16px; }
+    .scale-row { display: flex; align-items: center; gap: 10px; }
+    .scale-end { font-size: 11px; color: var(--steel); max-width: 80px; line-height: 1.3; }
+    .scale-options { display: flex; gap: 8px; }
+    .scale-opt input { display: none; }
+    .scale-opt label {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--hairline);
+      border-radius: 100px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; color: var(--charcoal);
+      transition: all 0.12s;
+      margin: 0;
+      font-family: var(--font);
+    }
+    .scale-opt input:checked + label {
+      background: var(--ink-deep);
+      border-color: var(--ink-deep);
+      color: var(--canvas);
+    }
+    .q-textarea { margin-top: 0; min-height: 80px; border-radius: 8px; }
+    .survey-complete {
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .survey-complete-icon { font-size: 64px; margin-bottom: 24px; }
+    .survey-complete-title { font-size: 32px; font-weight: 500; color: var(--ink-deep); margin-bottom: 12px; letter-spacing: -0.5px; }
+    .survey-complete-sub { font-size: 16px; color: var(--charcoal); margin-bottom: 32px; letter-spacing: -0.16px; }
+
+    /* OJT */
+    .ojt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .ojt-form-card { grid-column: 1; }
+    .ojt-list-card { grid-column: 2; }
+    .ojt-entry {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+    .ojt-entry:last-child { border-bottom: none; }
+    .ojt-entry-date { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+    .ojt-entry-label { font-size: 12px; font-weight: 700; color: var(--ink-deep); margin-bottom: 2px; }
+    .ojt-entry-text { font-size: 13px; color: var(--charcoal); line-height: 1.5; letter-spacing: -0.14px; margin-bottom: 8px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:1px; background:var(--hairline-soft); }
+    .tl-item { position: relative; margin-bottom: 32px; }
+    .tl-marker {
+      position: absolute;
+      left: -20px;
+      top: 3px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--hairline);
+      background: var(--canvas);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px;
+    }
+    .tl-marker.done { background: var(--ink-deep); border-color: var(--ink-deep); color: var(--canvas); font-size: 9px; font-weight: 700; }
+    .tl-marker.active { background: var(--primary); border-color: var(--primary); }
+    .tl-week-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .tl-week { font-size: 16px; font-weight: 700; color: var(--ink-deep); letter-spacing: -0.3px; }
+    .tl-current-badge {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--primary);
+      color: var(--canvas);
+    }
+    .tl-date { font-size: 12px; color: var(--slate); margin-bottom: 10px; letter-spacing: -0.14px; }
+    .tl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tl-chip {
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+    }
+    .tl-chip.done { background: var(--surface-soft); color: var(--charcoal); }
+    .tl-chip.active { background: var(--ink-deep); color: var(--canvas); }
+    .tl-chip.pending { background: var(--surface-soft); color: var(--steel); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--ink-deep); color: var(--canvas);
+      padding: 14px 22px; border-radius: 100px;
+      font-size: 14px; font-weight: 700; letter-spacing: -0.14px;
+      box-shadow: rgba(20, 22, 26, 0.3) 0px 4px 12px 0px;
+      z-index: 9999;
+      opacity: 0; transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* Modal */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:2000; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .modal-box {
+      background: var(--canvas);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: rgba(20, 22, 26, 0.3) 0px 4px 24px 0px;
+    }
+    .modal-box p { font-size: 16px; color: var(--charcoal); margin-bottom: 24px; line-height: 1.5; letter-spacing: -0.16px; }
+
+    /* Why-buy tiles */
+    .benefit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+    .benefit-tile {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+    .benefit-icon { font-size: 28px; margin-bottom: 10px; }
+    .benefit-title { font-size: 14px; font-weight: 700; color: var(--ink-deep); margin-bottom: 4px; letter-spacing: -0.14px; }
+    .benefit-desc { font-size: 12px; color: var(--charcoal); line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .role-cards-section { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .ojt-grid { grid-template-columns: 1fr; }
+      .benefit-grid { grid-template-columns: 1fr 1fr; }
+      .landing-hero-title { font-size: 36px; }
+      .sidebar { display: none; }
+      .admin-main { padding: 24px 16px; }
+      .nav-pills { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+let currentView = 'landing';
+let adminPage = 'admin-dashboard';
+let adminTab = 'analysis';
+let employeePage = 'menu';
+let surveyPart = 1;
+let surveyDone = false;
+let ojtEntries = [
+  {
+    date: '2026-05-14',
+    learned: 'Supabase RLS 정책 설정 방법과 Edge Function 배포 과정을 학습했습니다.',
+    felt: '처음에는 어려웠지만 멘토님의 도움으로 이해할 수 있었습니다.',
+    plan: '내일은 프론트엔드 연동 작업을 진행할 예정입니다.'
+  }
+];
+
+const MENTORS = ['이민준', '최지영', '김태영', '박소연'];
+
+const PARTS = [
+  {
+    label: 'Part 1 / 4',
+    title: 'OJT 준비 및 멘토링 태도',
+    desc: '멘토/팀장님이 OJT를 위해 얼마나 체계적으로 준비하고 성실하게 임했는지 평가합니다.',
+    qs: [
+      'OJT 계획을 사전에 명확히 공유하고 체계적으로 준비했습니다.',
+      '바쁜 업무 중에도 교육을 위해 충분한 시간을 할애했습니다.',
+      '질문할 때 편안하게 이야기할 수 있도록 개방적인 태도를 보여주었습니다.',
+      '나를 팀의 일원으로 존중하며 인격적으로 대해주었습니다.',
+    ],
+    open: '멘토의 준비 상태나 태도에서 느낀 점을 작성해 주세요.',
+  },
+  {
+    label: 'Part 2 / 4',
+    title: '업무 지식 및 기술 전수',
+    desc: '담당 업무에 필요한 지식과 기술을 얼마나 명확하고 효과적으로 전달했는지 평가합니다.',
+    qs: [
+      '담당 업무의 핵심 내용과 목표를 이해하기 쉽게 설명해 주었습니다.',
+      '업무 절차와 시스템 활용법을 알기 쉬운 방식으로 알려주었습니다.',
+      '멘토의 지도가 업무 지식 습득에 실질적으로 도움이 되었습니다.',
+      '업무 수행에 필요한 지식과 정보를 충분히 제공받았습니다.',
+    ],
+    open: '업무 지식 전달에서 가장 도움이 됐거나 부족했던 부분을 작성해 주세요.',
+  },
+  {
+    label: 'Part 3 / 4',
+    title: '실무 지도 및 피드백',
+    desc: '실무 수행 과정에서 적절한 가이드와 건설적인 피드백을 제공했는지 평가합니다.',
+    qs: [
+      '배운 내용을 직접 실행할 수 있도록 적절한 업무 기회를 부여했습니다.',
+      '업무 결과에 대해 구체적이고 건설적인 피드백을 제공했습니다.',
+      '어려움이나 실수 시 비난하기보다 해결책을 함께 고민해 주었습니다.',
+      '스스로 생각하고 업무를 처리할 수 있도록 적절한 가이드를 제공했습니다.',
+    ],
+    open: '피드백 중 가장 도움이 된 내용이나 아쉬웠던 부분을 작성해 주세요.',
+  },
+  {
+    label: 'Part 4 / 4',
+    title: '조직 적응 지원 및 소통',
+    desc: '조직 적응을 위해 얼마나 지원하고 원활하게 소통했는지 평가합니다.',
+    qs: [
+      '팀 문화와 분위기를 이해할 수 있도록 도와주었습니다.',
+      '업무 외 고민이나 어려움도 편하게 이야기할 수 있는 분위기를 만들어 주었습니다.',
+      '동료 및 타 부서와의 관계 형성을 지원해 주었습니다.',
+      '나의 의견과 아이디어를 존중하고 반영하려 노력했습니다.',
+    ],
+    open: '조직 적응 과정에서 가장 도움이 됐거나 아쉬웠던 경험을 작성해 주세요.',
+  },
+];
+
+function renderApp() {
+  document.getElementById('app').innerHTML = currentView === 'landing' ? renderLanding()
+    : currentView === 'admin' ? renderAdminFull()
+    : renderEmployeeFull();
+}
+
+/* ── Landing ── */
+function renderLanding() {
+  return `
+  <div class="promo-banner">포트폴리오 체험 데모 — 저장되지 않으며 새로고침 시 초기화됩니다.</div>
+  <nav class="top-nav">
+    <div class="nav-logo">YURA <span>Onboarding</span></div>
+    <div class="nav-pills">
+      <div class="nav-pill active">홈</div>
+      <div class="nav-pill" onclick="goAdmin()">관리자</div>
+      <div class="nav-pill" onclick="goEmployee()">신입사원</div>
+    </div>
+    <div class="nav-right">
+      <a href="../../index.html" class="btn-back-nav">← 포트폴리오</a>
+    </div>
+  </nav>
+  <div class="landing">
+    <div class="landing-eyebrow">Demo Experience</div>
+    <h1 class="landing-hero-title">신입사원 온보딩, 체계적으로 시작하세요.</h1>
+    <p class="landing-hero-sub">HR 관리자와 신입사원 각각의 입장에서 시스템을 직접 체험해보세요. 별도 로그인 없이 바로 시작할 수 있습니다.</p>
+    <div class="landing-cta-row">
+      <button class="btn-primary" onclick="goAdmin()">관리자로 체험하기</button>
+      <button class="btn-secondary" onclick="goEmployee()">신입사원으로 체험하기</button>
+    </div>
+
+    <div class="role-cards-section">
+      <div class="role-card admin" onclick="goAdmin()">
+        <div class="role-card-badge">HR Admin</div>
+        <div class="role-card-icon">🏢</div>
+        <div class="role-card-title">관리자 대시보드</div>
+        <div class="role-card-desc">온보딩 현황을 한눈에 파악하고 AI 기반 설문 분석을 통해 멘토링 품질을 관리합니다.</div>
+        <ul class="role-card-features">
+          <li>온보딩 현황 대시보드</li>
+          <li>ABSA 감성 분석 결과</li>
+          <li>AI 메일 초안 작성</li>
+          <li>분석 리포트 생성</li>
+        </ul>
+        <button class="btn-primary" onclick="goAdmin()">관리자로 체험하기</button>
+      </div>
+      <div class="role-card employee" onclick="goEmployee()">
+        <div class="role-card-badge">신입사원</div>
+        <div class="role-card-icon">👤</div>
+        <div class="role-card-title">신입사원 포털</div>
+        <div class="role-card-desc">온보딩 프로그램 일정을 확인하고 OJT 일지를 작성하며 멘토링 평가 설문에 참여합니다.</div>
+        <ul class="role-card-features">
+          <li>OJT 멘토링 평가 설문</li>
+          <li>주간 OJT 일지 작성</li>
+          <li>온보딩 프로그램 확인</li>
+        </ul>
+        <button class="btn-cobalt" onclick="goEmployee()">신입사원으로 체험하기</button>
+      </div>
+    </div>
+
+    <div style="margin-top:48px; padding-top:48px; border-top:1px solid var(--hairline-soft);">
+      <div class="benefit-grid">
+        <div class="benefit-tile"><div class="benefit-icon">🤖</div><div class="benefit-title">AI 감성 분석</div><div class="benefit-desc">설문 응답 자동 분석</div></div>
+        <div class="benefit-tile"><div class="benefit-icon">📊</div><div class="benefit-title">실시간 대시보드</div><div class="benefit-desc">온보딩 현황 모니터링</div></div>
+        <div class="benefit-tile"><div class="benefit-icon">✉️</div><div class="benefit-title">자동 메일 생성</div><div class="benefit-desc">분석 기반 피드백 메일</div></div>
+        <div class="benefit-tile"><div class="benefit-icon">📋</div><div class="benefit-title">체계적 관리</div><div class="benefit-desc">멘토/버디 매칭 시스템</div></div>
+      </div>
+    </div>
+
+    <div class="landing-footer-note">* 데모 페이지입니다. 저장되지 않습니다. &nbsp;|&nbsp; <a href="../../index.html">← 포트폴리오로 돌아가기</a></div>
+  </div>`;
+}
+
+/* ── Admin ── */
+function renderAdminFull() {
+  return `
+  <nav class="top-nav">
+    <div class="nav-logo">YURA <span>Onboarding</span></div>
+    <div class="nav-pills">
+      <div class="nav-pill ${adminPage==='admin-dashboard'?'active':''}" onclick="setAdminPage('admin-dashboard')">온보딩 현황</div>
+      <div class="nav-pill ${adminPage==='admin-survey'?'active':''}" onclick="setAdminPage('admin-survey')">설문 관리 (ABSA)</div>
+    </div>
+    <div class="nav-right">
+      <button class="btn-ghost" onclick="goLanding()">← 역할 선택</button>
+    </div>
+  </nav>
+  <div class="admin-wrap">
+    <aside class="sidebar">
+      <div style="padding:0 20px 16px;"><div style="font-size:12px;color:var(--slate);letter-spacing:1px;text-transform:uppercase;font-weight:700;">관리 메뉴</div></div>
+      <div class="sidebar-item ${adminPage==='admin-dashboard'?'active':''}" onclick="setAdminPage('admin-dashboard')">📋 온보딩 현황</div>
+      <div class="sidebar-item ${adminPage==='admin-survey'?'active':''}" onclick="setAdminPage('admin-survey')">📝 설문조사 (ABSA)</div>
+      <div class="sidebar-user">
+        <div class="sidebar-user-name">데모 관리자</div>
+        <div class="sidebar-user-role">HR 관리자</div>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 14px;" onclick="goLanding()">← 역할 선택</button>
+      </div>
+    </aside>
+    <main class="admin-main">
+      ${adminPage==='admin-dashboard' ? renderDashboard() : renderSurveyAdmin()}
+    </main>
+  </div>`;
+}
+
+function renderDashboard() {
+  const rows = [
+    { name:'김지수', join:'2026-04-01', dept:'영업팀', mentor:'이민준', pct:75 },
+    { name:'박준혁', join:'2026-04-15', dept:'개발팀', mentor:'최지영', pct:45 },
+    { name:'이수연', join:'2026-05-01', dept:'인사팀', mentor:'김태영', pct:10 },
+    { name:'정민서', join:'2026-03-01', dept:'마케팅팀', mentor:'박소연', pct:100 },
+  ].map(e => `<tr>
+    <td>${e.name}</td><td>${e.join}</td><td>${e.dept}</td><td>${e.mentor}</td>
+    <td>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="progress-wrap"><div class="progress-bar ${e.pct===100?'high':e.pct<20?'low':''}" style="width:${e.pct}%"></div></div>
+        <span style="font-size:13px;font-weight:700;color:var(--charcoal)">${e.pct}%</span>
+      </div>
+    </td>
+  </tr>`).join('');
+  return `
+  <div class="page-title"><strong>온보딩 현황</strong> 대시보드</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">전체 신규입사자</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--success)">1</div><div class="stat-label">완료</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--primary)">2</div><div class="stat-label">진행 중</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--steel)">1</div><div class="stat-label">시작 전</div></div>
+  </div>
+  <div class="card-feature">
+    <table>
+      <thead><tr><th>이름</th><th>입사일</th><th>부서</th><th>멘토</th><th>진행률</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderSurveyAdmin() {
+  return `
+  <div class="page-title"><strong>설문조사 관리</strong> — ABSA 분석</div>
+  <div class="tabs">
+    <button class="tab-btn ${adminTab==='analysis'?'active':''}" onclick="setTab('analysis')">📊 분석 결과</button>
+    <button class="tab-btn ${adminTab==='mail'?'active':''}" onclick="setTab('mail')">✉️ 메일 작성</button>
+    <button class="tab-btn ${adminTab==='report'?'active':''}" onclick="setTab('report')">📄 리포트</button>
+  </div>
+  ${adminTab==='analysis' ? renderAbsa() : adminTab==='mail' ? renderMail() : renderReport()}`;
+}
+
+function renderAbsa() {
+  return `
+  <div class="card-feature">
+    <div style="font-size:18px;font-weight:700;color:var(--ink-deep);margin-bottom:6px;letter-spacing:-0.3px">OJT 멘토링 평가 — AI 감성 분석 결과</div>
+    <div class="absa-meta">분석 기간: 2026년 4월 ~ 5월 &nbsp;|&nbsp; 응답자 4명</div>
+    <div class="alert-banner">⚠️ 1명의 신규입사자에서 업무 과부하 관련 부정 신호 감지</div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:12px">전체 감성 분포</div>
+    <div class="sentiment-row">
+      <span class="sentiment-name">긍정</span>
+      <div class="sentiment-track"><div class="sentiment-fill" style="width:68%;background:var(--ink-deep)">68%</div></div>
+    </div>
+    <div class="sentiment-row">
+      <span class="sentiment-name">중립</span>
+      <div class="sentiment-track"><div class="sentiment-fill" style="width:20%;background:var(--steel)">20%</div></div>
+    </div>
+    <div class="sentiment-row">
+      <span class="sentiment-name">부정</span>
+      <div class="sentiment-track"><div class="sentiment-fill" style="width:12%;background:#e74c3c">12%</div></div>
+    </div>
+    <div style="margin-top:24px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:12px">부문별 평균 점수</div>
+    <div class="score-grid">
+      <div class="score-item"><span class="score-item-label">OJT 준비 및 태도</span><span class="score-item-value">4.2 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
+      <div class="score-item"><span class="score-item-label">업무 지식 전수</span><span class="score-item-value">3.8 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
+      <div class="score-item"><span class="score-item-label">실무 지도 및 피드백</span><span class="score-item-value">4.0 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
+      <div class="score-item"><span class="score-item-label">조직 적응 지원</span><span class="score-item-value">3.5 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
+    </div>
+    <div style="margin-top:20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:10px">주요 키워드</div>
+    <div class="keyword-row">
+      <span class="keyword-chip">소통</span>
+      <span class="keyword-chip">체계적</span>
+      <span class="keyword-chip">피드백</span>
+      <span class="keyword-chip warn">업무량</span>
+      <span class="keyword-chip warn">개선필요</span>
+    </div>
+  </div>`;
+}
+
+function renderMail() {
+  return `
+  <div class="card-feature">
+    <div style="font-size:18px;font-weight:700;color:var(--ink-deep);margin-bottom:20px;letter-spacing:-0.3px">분석 기반 멘토 피드백 메일 작성</div>
+    <div class="form-label">받는 사람</div>
+    <select id="mailTo" onchange="updateMailBody()">${MENTORS.map(m=>`<option value="${m}">${m} 멘토</option>`).join('')}</select>
+    <div class="form-label">제목</div>
+    <input type="text" id="mailSubject" value="OJT 멘토링 피드백 안내 - 2026년 5월">
+    <div class="form-label">본문</div>
+    <textarea id="mailBody" rows="10">${getMailBody(MENTORS[0])}</textarea>
+    <div style="margin-top:16px">
+      <button class="btn-primary" onclick="sendMail()">메일 보내기</button>
+    </div>
+  </div>`;
+}
+
+function getMailBody(name) {
+  return `안녕하세요, ${name}님.\n\n이번 달 OJT 멘토링 평가 결과를 공유드립니다.\n\n[분석 결과 요약]\n• 전체 만족도: 3.9/5.0 (긍정 68%)\n• 강점: 소통 능력, 체계적인 OJT 준비\n• 개선 필요: 업무량 조율, 피드백 구체성\n\n더욱 발전된 온보딩 환경을 위해 지속적인 관심 부탁드립니다.\n\n인사기획팀 드림`;
+}
+
+function renderReport() {
+  return `
+  <div class="report-card">
+    <div class="report-header">
+      <div class="report-header-title">OJT 멘토링 평가 리포트</div>
+      <div class="report-header-sub">YURA Onboarding System · 2026년 5월</div>
+    </div>
+    <div class="report-body">
+      <div class="report-row"><span class="report-row-label">리포트명</span><span class="report-row-value">YURA 온보딩 OJT 평가 리포트 (2026년 5월)</span></div>
+      <div class="report-row"><span class="report-row-label">분석 기간</span><span class="report-row-value">2026.04.01 ~ 2026.05.14</span></div>
+      <div class="report-row"><span class="report-row-label">응답자 수</span><span class="report-row-value">4명</span></div>
+      <div class="report-row"><span class="report-row-label">전체 평균</span><span class="report-row-value">3.9 / 5.0</span></div>
+      <div class="report-row"><span class="report-row-label">생성일</span><span class="report-row-value">2026.05.15</span></div>
+      <div style="margin-top:20px">
+        <button class="btn-primary" onclick="showPdfModal()">PDF 다운로드</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Employee ── */
+function renderEmployeeFull() {
+  return `
+  <nav class="top-nav">
+    <div class="nav-logo">YURA <span>Onboarding</span></div>
+    <div class="nav-pills">
+      <div class="nav-pill ${employeePage==='menu'?'active':''}" onclick="setEmpPage('menu')">홈</div>
+      <div class="nav-pill ${employeePage==='survey'?'active':''}" onclick="setEmpPage('survey')">설문조사</div>
+      <div class="nav-pill ${employeePage==='ojt'?'active':''}" onclick="setEmpPage('ojt')">OJT 일지</div>
+      <div class="nav-pill ${employeePage==='program'?'active':''}" onclick="setEmpPage('program')">온보딩 프로그램</div>
+    </div>
+    <div class="nav-right">
+      <button class="btn-ghost" onclick="goLanding()">← 역할 선택</button>
+    </div>
+  </nav>
+  <div class="emp-body">
+    ${employeePage==='menu' ? renderEmpMenu()
+      : employeePage==='survey' ? renderSurvey()
+      : employeePage==='ojt' ? renderOjt()
+      : renderProgram()}
+  </div>`;
+}
+
+function renderEmpMenu() {
+  return `
+  <div class="greeting-section">
+    <div class="greeting-eyebrow">Welcome</div>
+    <h2 class="greeting-title">안녕하세요, 데모 신입사원님 👋</h2>
+    <p class="greeting-sub">오늘도 좋은 하루 되세요. 아래 메뉴에서 원하는 기능을 선택해 체험해보세요.</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-tile" onclick="setEmpPage('survey')">
+      <div class="menu-tile-icon">📝</div>
+      <div class="menu-tile-title">설문조사</div>
+      <div class="menu-tile-desc">OJT 멘토링 평가 설문에 참여하세요</div>
+    </div>
+    <div class="menu-tile" onclick="setEmpPage('ojt')">
+      <div class="menu-tile-icon">📓</div>
+      <div class="menu-tile-title">OJT 일지</div>
+      <div class="menu-tile-desc">주간 OJT 일지를 작성하고 기록하세요</div>
+    </div>
+    <div class="menu-tile" onclick="setEmpPage('program')">
+      <div class="menu-tile-icon">🗓️</div>
+      <div class="menu-tile-title">온보딩 프로그램</div>
+      <div class="menu-tile-desc">온보딩 일정과 진행 상황을 확인하세요</div>
+    </div>
+  </div>`;
+}
+
+function renderSurvey() {
+  if (surveyDone) return `
+  <div class="survey-complete">
+    <div class="survey-complete-icon">✅</div>
+    <h2 class="survey-complete-title">설문이 제출되었습니다</h2>
+    <p class="survey-complete-sub">참여해 주셔서 감사합니다. 소중한 의견을 반영하겠습니다.</p>
+    <button class="btn-primary" onclick="surveyDone=false;surveyPart=1;setEmpPage('menu')">홈으로 돌아가기</button>
+  </div>`;
+
+  const part = PARTS[surveyPart - 1];
+  const pips = PARTS.map((_, i) => `<div class="part-pip ${i < surveyPart-1?'done':i===surveyPart-1?'active':''}"></div>`).join('');
+  const qs = part.qs.map((q, qi) => `
+    <div class="question-block">
+      <div class="q-text">${qi+1}. ${q}</div>
+      <div class="scale-row">
+        <span class="scale-end">매우<br>불만족</span>
+        <div class="scale-options">
+          ${[1,2,3,4,5].map(n=>`<div class="scale-opt"><input type="radio" name="q${surveyPart}_${qi}" id="s${surveyPart}_${qi}_${n}" value="${n}"><label for="s${surveyPart}_${qi}_${n}">${n}</label></div>`).join('')}
+        </div>
+        <span class="scale-end">매우<br>만족</span>
+      </div>
+    </div>`).join('');
+  return `
+  <div class="part-progress">${pips}</div>
+  <div class="section-header">
+    <div class="part-label">${part.label}</div>
+    <h2 class="part-title">${part.title}</h2>
+    <p class="part-desc">${part.desc}</p>
+  </div>
+  <div class="card-feature">
+    ${qs}
+    <div class="question-block">
+      <div class="q-text">${part.qs.length+1}. ${part.open}</div>
+      <textarea class="q-textarea" rows="3" placeholder="자유롭게 작성해 주세요..."></textarea>
+    </div>
+    <div style="margin-top:20px">
+      <button class="btn-primary" onclick="nextPart()">${surveyPart<4?'다음 파트 →':'제출하기'}</button>
+    </div>
+  </div>`;
+}
+
+function renderOjt() {
+  const entries = ojtEntries.map(e => `
+    <div class="ojt-entry">
+      <div class="ojt-entry-date">${e.date}</div>
+      <div class="ojt-entry-label">오늘 배운 것</div>
+      <div class="ojt-entry-text">${e.learned}</div>
+      <div class="ojt-entry-label">느낀 점</div>
+      <div class="ojt-entry-text">${e.felt}</div>
+      <div class="ojt-entry-label">내일 계획</div>
+      <div class="ojt-entry-text">${e.plan}</div>
+    </div>`).join('');
+  return `
+  <div class="section-header">
+    <div class="part-label">My Journal</div>
+    <h2 class="part-title">OJT 일지</h2>
+  </div>
+  <div class="ojt-grid">
+    <div class="card-feature ojt-form-card">
+      <div style="font-size:16px;font-weight:700;color:var(--ink-deep);margin-bottom:20px;letter-spacing:-0.3px">새 일지 작성</div>
+      <div class="form-label">날짜</div>
+      <input type="date" id="ojtDate" value="${new Date().toISOString().slice(0,10)}">
+      <div class="form-label">오늘 배운 것</div>
+      <textarea id="ojtLearned" rows="3" placeholder="오늘 배운 내용을 기록하세요"></textarea>
+      <div class="form-label">느낀 점</div>
+      <textarea id="ojtFelt" rows="2" placeholder="오늘의 소감을 작성하세요"></textarea>
+      <div class="form-label">내일 계획</div>
+      <textarea id="ojtPlan" rows="2" placeholder="내일 할 일을 계획하세요"></textarea>
+      <div style="margin-top:16px"><button class="btn-primary" onclick="saveOjt()">일지 저장</button></div>
+    </div>
+    <div class="card-feature ojt-list-card">
+      <div style="font-size:16px;font-weight:700;color:var(--ink-deep);margin-bottom:16px;letter-spacing:-0.3px">일지 목록</div>
+      ${entries}
+    </div>
+  </div>`;
+}
+
+function renderProgram() {
+  return `
+  <div class="section-header">
+    <div class="part-label">Onboarding Schedule</div>
+    <h2 class="part-title">온보딩 프로그램</h2>
+    <p class="part-desc">현재 Week 2 진행 중입니다.</p>
+  </div>
+  <div class="card-feature">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-marker done">✓</div>
+        <div class="tl-week-row"><div class="tl-week">Week 1</div></div>
+        <div class="tl-date">4월 1일 ~ 4월 5일</div>
+        <div class="tl-chips">
+          <span class="tl-chip done">오리엔테이션</span>
+          <span class="tl-chip done">회사 소개</span>
+          <span class="tl-chip done">부서 투어</span>
+          <span class="tl-chip done">시스템 계정 발급</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker active"></div>
+        <div class="tl-week-row"><div class="tl-week">Week 2</div><div class="tl-current-badge">진행 중</div></div>
+        <div class="tl-date">4월 8일 ~ 4월 12일</div>
+        <div class="tl-chips">
+          <span class="tl-chip active">업무 시스템 교육</span>
+          <span class="tl-chip active">멘토 미팅</span>
+          <span class="tl-chip active">첫 업무 배정</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker pending"></div>
+        <div class="tl-week-row"><div class="tl-week">Week 3</div></div>
+        <div class="tl-date">4월 15일 ~ 4월 19일</div>
+        <div class="tl-chips">
+          <span class="tl-chip pending">실무 투입</span>
+          <span class="tl-chip pending">OJT 중간 점검</span>
+          <span class="tl-chip pending">중간 설문조사</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker pending"></div>
+        <div class="tl-week-row"><div class="tl-week">Week 4</div></div>
+        <div class="tl-date">4월 22일 ~ 4월 26일</div>
+        <div class="tl-chips">
+          <span class="tl-chip pending">팀 프로젝트 참여</span>
+          <span class="tl-chip pending">최종 평가 설문</span>
+          <span class="tl-chip pending">수료식</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Actions ── */
+function goAdmin() { currentView='admin'; adminPage='admin-dashboard'; renderApp(); }
+function goEmployee() { currentView='employee'; employeePage='menu'; renderApp(); }
+function goLanding() { currentView='landing'; renderApp(); }
+function setAdminPage(p) { adminPage=p; renderApp(); }
+function setTab(t) { adminTab=t; renderApp(); }
+function setEmpPage(p) { employeePage=p; renderApp(); }
+function nextPart() { surveyPart < 4 ? (surveyPart++, renderApp()) : (surveyDone=true, renderApp()); }
+function updateMailBody() {
+  const sel = document.getElementById('mailTo');
+  const body = document.getElementById('mailBody');
+  if (sel && body) body.value = getMailBody(sel.value);
+}
+function sendMail() { showToast('✓ 메일이 발송되었습니다.'); }
+function saveOjt() {
+  const d = document.getElementById('ojtDate').value;
+  const l = document.getElementById('ojtLearned').value.trim();
+  const f = document.getElementById('ojtFelt').value.trim();
+  const p = document.getElementById('ojtPlan').value.trim();
+  if (!l) return;
+  ojtEntries.unshift({ date:d, learned:l, felt:f, plan:p });
+  showToast('✓ 일지가 저장되었습니다.');
+  renderApp();
+}
+function showPdfModal() {
+  const ov = document.createElement('div');
+  ov.className = 'modal-overlay';
+  ov.innerHTML = `<div class="modal-box"><p>데모 환경에서는 PDF 다운로드가 지원되지 않습니다.</p><button class="btn-primary" onclick="this.closest('.modal-overlay').remove()">확인</button></div>`;
+  document.body.appendChild(ov);
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+renderApp();
+</script>
+</body>
+</html>
