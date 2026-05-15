@@ -51,10 +51,38 @@
       font-weight: 700;
       color: var(--ink-strong);
       letter-spacing: -0.3px;
+      white-space: nowrap;
     }
-    .header-logo-glyph { color: var(--primary); font-size: 18px; }
     .header-divider { width: 1px; height: 16px; background: var(--hairline); }
-    .header-board { font-size: 13px; color: var(--body); flex: 1; font-family: var(--font-mono); }
+    .header-board { font-size: 13px; color: var(--body); font-family: var(--font-mono); white-space: nowrap; }
+
+    /* ── View toggle ── */
+    .view-toggle {
+      display: flex;
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+    .view-btn {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--mute);
+      background: none;
+      border: none;
+      border-right: 1px solid var(--hairline);
+      padding: 5px 14px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: color .12s, background .12s;
+      white-space: nowrap;
+    }
+    .view-btn:last-child { border-right: none; }
+    .view-btn.active { background: rgba(255,255,255,0.06); color: var(--ink); font-weight: 600; }
+    .view-btn:hover:not(.active) { color: var(--body); }
+
+    .header-spacer { flex: 1; }
     .header-back {
       color: var(--body);
       text-decoration: none;
@@ -67,8 +95,8 @@
     }
     .header-back:hover { color: var(--ink); border-color: var(--mute); }
 
-    /* ── Board wrapper ── */
-    .board-wrapper { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    /* ── Main content ── */
+    .main-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
     /* ── Board title area ── */
     .board-title-area { padding: 20px 20px 0; flex-shrink: 0; }
@@ -95,24 +123,14 @@
     }
     .board-invite-btn:hover { border-color: var(--mute); color: var(--ink); }
 
-    /* ── Avatar pill (shared) ── */
+    /* ── Avatar pill ── */
     .avatar-pill {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      color: var(--ink-strong);
-      font-family: var(--font-sans);
-      white-space: nowrap;
+      font-size: 11px; font-weight: 700; padding: 2px 8px;
+      border-radius: 6px; color: var(--ink-strong); font-family: var(--font-sans); white-space: nowrap;
     }
     .avatar-pill-sm {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 5px;
-      color: var(--ink-strong);
-      font-family: var(--font-sans);
-      white-space: nowrap;
+      font-size: 10px; font-weight: 700; padding: 2px 6px;
+      border-radius: 5px; color: var(--ink-strong); font-family: var(--font-sans); white-space: nowrap;
     }
 
     /* ── Board ── */
@@ -131,500 +149,284 @@
 
     /* ── List ── */
     .list {
-      width: 280px;
-      flex-shrink: 0;
+      width: 280px; flex-shrink: 0;
       background: var(--canvas-soft);
       border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
+      border-radius: 8px; padding: 14px;
+      display: flex; flex-direction: column;
       max-height: calc(100vh - 180px);
     }
-    .list-header {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
+    .list-header { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
     .list-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-      cursor: pointer;
-      flex: 1;
-      padding: 2px 4px;
-      border-radius: 4px;
-      min-width: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      cursor: pointer; flex: 1; padding: 2px 4px; border-radius: 4px;
+      min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .list-title:hover { background: rgba(255,255,255,0.04); }
     .list-title-input {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-      background: transparent;
-      border: 1px solid var(--primary);
-      border-radius: 4px;
-      padding: 2px 4px;
-      outline: none;
-      flex: 1;
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      background: transparent; border: 1px solid var(--primary);
+      border-radius: 4px; padding: 2px 4px; outline: none; flex: 1;
       font-family: var(--font-sans);
     }
     .list-header-right { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
     .list-icon-btn {
-      width: 24px; height: 24px;
-      border-radius: 5px;
-      border: none;
-      background: none;
-      color: var(--mute);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-family: var(--font-sans);
+      width: 24px; height: 24px; border-radius: 5px; border: none;
+      background: none; color: var(--mute); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-family: var(--font-sans);
       transition: background .12s, color .12s;
     }
     .list-icon-btn:hover { background: rgba(255,255,255,0.06); color: var(--ink); }
-
     .cards { flex: 1; overflow-y: auto; min-height: 32px; }
     .cards::-webkit-scrollbar { width: 4px; }
-    .cards::-webkit-scrollbar-track { background: transparent; }
     .cards::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
     .cards.drag-over { background: rgba(0,217,146,0.04); border-radius: 6px; }
 
     /* ── Card ── */
     .card {
-      background: var(--canvas);
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 11px 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      background: var(--canvas); border: 1px solid var(--hairline);
+      border-radius: 8px; padding: 11px 12px; margin-bottom: 8px;
+      cursor: pointer; position: relative; overflow: hidden;
       transition: border-color .12s, box-shadow .12s;
     }
     .card:last-child { margin-bottom: 0; }
     .card:hover { border-color: var(--mute); box-shadow: 0 0 15px rgba(92,88,85,0.2); }
     .card.dragging { opacity: 0.35; }
-
-    .card-top-label {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-    }
+    .card-top-label { position: absolute; top: 0; left: 0; right: 0; height: 5px; }
     .card.has-label .card-title { margin-top: 8px; }
-
     .card-title { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-      gap: 6px;
-    }
+    .card-meta { display: flex; align-items: center; margin-top: 8px; gap: 6px; }
     .card-check {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.06);
-      color: var(--mute);
-      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 600; padding: 2px 7px;
+      border-radius: 4px; background: rgba(255,255,255,0.06);
+      color: var(--mute); font-family: var(--font-mono);
     }
     .card-check.complete { background: rgba(0,217,146,0.12); color: var(--primary); }
     .card-member-badges { display: flex; gap: 3px; margin-left: auto; }
 
     /* ── Add card ── */
     .add-card-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--mute);
-      font-size: 13px;
-      cursor: pointer;
-      padding: 6px 4px;
-      border-radius: 6px;
-      margin-top: 8px;
-      border: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-      font-family: var(--font-sans);
-      transition: color .12s, background .12s;
+      display: flex; align-items: center; gap: 6px; color: var(--mute);
+      font-size: 13px; cursor: pointer; padding: 6px 4px; border-radius: 6px;
+      margin-top: 8px; border: none; background: none; width: 100%;
+      text-align: left; font-family: var(--font-sans); transition: color .12s, background .12s;
     }
     .add-card-btn:hover { color: var(--primary); background: rgba(0,217,146,0.06); }
     .add-card-form { margin-top: 8px; }
     .add-card-textarea {
-      width: 100%;
-      border: 1px solid var(--primary);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 13px;
-      resize: none;
-      outline: none;
-      font-family: var(--font-sans);
-      line-height: 1.5;
-      background: var(--canvas);
-      color: var(--ink);
+      width: 100%; border: 1px solid var(--primary); border-radius: 6px;
+      padding: 8px 10px; font-size: 13px; resize: none; outline: none;
+      font-family: var(--font-sans); line-height: 1.5;
+      background: var(--canvas); color: var(--ink);
     }
     .add-card-textarea::placeholder { color: var(--mute); }
     .add-card-actions { display: flex; gap: 6px; margin-top: 6px; }
     .btn-add {
-      background: var(--primary);
-      color: #0a1a14;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font-sans);
-      transition: opacity .12s;
+      background: var(--primary); color: #0a1a14; border: none; border-radius: 6px;
+      padding: 6px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: var(--font-sans); transition: opacity .12s;
     }
     .btn-add:hover { opacity: 0.85; }
     .btn-cancel {
-      background: none;
-      border: 1px solid var(--hairline);
-      color: var(--body);
-      font-size: 13px;
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-family: var(--font-sans);
-      transition: border-color .12s, color .12s;
+      background: none; border: 1px solid var(--hairline); color: var(--body);
+      font-size: 13px; cursor: pointer; padding: 6px 10px; border-radius: 6px;
+      font-family: var(--font-sans); transition: border-color .12s, color .12s;
     }
     .btn-cancel:hover { border-color: var(--mute); color: var(--ink); }
 
     /* ── Add list ── */
     .add-list { width: 280px; flex-shrink: 0; }
     .add-list-btn {
-      width: 100%;
-      background: transparent;
-      border: 1px dashed rgba(79,93,117,0.4);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 13px;
-      color: var(--mute);
-      cursor: pointer;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-sans);
+      width: 100%; background: transparent;
+      border: 1px dashed rgba(79,93,117,0.4); border-radius: 8px; padding: 12px;
+      font-size: 13px; color: var(--mute); cursor: pointer; text-align: left;
+      display: flex; align-items: center; gap: 8px; font-family: var(--font-sans);
       transition: color .12s, border-color .12s;
     }
     .add-list-btn:hover { color: var(--primary); border-color: rgba(0,217,146,0.3); }
-    .add-list-form {
-      background: var(--canvas-soft);
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 14px;
-    }
+    .add-list-form { background: var(--canvas-soft); border: 1px solid var(--hairline); border-radius: 8px; padding: 14px; }
     .add-list-input {
-      width: 100%;
-      border: 1px solid var(--primary);
-      border-radius: 6px;
-      padding: 7px 10px;
-      font-size: 13px;
-      outline: none;
-      font-family: var(--font-sans);
-      background: var(--canvas);
-      color: var(--ink);
+      width: 100%; border: 1px solid var(--primary); border-radius: 6px;
+      padding: 7px 10px; font-size: 13px; outline: none;
+      font-family: var(--font-sans); background: var(--canvas); color: var(--ink);
     }
     .add-list-input::placeholder { color: var(--mute); }
 
+    /* ── Calendar view ── */
+    .calendar-wrapper {
+      flex: 1; overflow-y: auto; padding: 0 20px 20px;
+    }
+    .calendar-wrapper::-webkit-scrollbar { width: 6px; }
+    .calendar-wrapper::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 3px; }
+    .cal-nav {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+    }
+    .cal-month-label {
+      font-size: 16px; font-weight: 700; color: var(--ink-strong);
+      min-width: 120px; text-align: center;
+    }
+    .cal-nav-btn {
+      background: none; border: 1px solid var(--hairline); color: var(--mute);
+      border-radius: 6px; width: 28px; height: 28px; cursor: pointer;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      transition: color .12s, border-color .12s;
+    }
+    .cal-nav-btn:hover { color: var(--ink); border-color: var(--mute); }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden;
+      gap: 1px; background: var(--hairline);
+    }
+    .cal-day-header {
+      background: var(--canvas-soft); padding: 8px 6px; text-align: center;
+      font-size: 11px; font-weight: 600; color: var(--mute); letter-spacing: 0.5px;
+    }
+    .cal-day-header.sun { color: #f87171; }
+    .cal-day-header.sat { color: #60a5fa; }
+    .cal-cell {
+      background: var(--canvas); min-height: 90px; padding: 6px;
+      vertical-align: top;
+    }
+    .cal-cell.other-month { background: var(--canvas-soft); }
+    .cal-cell.today-cell { background: rgba(0,217,146,0.04); }
+    .cal-date-num {
+      font-size: 12px; color: var(--mute); margin-bottom: 4px;
+      font-family: var(--font-mono); display: inline-block;
+    }
+    .cal-date-num.today-num {
+      color: var(--primary); font-weight: 700;
+      background: rgba(0,217,146,0.12); border-radius: 4px;
+      padding: 0 4px;
+    }
+    .cal-date-num.sun-num { color: #f87171; }
+    .cal-date-num.sat-num { color: #60a5fa; }
+    .cal-cell.other-month .cal-date-num { opacity: 0.4; }
+    .cal-chip {
+      display: block; font-size: 11px; padding: 2px 6px; border-radius: 4px;
+      margin-bottom: 2px; cursor: pointer; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+      transition: opacity .12s;
+    }
+    .cal-chip:hover { opacity: 0.75; }
+    .cal-chip.start-chip { background: rgba(0,217,146,0.15); color: var(--primary); border: 1px solid rgba(0,217,146,0.25); }
+    .cal-chip.end-chip   { background: rgba(59,130,246,0.15); color: #60a5fa;    border: 1px solid rgba(59,130,246,0.25); }
+
     /* ── Footer ── */
     .footer {
-      text-align: center;
-      padding: 8px;
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--mute);
-      background: var(--canvas);
-      border-top: 1px solid var(--hairline);
-      flex-shrink: 0;
+      text-align: center; padding: 8px; font-size: 11px;
+      font-family: var(--font-mono); color: var(--mute);
+      background: var(--canvas); border-top: 1px solid var(--hairline); flex-shrink: 0;
     }
     .footer-dot {
-      display: inline-block;
-      width: 6px; height: 6px;
-      background: var(--primary);
-      border-radius: 9999px;
-      margin-right: 5px;
-      vertical-align: middle;
+      display: inline-block; width: 6px; height: 6px; background: var(--primary);
+      border-radius: 9999px; margin-right: 5px; vertical-align: middle;
     }
 
     /* ── Modal overlay ── */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.72);
-      z-index: 1000;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 16px 40px;
-      overflow-y: auto;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.72); z-index: 1000;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 40px 16px; overflow-y: auto;
     }
-
-    /* ── Modal ── */
     .modal {
-      background: var(--canvas-soft);
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      width: 100%;
-      max-width: 620px;
-      display: flex;
-      flex-direction: column;
-      max-height: calc(100vh - 80px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.75);
-      flex-shrink: 0;
+      background: var(--canvas-soft); border: 1px solid var(--hairline);
+      border-radius: 8px; width: 100%; max-width: 620px;
+      display: flex; flex-direction: column; max-height: calc(100vh - 80px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.75); flex-shrink: 0;
     }
     .modal-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 22px 22px 16px;
-      border-bottom: 1px solid var(--hairline);
-      flex-shrink: 0;
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 22px 22px 16px; border-bottom: 1px solid var(--hairline); flex-shrink: 0;
     }
     .modal-header-left { flex: 1; min-width: 0; }
     .modal-card-title-input {
-      width: 100%;
-      background: none;
-      border: none;
-      outline: none;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--ink-strong);
-      font-family: var(--font-sans);
-      letter-spacing: -0.3px;
-      padding: 0;
+      width: 100%; background: none; border: none; outline: none;
+      font-size: 20px; font-weight: 700; color: var(--ink-strong);
+      font-family: var(--font-sans); letter-spacing: -0.3px; padding: 0;
     }
-    .modal-in-list {
-      font-size: 12px;
-      color: var(--mute);
-      margin-top: 5px;
-      font-family: var(--font-mono);
-    }
+    .modal-in-list { font-size: 12px; color: var(--mute); margin-top: 5px; font-family: var(--font-mono); }
     .modal-close {
-      background: none;
-      border: 1px solid var(--hairline);
-      font-size: 14px;
-      cursor: pointer;
-      color: var(--mute);
-      padding: 4px 8px;
-      border-radius: 4px;
-      line-height: 1;
-      flex-shrink: 0;
-      transition: color .12s, border-color .12s;
+      background: none; border: 1px solid var(--hairline); font-size: 14px;
+      cursor: pointer; color: var(--mute); padding: 4px 8px; border-radius: 4px;
+      line-height: 1; flex-shrink: 0; transition: color .12s, border-color .12s;
     }
     .modal-close:hover { color: var(--ink); border-color: var(--mute); }
-
     .modal-body { flex: 1; overflow-y: auto; padding: 20px 22px 22px; }
     .modal-body::-webkit-scrollbar { width: 4px; }
     .modal-body::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
-
     .modal-section { margin-bottom: 22px; }
-    .modal-section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .modal-section-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
+    .modal-section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .modal-section-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
     .modal-section-heading .modal-section-title { margin-bottom: 0; }
-
     .modal-desc-textarea {
-      width: 100%;
-      border: 1px solid var(--hairline);
-      border-radius: 6px;
-      padding: 9px 11px;
-      font-size: 13px;
-      resize: vertical;
-      min-height: 80px;
-      outline: none;
-      font-family: var(--font-mono);
-      line-height: 1.6;
-      background: var(--canvas);
-      color: var(--body);
-      transition: border-color .12s;
+      width: 100%; border: 1px solid var(--hairline); border-radius: 6px;
+      padding: 9px 11px; font-size: 13px; resize: vertical; min-height: 80px;
+      outline: none; font-family: var(--font-mono); line-height: 1.6;
+      background: var(--canvas); color: var(--body); transition: border-color .12s;
     }
     .modal-desc-textarea::placeholder { color: var(--mute); font-style: italic; }
     .modal-desc-textarea:focus { border-color: var(--primary); }
-
-    /* ── Date section ── */
-    .date-grid {
-      display: grid;
-      grid-template-columns: 52px 1fr;
-      gap: 8px 12px;
-      align-items: center;
-    }
+    .date-grid { display: grid; grid-template-columns: 52px 1fr; gap: 8px 12px; align-items: center; }
     .date-label { font-size: 12px; color: var(--mute); font-family: var(--font-mono); }
     .date-input {
-      border: 1px solid var(--hairline);
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 12px;
-      background: var(--canvas);
-      color: var(--body);
-      font-family: var(--font-sans);
-      outline: none;
-      transition: border-color .12s;
-      cursor: pointer;
-      width: 100%;
+      border: 1px solid var(--hairline); border-radius: 6px; padding: 6px 10px;
+      font-size: 12px; background: var(--canvas); color: var(--body);
+      font-family: var(--font-sans); outline: none; transition: border-color .12s;
+      cursor: pointer; width: 100%;
     }
     .date-input:focus { border-color: var(--primary); }
     .date-input::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
-
-    /* ── Checklist section ── */
     .btn-checklist-delete {
-      font-size: 12px;
-      color: var(--mute);
-      border: 1px solid var(--hairline);
-      border-radius: 4px;
-      padding: 3px 10px;
-      cursor: pointer;
-      background: none;
-      font-family: var(--font-sans);
-      transition: color .12s, border-color .12s;
+      font-size: 12px; color: var(--mute); border: 1px solid var(--hairline);
+      border-radius: 4px; padding: 3px 10px; cursor: pointer; background: none;
+      font-family: var(--font-sans); transition: color .12s, border-color .12s;
     }
     .btn-checklist-delete:hover { color: #f87171; border-color: #3d2020; }
-
-    .checklist-progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .checklist-pct {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--mute);
-      width: 30px;
-      flex-shrink: 0;
-      text-align: right;
-    }
-    .checklist-progress-track {
-      flex: 1;
-      height: 6px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .checklist-progress-fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 3px;
-      transition: width .2s;
-    }
-
-    .checklist-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
+    .checklist-progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .checklist-pct { font-size: 11px; font-family: var(--font-mono); color: var(--mute); width: 30px; flex-shrink: 0; text-align: right; }
+    .checklist-progress-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .checklist-progress-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width .2s; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .checklist-item:last-child { border-bottom: none; }
     .checklist-checkbox {
-      width: 15px; height: 15px;
-      border-radius: 3px;
-      border: 1.5px solid var(--hairline);
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      flex-shrink: 0;
-      margin-top: 2px;
-      background: var(--canvas);
-      position: relative;
+      width: 15px; height: 15px; border-radius: 3px; border: 1.5px solid var(--hairline);
+      cursor: pointer; appearance: none; -webkit-appearance: none; flex-shrink: 0;
+      margin-top: 2px; background: var(--canvas); position: relative;
       transition: background .12s, border-color .12s;
     }
     .checklist-checkbox:checked { background: var(--primary); border-color: var(--primary); }
-    .checklist-checkbox:checked::after {
-      content: '✓';
-      position: absolute;
-      top: -2px; left: 1px;
-      font-size: 11px;
-      color: #0a1a14;
-      font-weight: 900;
-    }
+    .checklist-checkbox:checked::after { content: '✓'; position: absolute; top: -2px; left: 1px; font-size: 11px; color: #0a1a14; font-weight: 900; }
     .checklist-item-content { flex: 1; }
     .checklist-item-text { font-size: 13px; color: var(--body); line-height: 1.5; }
     .checklist-item-text.done { text-decoration: line-through; color: var(--mute); }
     .checklist-item-date { font-size: 11px; color: var(--mute); font-family: var(--font-mono); margin-top: 2px; }
-
     .add-check-input {
-      width: 100%;
-      border: 1px solid var(--primary);
-      border-radius: 6px;
-      padding: 7px 10px;
-      font-size: 13px;
-      outline: none;
-      font-family: var(--font-sans);
-      background: var(--canvas);
-      color: var(--ink);
-      margin-top: 8px;
+      width: 100%; border: 1px solid var(--primary); border-radius: 6px;
+      padding: 7px 10px; font-size: 13px; outline: none; font-family: var(--font-sans);
+      background: var(--canvas); color: var(--ink); margin-top: 8px;
     }
     .add-check-input::placeholder { color: var(--mute); }
-
     .btn-add-check {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--mute);
-      font-size: 12px;
-      cursor: pointer;
-      padding: 6px 0;
-      border: none;
-      background: none;
-      font-family: var(--font-sans);
-      margin-top: 4px;
-      transition: color .12s;
+      display: flex; align-items: center; gap: 6px; color: var(--mute);
+      font-size: 12px; cursor: pointer; padding: 6px 0; border: none; background: none;
+      font-family: var(--font-sans); margin-top: 4px; transition: color .12s;
     }
     .btn-add-check:hover { color: var(--primary); }
-
-    /* ── Modal footer ── */
     .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid var(--hairline);
-      gap: 8px;
+      display: flex; justify-content: flex-end; margin-top: 20px;
+      padding-top: 16px; border-top: 1px solid var(--hairline); gap: 8px;
     }
     .btn-delete {
-      background: none;
-      border: 1px solid #3d2020;
-      color: #f87171;
-      border-radius: 6px;
-      padding: 7px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      font-family: var(--font-sans);
-      transition: background .12s;
+      background: none; border: 1px solid #3d2020; color: #f87171;
+      border-radius: 6px; padding: 7px 14px; font-size: 13px; cursor: pointer;
+      font-family: var(--font-sans); transition: background .12s;
     }
     .btn-delete:hover { background: rgba(248,113,113,0.08); }
     .btn-save {
-      background: var(--primary);
-      color: #0a1a14;
-      border: none;
-      border-radius: 6px;
-      padding: 7px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font-sans);
-      transition: opacity .12s;
+      background: var(--primary); color: #0a1a14; border: none; border-radius: 6px;
+      padding: 7px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: var(--font-sans); transition: opacity .12s;
     }
     .btn-save:hover { opacity: 0.85; }
   </style>
@@ -632,15 +434,19 @@
 <body>
 
 <div class="header">
-  <div class="header-logo">
-    YU-rello
-  </div>
+  <div class="header-logo">YU-rello</div>
   <div class="header-divider"></div>
   <div class="header-board">업무 관리 시스템</div>
+  <div class="view-toggle">
+    <button class="view-btn active" id="btnBoard" onclick="setView('board')">보드뷰</button>
+    <button class="view-btn" id="btnCalendar" onclick="setView('calendar')">달력뷰</button>
+  </div>
+  <div class="header-spacer"></div>
   <a href="../../index.html" class="header-back">← 포트폴리오</a>
 </div>
 
-<div class="board-wrapper">
+<div class="main-content">
+  <!-- 보드 타이틀 (공통) -->
   <div class="board-title-area">
     <div class="board-title-row">
       <h1 class="board-title" id="boardTitleText"></h1>
@@ -648,7 +454,19 @@
       <button class="board-invite-btn">+ 멤버 초대</button>
     </div>
   </div>
+
+  <!-- 보드뷰 -->
   <div class="board" id="board"></div>
+
+  <!-- 달력뷰 -->
+  <div class="calendar-wrapper" id="calendarWrapper" style="display:none">
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="prevMonth()">‹</button>
+      <div class="cal-month-label" id="calMonthLabel"></div>
+      <button class="cal-nav-btn" onclick="nextMonth()">›</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
 </div>
 
 <div class="footer">
@@ -667,14 +485,10 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-
-      <!-- 설명 -->
       <div class="modal-section">
         <div class="modal-section-title">📝 설명</div>
         <textarea class="modal-desc-textarea" id="modalDesc" placeholder="설명을 추가하려면 클릭하세요..."></textarea>
       </div>
-
-      <!-- 날짜 -->
       <div class="modal-section">
         <div class="modal-section-title">📅 날짜</div>
         <div class="date-grid">
@@ -684,8 +498,6 @@
           <input class="date-input" type="date" id="modalEndDate">
         </div>
       </div>
-
-      <!-- 체크리스트 -->
       <div class="modal-section">
         <div class="modal-section-heading">
           <div class="modal-section-title">☑ 체크리스트</div>
@@ -707,7 +519,6 @@
           </div>
         </div>
       </div>
-
       <div class="modal-footer">
         <button class="btn-delete" onclick="deleteCard()">카드 삭제</button>
         <button class="btn-save" onclick="saveModal()">저장</button>
@@ -719,38 +530,36 @@
 <script>
   // ── Constants ──
   const AVATAR_COLORS = {
-    '상혁': '#3b82f6',
-    '진기': '#7c3aed',
-    '수진': '#db2777',
-    '민준': '#ea580c',
+    '사용자1': '#3b82f6',
+    '사용자2': '#7c3aed',
   };
   const TOP_LABEL_COLORS = {
-    red:    '#ef4444',
-    green:  '#00d992',
-    blue:   '#3b82f6',
-    purple: '#a855f7',
-    orange: '#f97316',
-    gray:   '#6b7280',
+    red: '#ef4444', green: '#00d992', blue: '#3b82f6',
+    purple: '#a855f7', orange: '#f97316', gray: '#6b7280',
   };
+  const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const DOW_NAMES = ['일','월','화','수','목','금','토'];
 
   function avatarColor(name) { return AVATAR_COLORS[name] || '#6b7280'; }
-
   function avatarPill(name, small) {
     const cls = small ? 'avatar-pill-sm' : 'avatar-pill';
     return `<span class="${cls}" style="background:${avatarColor(name)}">${escHtml(name)}</span>`;
   }
+  function toDateStr(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
 
   // ── Data ──
   let data = {
-    board: { title: '2026 교육파트', members: ['상혁', '진기'] },
+    board: { title: '2026 교육파트', members: ['사용자1', '사용자2'] },
     lists: [
       {
-        id: 'l1', title: '수명성 업무', members: ['상혁', '진기'],
+        id: 'l1', title: '수명성 업무', members: ['사용자1', '사용자2'],
         cards: [
           {
             id: 'c1', title: '인적자원개발 우수기관 인증',
-            desc: '', topLabel: null, members: ['상혁'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: null, members: ['사용자1'],
+            startDate: '2026-04-01', endDate: '2026-05-30',
             checklistItems: [
               { id: 'ci1', text: '인증 신청서 작성', done: true, date: '3월 10일' },
               { id: 'ci2', text: '증빙 서류 수집', done: true, date: '3월 20일' },
@@ -761,8 +570,8 @@
           },
           {
             id: 'c2', title: '생성형AI 활용 경진대회',
-            desc: '', topLabel: null, members: ['상혁', '진기'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: null, members: ['사용자1', '사용자2'],
+            startDate: '2026-05-20', endDate: '2026-05-22',
             checklistItems: [
               { id: 'ci6', text: '공고문 작성', done: true, date: '2월 28일' },
               { id: 'ci7', text: '참가 신청 접수', done: true, date: '3월 15일' },
@@ -773,12 +582,12 @@
         ]
       },
       {
-        id: 'l2', title: '신입사원 입문교육', members: ['진기'],
+        id: 'l2', title: '신입사원 입문교육', members: ['사용자2'],
         cards: [
           {
             id: 'c3', title: '26년 상반기 공채 입문교육',
-            desc: '', topLabel: null, members: ['진기'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: null, members: ['사용자2'],
+            startDate: '2026-05-19', endDate: '2026-05-23',
             checklistItems: [
               { id: 'ci10', text: '교육 일정 확정', done: true, date: '1월 20일' },
               { id: 'ci11', text: '강사 섭외', done: true, date: '2월 5일' },
@@ -791,12 +600,12 @@
         ]
       },
       {
-        id: 'l3', title: '리더십 교육', members: ['상혁'],
+        id: 'l3', title: '리더십 교육', members: ['사용자1'],
         cards: [
           {
             id: 'c4', title: '신임 임원교육',
-            desc: '', topLabel: 'blue', members: ['상혁'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: 'blue', members: ['사용자1'],
+            startDate: '2026-05-15', endDate: '2026-05-15',
             checklistItems: [
               { id: 'ci16', text: '교육 커리큘럼 설계', done: true, date: '1월 10일' },
               { id: 'ci17', text: '외부 강사 섭외', done: true, date: '1월 25일' },
@@ -806,8 +615,8 @@
           },
           {
             id: 'c5', title: '임원 AI특강',
-            desc: '', topLabel: null, members: ['상혁', '진기'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: null, members: ['사용자1', '사용자2'],
+            startDate: '2026-05-27', endDate: '',
             checklistItems: [
               { id: 'ci20', text: '강사 섭외 (외부 전문가)', done: true, date: '' },
               { id: 'ci21', text: '강의 주제 확정', done: true, date: '' },
@@ -816,8 +625,8 @@
           },
           {
             id: 'c6', title: '팀장 1on1 방법론 세미나',
-            desc: '', topLabel: null, members: ['진기'],
-            startDate: '', endDate: '',
+            desc: '', topLabel: null, members: ['사용자2'],
+            startDate: '', endDate: '2026-06-10',
             checklistItems: [
               { id: 'ci23', text: '세미나 기획안 작성', done: true, date: '3월 5일' },
               { id: 'ci24', text: '팀장 참석 대상 선정', done: false, date: '' },
@@ -831,15 +640,15 @@
     ]
   };
 
-  let idCounter = 20;
-  let checkIdCounter = 30;
+  let idCounter = 20, checkIdCounter = 30;
   let dragCardId = null, dragListId = null;
   let modalListId = null, modalCardId = null;
+  let currentView = 'board';
+  let calYear = 2026, calMonth = 4; // 0-indexed (4 = May)
 
   function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-
   function findCard(cardId) {
     for (const list of data.lists) {
       const card = list.cards.find(c => c.id === cardId);
@@ -847,14 +656,88 @@
     }
     return null;
   }
-
   function checkStats(card) {
     const total = card.checklistItems.length;
     const done = card.checklistItems.filter(i => i.done).length;
     return { total, done };
   }
 
-  // ── Render ──
+  // ── View toggle ──
+  function setView(view) {
+    currentView = view;
+    document.getElementById('btnBoard').classList.toggle('active', view === 'board');
+    document.getElementById('btnCalendar').classList.toggle('active', view === 'calendar');
+    document.getElementById('board').style.display = view === 'board' ? 'flex' : 'none';
+    document.getElementById('calendarWrapper').style.display = view === 'calendar' ? '' : 'none';
+    if (view === 'calendar') renderCalendar();
+  }
+
+  // ── Calendar ──
+  function renderCalendar() {
+    document.getElementById('calMonthLabel').textContent = `${calYear}년 ${MONTH_NAMES[calMonth]}`;
+
+    const allCards = data.lists.flatMap(list => list.cards);
+    const firstDay = new Date(calYear, calMonth, 1);
+    const lastDay  = new Date(calYear, calMonth + 1, 0);
+    const startDow = firstDay.getDay();
+
+    let cells = [];
+    for (let i = startDow - 1; i >= 0; i--) {
+      cells.push({ date: new Date(calYear, calMonth, -i), thisMonth: false });
+    }
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      cells.push({ date: new Date(calYear, calMonth, d), thisMonth: true });
+    }
+    const trail = (7 - (cells.length % 7)) % 7;
+    for (let i = 1; i <= trail; i++) {
+      cells.push({ date: new Date(calYear, calMonth + 1, i), thisMonth: false });
+    }
+
+    const todayStr = toDateStr(new Date());
+
+    let html = DOW_NAMES.map((d, i) =>
+      `<div class="cal-day-header${i===0?' sun':i===6?' sat':''}">${d}</div>`
+    ).join('');
+
+    html += cells.map(cell => {
+      const ds = toDateStr(cell.date);
+      const isToday = ds === todayStr;
+      const dow = cell.date.getDay();
+      const numCls = isToday ? 'today-num' : dow===0 ? 'sun-num' : dow===6 ? 'sat-num' : '';
+
+      const startCards = allCards.filter(c => c.startDate === ds);
+      const endCards   = allCards.filter(c => c.endDate === ds);
+
+      const chips = [
+        ...startCards.map(c => {
+          const listId = data.lists.find(l => l.cards.some(x => x.id === c.id))?.id;
+          return `<span class="cal-chip start-chip" onclick="openModal('${listId}','${c.id}')" title="시작: ${escHtml(c.title)}">▶ ${escHtml(c.title)}</span>`;
+        }),
+        ...endCards.filter(c => c.startDate !== ds).map(c => {
+          const listId = data.lists.find(l => l.cards.some(x => x.id === c.id))?.id;
+          return `<span class="cal-chip end-chip" onclick="openModal('${listId}','${c.id}')" title="종료: ${escHtml(c.title)}">■ ${escHtml(c.title)}</span>`;
+        }),
+      ].join('');
+
+      return `<div class="cal-cell${!cell.thisMonth?' other-month':''}${isToday?' today-cell':''}">
+        <span class="cal-date-num${numCls?' '+numCls:''}">${cell.date.getDate()}</span>
+        ${chips}
+      </div>`;
+    }).join('');
+
+    document.getElementById('calGrid').innerHTML = html;
+  }
+
+  function prevMonth() {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  }
+  function nextMonth() {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }
+
+  // ── Render board ──
   function render() {
     document.getElementById('boardTitleText').textContent = data.board.title;
     document.getElementById('boardMembers').innerHTML =
@@ -867,9 +750,7 @@
       const listEl = document.createElement('div');
       listEl.className = 'list';
       listEl.dataset.listId = list.id;
-
       const memberBadges = list.members.map(m => avatarPill(m, true)).join('');
-
       listEl.innerHTML = `
         <div class="list-header">
           <span class="list-title" id="title-${list.id}" onclick="startEditTitle('${list.id}')">${escHtml(list.title)}</span>
@@ -895,19 +776,15 @@
           </div>
         </div>
       `;
-
       const cardsEl = listEl.querySelector(`#cards-${list.id}`);
       list.cards.forEach(card => cardsEl.appendChild(createCardEl(card, list.id)));
       board.appendChild(listEl);
     });
 
-    // Add list
     const addListEl = document.createElement('div');
     addListEl.className = 'add-list';
     addListEl.innerHTML = `
-      <button class="add-list-btn" id="addListBtn" onclick="showAddList()">
-        <span>＋</span> Add list
-      </button>
+      <button class="add-list-btn" id="addListBtn" onclick="showAddList()"><span>＋</span> Add list</button>
       <div class="add-list-form" id="addListForm" style="display:none">
         <input class="add-list-input" id="addListInput" type="text" placeholder="List name...">
         <div class="add-card-actions" style="margin-top:8px">
@@ -927,23 +804,10 @@
     el.draggable = true;
     el.dataset.cardId = card.id;
     el.dataset.listId = listId;
-
-    const labelBar = hasLabel
-      ? `<div class="card-top-label" style="background:${TOP_LABEL_COLORS[card.topLabel] || '#6b7280'}"></div>`
-      : '';
-
-    const checkBadge = total > 0
-      ? `<span class="card-check${done === total ? ' complete' : ''}">✓ ${done}/${total}</span>`
-      : '';
-
-    const memberBadges = card.members.length > 0
-      ? `<div class="card-member-badges">${card.members.map(m => avatarPill(m, true)).join('')}</div>`
-      : '';
-
-    const metaRow = (total > 0 || card.members.length > 0)
-      ? `<div class="card-meta">${checkBadge}${memberBadges}</div>`
-      : '';
-
+    const labelBar = hasLabel ? `<div class="card-top-label" style="background:${TOP_LABEL_COLORS[card.topLabel]||'#6b7280'}"></div>` : '';
+    const checkBadge = total > 0 ? `<span class="card-check${done===total?' complete':''}">✓ ${done}/${total}</span>` : '';
+    const memberBadges = card.members.length > 0 ? `<div class="card-member-badges">${card.members.map(m => avatarPill(m, true)).join('')}</div>` : '';
+    const metaRow = (total > 0 || card.members.length > 0) ? `<div class="card-meta">${checkBadge}${memberBadges}</div>` : '';
     el.innerHTML = `${labelBar}<div class="card-title">${escHtml(card.title)}</div>${metaRow}`;
     el.addEventListener('click', () => openModal(listId, card.id));
     el.addEventListener('dragstart', e => handleDragStart(e, card.id, listId));
@@ -963,8 +827,7 @@
     document.querySelectorAll('.cards').forEach(el => el.classList.remove('drag-over'));
   }
   function handleDragOver(e, listId) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+    e.preventDefault(); e.dataTransfer.dropEffect = 'move';
     document.getElementById(`cards-${listId}`).classList.add('drag-over');
   }
   function handleDragLeave(e) {
@@ -993,7 +856,7 @@
     render();
   }
 
-  // ── Add card ──
+  // ── Add card / list ──
   function showAddCard(listId) {
     document.getElementById(`addCardBtn-${listId}`).style.display = 'none';
     document.getElementById(`addCardForm-${listId}`).style.display = 'block';
@@ -1010,16 +873,13 @@
   }
   function addCard(listId) {
     const ta = document.getElementById(`addCardText-${listId}`);
-    const title = ta.value.trim();
-    if (!title) return;
+    const title = ta.value.trim(); if (!title) return;
     data.lists.find(l => l.id === listId).cards.push({
-      id: 'c' + (++idCounter), title, desc: '',
+      id: 'c'+(++idCounter), title, desc: '',
       topLabel: null, members: [], startDate: '', endDate: '', checklistItems: []
     });
     render();
   }
-
-  // ── Add list ──
   function showAddList() {
     document.getElementById('addListBtn').style.display = 'none';
     document.getElementById('addListForm').style.display = 'block';
@@ -1030,30 +890,24 @@
     document.getElementById('addListForm').style.display = 'none';
   }
   function addList() {
-    const title = document.getElementById('addListInput').value.trim();
-    if (!title) return;
-    data.lists.push({ id: 'l' + (++idCounter), title, members: [], cards: [] });
+    const title = document.getElementById('addListInput').value.trim(); if (!title) return;
+    data.lists.push({ id: 'l'+(++idCounter), title, members: [], cards: [] });
     render();
   }
-
-  // ── Edit list title ──
   function startEditTitle(listId) {
     const span = document.getElementById(`title-${listId}`);
     const list = data.lists.find(l => l.id === listId);
     const input = document.createElement('input');
-    input.className = 'list-title-input';
-    input.value = list.title;
-    span.replaceWith(input);
-    input.focus(); input.select();
+    input.className = 'list-title-input'; input.value = list.title;
+    span.replaceWith(input); input.focus(); input.select();
     const finish = () => { if (input.value.trim()) list.title = input.value.trim(); render(); };
     input.onblur = finish;
-    input.onkeydown = e => { if (e.key === 'Enter') finish(); if (e.key === 'Escape') render(); };
+    input.onkeydown = e => { if (e.key==='Enter') finish(); if (e.key==='Escape') render(); };
   }
 
   // ── Modal ──
   function openModal(listId, cardId) {
-    const result = findCard(cardId);
-    if (!result) return;
+    const result = findCard(cardId); if (!result) return;
     const { list, card } = result;
     modalListId = listId; modalCardId = cardId;
     document.getElementById('modalTitle').value = card.title;
@@ -1066,44 +920,37 @@
     document.getElementById('modalOverlay').style.display = 'flex';
     document.getElementById('modalTitle').focus();
   }
-
   function renderChecklistUI(card) {
     const items = card.checklistItems;
     const total = items.length;
     const done = items.filter(i => i.done).length;
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    const pct = total > 0 ? Math.round((done/total)*100) : 0;
     document.getElementById('checkPct').textContent = pct + '%';
     document.getElementById('checkFill').style.width = pct + '%';
     document.getElementById('checklistItems').innerHTML = items.map(item => `
       <div class="checklist-item" data-item-id="${item.id}">
-        <input type="checkbox" class="checklist-checkbox" ${item.done ? 'checked' : ''}
+        <input type="checkbox" class="checklist-checkbox" ${item.done?'checked':''}
           onchange="toggleChecklistItem('${card.id}','${item.id}',this.checked)">
         <div class="checklist-item-content">
-          <div class="checklist-item-text${item.done ? ' done' : ''}">${escHtml(item.text)}</div>
+          <div class="checklist-item-text${item.done?' done':''}">${escHtml(item.text)}</div>
           ${item.date ? `<div class="checklist-item-date">📅 ${escHtml(item.date)}</div>` : ''}
         </div>
       </div>
     `).join('');
   }
-
   function toggleChecklistItem(cardId, itemId, checked) {
-    const result = findCard(cardId);
-    if (!result) return;
+    const result = findCard(cardId); if (!result) return;
     const item = result.card.checklistItems.find(i => i.id === itemId);
     if (!item) return;
     item.done = checked;
     renderChecklistUI(result.card);
   }
-
   function showAddCheckItem() {
     document.getElementById('addCheckBtn').style.display = 'none';
     document.getElementById('addCheckForm').style.display = 'block';
     const inp = document.getElementById('addCheckInput');
     inp.value = ''; inp.focus();
-    inp.onkeydown = e => {
-      if (e.key === 'Enter') confirmAddCheckItem();
-      if (e.key === 'Escape') hideAddCheckItem();
-    };
+    inp.onkeydown = e => { if(e.key==='Enter') confirmAddCheckItem(); if(e.key==='Escape') hideAddCheckItem(); };
   }
   function hideAddCheckItem() {
     document.getElementById('addCheckBtn').style.display = '';
@@ -1112,44 +959,35 @@
   }
   function confirmAddCheckItem() {
     const inp = document.getElementById('addCheckInput');
-    const text = inp.value.trim();
-    if (!text) return;
-    const result = findCard(modalCardId);
-    if (!result) return;
-    result.card.checklistItems.push({ id: 'ci' + (++checkIdCounter), text, done: false, date: '' });
+    const text = inp.value.trim(); if (!text) return;
+    const result = findCard(modalCardId); if (!result) return;
+    result.card.checklistItems.push({ id: 'ci'+(++checkIdCounter), text, done: false, date: '' });
     hideAddCheckItem();
     renderChecklistUI(result.card);
   }
-
   function clearChecklist() {
     const result = findCard(modalCardId);
     if (!result || result.card.checklistItems.length === 0) return;
     result.card.checklistItems = [];
     renderChecklistUI(result.card);
   }
-
   function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
   function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
-
   function saveModal() {
-    const title = document.getElementById('modalTitle').value.trim();
-    if (!title) return;
-    const result = findCard(modalCardId);
-    if (!result) return;
+    const title = document.getElementById('modalTitle').value.trim(); if (!title) return;
+    const result = findCard(modalCardId); if (!result) return;
     result.card.title = title;
     result.card.desc = document.getElementById('modalDesc').value.trim();
     result.card.startDate = document.getElementById('modalStartDate').value;
     result.card.endDate = document.getElementById('modalEndDate').value;
-    closeModal();
-    render();
+    closeModal(); render();
+    if (currentView === 'calendar') renderCalendar();
   }
-
   function deleteCard() {
-    const list = data.lists.find(l => l.id === modalListId);
-    if (!list) return;
+    const list = data.lists.find(l => l.id === modalListId); if (!list) return;
     list.cards = list.cards.filter(c => c.id !== modalCardId);
-    closeModal();
-    render();
+    closeModal(); render();
+    if (currentView === 'calendar') renderCalendar();
   }
 
   render();
