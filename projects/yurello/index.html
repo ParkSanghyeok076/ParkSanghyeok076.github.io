@@ -633,7 +633,6 @@
 
 <div class="header">
   <div class="header-logo">
-    <span class="header-logo-glyph">⚡</span>
     YU-rello
   </div>
   <div class="header-divider"></div>
@@ -743,66 +742,88 @@
 
   // ── Data ──
   let data = {
-    board: { title: '온보딩 프로젝트 보드', members: ['상혁', '진기'] },
+    board: { title: '2026 교육파트', members: ['상혁', '진기'] },
     lists: [
       {
-        id: 'l1', title: '할 일', members: ['상혁', '진기'],
+        id: 'l1', title: '수명성 업무', members: ['상혁', '진기'],
         cards: [
           {
-            id: 'c1', title: '온보딩 자료 검토',
+            id: 'c1', title: '인적자원개발 우수기관 인증',
             desc: '', topLabel: null, members: ['상혁'],
             startDate: '', endDate: '',
             checklistItems: [
-              { id: 'ci1', text: '인사 규정 검토', done: true, date: '1월 15일' },
-              { id: 'ci2', text: '업무 매뉴얼 확인', done: true, date: '1월 20일' },
-              { id: 'ci3', text: '복리후생 안내 숙지', done: true, date: '1월 22일' },
-              { id: 'ci4', text: '보안 정책 확인', done: true, date: '1월 25일' },
-              { id: 'ci5', text: '온보딩 일정 확인', done: true, date: '' },
-              { id: 'ci6', text: '멘토 미팅 일정 조율', done: false, date: '' },
-              { id: 'ci7', text: '팀 소개 자료 준비', done: false, date: '' },
+              { id: 'ci1', text: '인증 신청서 작성', done: true, date: '3월 10일' },
+              { id: 'ci2', text: '증빙 서류 수집', done: true, date: '3월 20일' },
+              { id: 'ci3', text: '심사 일정 확인', done: true, date: '4월 5일' },
+              { id: 'ci4', text: '현장 심사 준비', done: false, date: '4월 15일' },
+              { id: 'ci5', text: '결과 보고서 작성', done: false, date: '' },
             ]
           },
           {
-            id: 'c2', title: '팀원 소개 미팅',
-            desc: '월요일 오전 10시', topLabel: null, members: ['상혁', '진기'],
+            id: 'c2', title: '생성형AI 활용 경진대회',
+            desc: '', topLabel: null, members: ['상혁', '진기'],
             startDate: '', endDate: '',
             checklistItems: [
-              { id: 'ci8', text: '미팅룸 예약', done: true, date: '' },
-              { id: 'ci9', text: '자기소개 자료 준비', done: true, date: '' },
-              { id: 'ci10', text: '팀원 명단 확인', done: true, date: '' },
+              { id: 'ci6', text: '공고문 작성', done: true, date: '2월 28일' },
+              { id: 'ci7', text: '참가 신청 접수', done: true, date: '3월 15일' },
+              { id: 'ci8', text: '심사 기준 수립', done: false, date: '' },
+              { id: 'ci9', text: '시상식 준비', done: false, date: '' },
             ]
           },
         ]
       },
       {
-        id: 'l2', title: '진행 중', members: ['진기'],
+        id: 'l2', title: '신입사원 입문교육', members: ['진기'],
         cards: [
           {
-            id: 'c3', title: '업무 시스템 세팅',
+            id: 'c3', title: '26년 상반기 공채 입문교육',
             desc: '', topLabel: null, members: ['진기'],
             startDate: '', endDate: '',
             checklistItems: [
-              { id: 'ci11', text: '계정 발급 요청', done: true, date: '' },
-              { id: 'ci12', text: 'VPN 설정', done: true, date: '' },
-              { id: 'ci13', text: '메일 클라이언트 설정', done: false, date: '' },
-              { id: 'ci14', text: '협업 도구 연동', done: false, date: '' },
-              { id: 'ci15', text: '보안 프로그램 설치', done: false, date: '' },
+              { id: 'ci10', text: '교육 일정 확정', done: true, date: '1월 20일' },
+              { id: 'ci11', text: '강사 섭외', done: true, date: '2월 5일' },
+              { id: 'ci12', text: '교육 자료 제작', done: true, date: '2월 20일' },
+              { id: 'ci13', text: '참석자 명단 확인', done: false, date: '' },
+              { id: 'ci14', text: '교육장 세팅', done: false, date: '' },
+              { id: 'ci15', text: '교육 결과 보고', done: false, date: '' },
             ]
           },
         ]
       },
       {
-        id: 'l3', title: '완료', members: [],
+        id: 'l3', title: '리더십 교육', members: ['상혁'],
         cards: [
           {
-            id: 'c4', title: '인사팀 서류 제출',
-            desc: '완료', topLabel: 'red', members: ['상혁'],
+            id: 'c4', title: '신임 임원교육',
+            desc: '', topLabel: 'blue', members: ['상혁'],
             startDate: '', endDate: '',
             checklistItems: [
-              { id: 'ci16', text: '재직증명서 제출', done: true, date: '' },
-              { id: 'ci17', text: '주민등록등본 제출', done: true, date: '' },
-              { id: 'ci18', text: '통장사본 제출', done: true, date: '' },
-              { id: 'ci19', text: '서명 완료', done: true, date: '' },
+              { id: 'ci16', text: '교육 커리큘럼 설계', done: true, date: '1월 10일' },
+              { id: 'ci17', text: '외부 강사 섭외', done: true, date: '1월 25일' },
+              { id: 'ci18', text: '임원 일정 조율', done: true, date: '2월 1일' },
+              { id: 'ci19', text: '교육 실시', done: false, date: '2월 15일' },
+            ]
+          },
+          {
+            id: 'c5', title: '임원 AI특강',
+            desc: '', topLabel: null, members: ['상혁', '진기'],
+            startDate: '', endDate: '',
+            checklistItems: [
+              { id: 'ci20', text: '강사 섭외 (외부 전문가)', done: true, date: '' },
+              { id: 'ci21', text: '강의 주제 확정', done: true, date: '' },
+              { id: 'ci22', text: '장소 예약', done: false, date: '' },
+            ]
+          },
+          {
+            id: 'c6', title: '팀장 1on1 방법론 세미나',
+            desc: '', topLabel: null, members: ['진기'],
+            startDate: '', endDate: '',
+            checklistItems: [
+              { id: 'ci23', text: '세미나 기획안 작성', done: true, date: '3월 5일' },
+              { id: 'ci24', text: '팀장 참석 대상 선정', done: false, date: '' },
+              { id: 'ci25', text: '워크북 제작', done: false, date: '' },
+              { id: 'ci26', text: '세미나 진행', done: false, date: '' },
+              { id: 'ci27', text: '사후 만족도 조사', done: false, date: '' },
             ]
           },
         ]
