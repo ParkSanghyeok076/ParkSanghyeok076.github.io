@@ -3,1275 +3,1628 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YURA 온보딩 시스템 데모</title>
+  <title>YURA 온보딩 시스템 — 데모</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --canvas:         #ffffff;
-      --surface-soft:   #f0f2f5;
-      --hairline:       #dddfe2;
-      --hairline-soft:  #e4e6ea;
-      --ink-deep:       #1c1e21;
-      --ink:            #050505;
-      --charcoal:       #606770;
-      --slate:          #8a8d91;
-      --steel:          #b0b3b8;
-      --primary:        #0866ff;
-      --primary-deep:   #0143b5;
-      --ink-button:     #050505;
-      --on-ink-button:  #ffffff;
-      --on-primary:     #ffffff;
-      --success:        #31a24c;
-      --warning:        #f5c518;
-      --font: 'Montserrat', Helvetica, Arial, sans-serif;
+      --primary: #3b5bdb;
+      --primary-dark: #2f4ac4;
+      --primary-light: #eef0ff;
+      --bg: #f0f2f5;
+      --white: #ffffff;
+      --text: #1c1e21;
+      --text-sub: #606770;
+      --text-mute: #8a8d91;
+      --border: #dddfe2;
+      --success: #2e7d32;
+      --success-bg: #e8f5e9;
+      --danger: #c62828;
+      --danger-bg: #ffebee;
+      --warning: #e65100;
+      --radius: 8px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.12);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.15);
+      --font: 'Inter', -apple-system, 'Malgun Gothic', sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: var(--font);
-      background: var(--canvas);
-      color: var(--ink-deep);
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      font-size: 14px;
     }
 
-    /* ── Promo Banner ── */
-    .promo-banner {
-      background: var(--ink-deep);
-      color: var(--canvas);
-      text-align: center;
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-    }
-    .promo-banner a { color: var(--canvas); text-decoration: underline; }
+    /* VIEW SYSTEM */
+    .view { display: none; }
+    .view.active { display: flex; }
 
-    /* ── Top Nav ── */
-    .top-nav {
-      background: var(--canvas);
-      border-bottom: 1px solid var(--hairline-soft);
-      height: 64px;
-      display: flex;
-      align-items: center;
-      padding: 0 32px;
-      gap: 24px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    /* =========================================
+       VIEW 1: LANDING
+    ========================================= */
+    #view-landing {
+      min-height: 100vh;
+      flex-direction: row;
     }
-    .nav-logo {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--ink-deep);
-      white-space: nowrap;
-      letter-spacing: -0.5px;
-    }
-    .nav-logo span { color: var(--primary); }
-    .nav-pills {
-      display: flex;
-      gap: 8px;
+
+    .landing-left {
       flex: 1;
-    }
-    .nav-pill {
-      padding: 8px 16px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      cursor: pointer;
-      border: 1px solid var(--hairline);
-      background: var(--canvas);
-      color: var(--ink);
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .nav-pill.active {
-      background: var(--ink-deep);
-      color: var(--canvas);
-      border-color: var(--ink-deep);
-    }
-    .nav-right {
+      background: linear-gradient(135deg, #3b5bdb, #5c7cfa);
       display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .btn-back-nav {
-      padding: 8px 20px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      cursor: pointer;
-      border: 2px solid var(--ink-deep);
-      background: transparent;
-      color: var(--ink-deep);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    /* ── Buttons ── */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      padding: 14px 30px;
-      border-radius: 100px;
-      background: var(--ink-button);
-      color: var(--on-ink-button);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.12s;
-      font-family: var(--font);
+      padding: 60px 56px;
+      color: #fff;
     }
-    .btn-primary:hover { background: var(--charcoal); }
 
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
+    .landing-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    .landing-title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 48px;
+    }
+
+    .feature-cards { display: flex; flex-direction: column; gap: 16px; }
+
+    .feature-card {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      backdrop-filter: blur(4px);
+    }
+
+    .feature-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card-desc { font-size: 13px; opacity: 0.82; line-height: 1.5; }
+
+    .landing-right {
+      width: 460px;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
       justify-content: center;
-      padding: 12px 28px;
-      border-radius: 100px;
-      background: transparent;
-      color: var(--ink-deep);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      border: 2px solid var(--ink-deep);
-      cursor: pointer;
-      transition: background 0.12s;
-      font-family: var(--font);
+      padding: 60px 56px;
     }
 
-    .btn-cobalt {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 30px;
-      border-radius: 100px;
-      background: var(--primary);
-      color: var(--on-primary);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.12s;
-      font-family: var(--font);
-    }
-    .btn-cobalt:hover { background: var(--primary-deep); }
+    .yura-logo { font-size: 26px; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.5px; }
+    .yura-logo .yr { color: #e53935; }
+    .yura-logo .yura-text { color: var(--text); }
 
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 22px;
-      border-radius: 100px;
-      background: transparent;
-      color: var(--ink-deep);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      border: 2px solid rgba(10, 19, 23, 0.12);
-      cursor: pointer;
-      font-family: var(--font);
-    }
-
-    /* ── Landing ── */
-    .landing {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 80px 32px;
-    }
-    .landing-eyebrow {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-bottom: 20px;
-      padding: 4px 12px;
-      border-radius: 100px;
-      background: var(--surface-soft);
-    }
-    .landing-hero-title {
-      font-size: 56px;
-      font-weight: 500;
-      line-height: 1.16;
-      color: var(--ink-deep);
-      margin-bottom: 20px;
-      letter-spacing: -1px;
-      max-width: 640px;
-    }
-    .landing-hero-sub {
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.44;
-      color: var(--charcoal);
-      margin-bottom: 40px;
-      max-width: 480px;
-    }
-    .landing-cta-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 80px;
-    }
-    .role-cards-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .role-card {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 32px;
-      padding: 40px;
-      cursor: pointer;
-      transition: box-shadow 0.15s, border-color 0.15s;
-      position: relative;
-      overflow: hidden;
-    }
-    .role-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      border-radius: 32px 32px 0 0;
-    }
-    .role-card.admin::before { background: var(--ink-deep); }
-    .role-card.employee::before { background: var(--primary); }
-    .role-card:hover { box-shadow: rgba(20, 22, 26, 0.3) 0px 1px 4px 0px; border-color: var(--hairline); }
-    .role-card-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    .role-card.admin .role-card-badge { background: var(--ink-deep); color: var(--canvas); }
-    .role-card.employee .role-card-badge { background: #e7f0ff; color: var(--primary-deep); }
-    .role-card-icon { font-size: 40px; margin-bottom: 16px; }
-    .role-card-title {
-      font-size: 24px;
-      font-weight: 500;
-      color: var(--ink-deep);
-      margin-bottom: 12px;
-      letter-spacing: -0.3px;
-    }
-    .role-card-desc {
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.6;
-      color: var(--charcoal);
-      margin-bottom: 28px;
-      letter-spacing: -0.14px;
-    }
-    .role-card-features {
-      list-style: none;
-      margin-bottom: 28px;
-    }
-    .role-card-features li {
-      font-size: 13px;
-      color: var(--charcoal);
-      padding: 6px 0;
-      border-bottom: 1px solid var(--hairline-soft);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .role-card-features li:last-child { border-bottom: none; }
-    .role-card-features li::before { content: '→'; color: var(--steel); }
-    .landing-footer-note {
-      text-align: center;
-      font-size: 12px;
-      color: var(--steel);
-      margin-top: 40px;
-    }
-    .landing-footer-note a { color: var(--charcoal); }
-
-    /* ── Sidebar Admin Layout ── */
-    .admin-wrap { display: flex; min-height: calc(100vh - 64px); }
-    .sidebar {
-      width: 220px;
-      flex-shrink: 0;
-      background: var(--canvas);
-      border-right: 1px solid var(--hairline-soft);
-      padding: 24px 0;
-      position: sticky;
-      top: 64px;
-      height: calc(100vh - 64px);
-      overflow-y: auto;
-    }
-    .sidebar-section-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--slate);
-      padding: 0 20px;
-      margin-bottom: 8px;
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--charcoal);
-      cursor: pointer;
-      transition: background 0.1s, color 0.1s;
-      letter-spacing: -0.14px;
-    }
-    .sidebar-item:hover { background: var(--surface-soft); color: var(--ink-deep); }
-    .sidebar-item.active {
-      background: var(--surface-soft);
-      color: var(--ink-deep);
-      font-weight: 700;
-    }
-    .sidebar-item.active::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      width: 3px;
-      height: 32px;
-      background: var(--ink-deep);
-      border-radius: 2px 0 0 2px;
-    }
-    .sidebar-item { position: relative; }
-    .sidebar-user {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      padding: 16px 20px;
-      border-top: 1px solid var(--hairline-soft);
-      background: var(--canvas);
-    }
-    .sidebar-user-name { font-size: 13px; font-weight: 700; color: var(--ink-deep); }
-    .sidebar-user-role { font-size: 12px; color: var(--slate); margin-bottom: 10px; }
-    .admin-main {
-      flex: 1;
-      padding: 40px;
-      background: var(--surface-soft);
-      min-height: calc(100vh - 64px);
-    }
-
-    /* ── Common ── */
-    .page-title {
-      font-size: 28px;
-      font-weight: 300;
-      color: var(--ink-deep);
-      margin-bottom: 28px;
-      letter-spacing: -0.5px;
-      line-height: 1.21;
-    }
-    .page-title strong { font-weight: 500; }
-
-    .card-feature {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 16px;
-      padding: 24px;
-    }
-
-    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    .stat-card {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-    }
-    .stat-value {
-      font-size: 36px;
-      font-weight: 500;
-      color: var(--ink-deep);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-    .stat-label { font-size: 12px; color: var(--charcoal); font-weight: 400; letter-spacing: -0.14px; }
-
-    table { width: 100%; border-collapse: collapse; }
-    th {
-      text-align: left;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--slate);
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--hairline-soft);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    td { padding: 14px 16px; border-bottom: 1px solid var(--hairline-soft); font-size: 14px; color: var(--ink); letter-spacing: -0.14px; }
-    tr:last-child td { border-bottom: none; }
-
-    .progress-wrap { background: var(--surface-soft); border-radius: 100px; height: 6px; width: 100px; }
-    .progress-bar { height: 6px; border-radius: 100px; background: var(--ink-deep); }
-    .progress-bar.high { background: var(--success); }
-    .progress-bar.low { background: var(--charcoal); }
-
-    /* Tabs */
-    .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-    .tab-btn {
-      padding: 8px 20px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: -0.14px;
-      cursor: pointer;
-      border: 1px solid var(--hairline);
-      background: var(--canvas);
-      color: var(--charcoal);
-      transition: all 0.12s;
-      font-family: var(--font);
-    }
-    .tab-btn.active {
-      background: var(--ink-deep);
-      color: var(--canvas);
-      border-color: var(--ink-deep);
-    }
-
-    /* ABSA */
-    .absa-meta {
-      font-size: 13px;
-      color: var(--slate);
-      margin-bottom: 20px;
-      letter-spacing: -0.14px;
-    }
-    .alert-banner {
-      background: #fff8e6;
-      border: 1px solid #f5c518;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-size: 14px;
-      color: #5f4a00;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: -0.14px;
-    }
-    .sentiment-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .sentiment-name { font-size: 13px; color: var(--charcoal); width: 36px; font-weight: 700; letter-spacing: -0.14px; }
-    .sentiment-track { flex: 1; background: var(--surface-soft); border-radius: 100px; height: 14px; overflow: hidden; }
-    .sentiment-fill { height: 14px; border-radius: 100px; display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 700; color: #fff; }
-    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
-    .score-item {
-      background: var(--surface-soft);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .score-item-label { font-size: 13px; color: var(--charcoal); letter-spacing: -0.14px; }
-    .score-item-value { font-size: 16px; font-weight: 700; color: var(--ink-deep); }
-    .keyword-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-    .keyword-chip {
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 700;
-      background: var(--surface-soft);
-      color: var(--charcoal);
-      letter-spacing: -0.14px;
-    }
-    .keyword-chip.warn { background: #fff3cd; color: #7c5800; }
-
-    /* Mail */
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--slate);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      margin-top: 20px;
-    }
-    .form-label:first-of-type { margin-top: 0; }
-    select, input[type="text"], textarea {
-      width: 100%;
+    .demo-notice {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: var(--radius);
       padding: 12px 16px;
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: var(--font);
-      color: var(--ink-deep);
-      background: var(--canvas);
-      letter-spacing: -0.14px;
-      outline: none;
-    }
-    select:focus, input:focus, textarea:focus { border: 2px solid var(--primary); }
-    textarea { resize: vertical; line-height: 1.6; }
-
-    /* Report */
-    .report-card {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .report-header {
-      background: var(--ink-deep);
-      color: var(--canvas);
-      padding: 24px 28px;
-    }
-    .report-header-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-    .report-header-sub { font-size: 13px; color: var(--steel); }
-    .report-body { padding: 24px 28px; }
-    .report-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--hairline-soft);
-      font-size: 14px;
-      letter-spacing: -0.14px;
-    }
-    .report-row:last-child { border-bottom: none; }
-    .report-row-label { color: var(--charcoal); }
-    .report-row-value { color: var(--ink-deep); font-weight: 700; }
-
-    /* Employee */
-    .emp-body { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
-    .greeting-section { margin-bottom: 48px; }
-    .greeting-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-bottom: 12px;
-    }
-    .greeting-title {
-      font-size: 36px;
-      font-weight: 500;
-      color: var(--ink-deep);
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-      line-height: 1.28;
-    }
-    .greeting-sub {
-      font-size: 16px;
-      color: var(--charcoal);
-      line-height: 1.5;
-      letter-spacing: -0.16px;
-    }
-    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .menu-tile {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 24px;
-      padding: 32px;
-      cursor: pointer;
-      transition: box-shadow 0.15s, border-color 0.15s;
-    }
-    .menu-tile:hover { box-shadow: rgba(20, 22, 26, 0.3) 0px 1px 4px 0px; border-color: var(--hairline); }
-    .menu-tile-icon { font-size: 32px; margin-bottom: 16px; }
-    .menu-tile-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--ink-deep);
-      margin-bottom: 6px;
-      letter-spacing: -0.3px;
-    }
-    .menu-tile-desc { font-size: 13px; color: var(--charcoal); line-height: 1.5; letter-spacing: -0.14px; }
-
-    /* Survey */
-    .section-header { margin-bottom: 32px; }
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       font-size: 13px;
-      font-weight: 700;
-      color: var(--charcoal);
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-bottom: 24px;
-      font-family: var(--font);
-      letter-spacing: -0.14px;
+      color: #7b4f00;
+      margin-bottom: 32px;
+      line-height: 1.5;
     }
-    .back-btn:hover { color: var(--ink-deep); }
-    .part-progress { display: flex; gap: 6px; margin-bottom: 24px; }
-    .part-pip { height: 4px; flex: 1; border-radius: 100px; background: var(--hairline-soft); }
-    .part-pip.done { background: var(--ink-deep); }
-    .part-pip.active { background: var(--primary); }
-    .part-label {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-bottom: 8px;
-    }
-    .part-title {
-      font-size: 24px;
-      font-weight: 500;
-      color: var(--ink-deep);
-      margin-bottom: 6px;
-      letter-spacing: -0.3px;
-    }
-    .part-desc { font-size: 14px; color: var(--charcoal); margin-bottom: 28px; line-height: 1.5; letter-spacing: -0.14px; }
-    .question-block { margin-bottom: 24px; }
-    .q-text { font-size: 15px; color: var(--ink-deep); font-weight: 400; margin-bottom: 12px; line-height: 1.5; letter-spacing: -0.16px; }
-    .scale-row { display: flex; align-items: center; gap: 10px; }
-    .scale-end { font-size: 11px; color: var(--steel); max-width: 80px; line-height: 1.3; }
-    .scale-options { display: flex; gap: 8px; }
-    .scale-opt input { display: none; }
-    .scale-opt label {
-      width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--hairline);
-      border-radius: 100px;
-      font-size: 14px; font-weight: 700;
-      cursor: pointer; color: var(--charcoal);
-      transition: all 0.12s;
-      margin: 0;
-      font-family: var(--font);
-    }
-    .scale-opt input:checked + label {
-      background: var(--ink-deep);
-      border-color: var(--ink-deep);
-      color: var(--canvas);
-    }
-    .q-textarea { margin-top: 0; min-height: 80px; border-radius: 8px; }
-    .survey-complete {
-      text-align: center;
-      padding: 80px 24px;
-    }
-    .survey-complete-icon { font-size: 64px; margin-bottom: 24px; }
-    .survey-complete-title { font-size: 32px; font-weight: 500; color: var(--ink-deep); margin-bottom: 12px; letter-spacing: -0.5px; }
-    .survey-complete-sub { font-size: 16px; color: var(--charcoal); margin-bottom: 32px; letter-spacing: -0.16px; }
 
-    /* OJT */
-    .ojt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .ojt-form-card { grid-column: 1; }
-    .ojt-list-card { grid-column: 2; }
-    .ojt-entry {
-      padding: 16px 0;
-      border-bottom: 1px solid var(--hairline-soft);
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.18s ease;
+      margin-bottom: 12px;
     }
-    .ojt-entry:last-child { border-bottom: none; }
-    .ojt-entry-date { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
-    .ojt-entry-label { font-size: 12px; font-weight: 700; color: var(--ink-deep); margin-bottom: 2px; }
-    .ojt-entry-text { font-size: 13px; color: var(--charcoal); line-height: 1.5; letter-spacing: -0.14px; margin-bottom: 8px; }
+
+    .role-btn-icon { font-size: 20px; line-height: 1; }
+    .role-btn-info { text-align: left; }
+    .role-btn-sub { font-size: 12px; font-weight: 400; opacity: 0.75; margin-top: 2px; }
+
+    .role-btn.primary { background: var(--primary); color: #fff; }
+    .role-btn.primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    .role-btn.outline { background: transparent; border-color: var(--border); color: var(--text); }
+    .role-btn.outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+    .landing-back { margin-top: 28px; text-align: center; }
+    .landing-back a { color: var(--text-mute); font-size: 13px; text-decoration: none; transition: color 0.15s; }
+    .landing-back a:hover { color: var(--primary); }
+
+    /* =========================================
+       VIEW 2: EMPLOYEE DASHBOARD
+    ========================================= */
+    #view-employee { flex-direction: column; min-height: 100vh; }
+
+    .emp-header {
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      height: 56px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .emp-header-logo { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; margin-right: auto; }
+
+    .emp-header-info {
+      font-size: 13px;
+      opacity: 0.88;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .emp-header-date {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      opacity: 0.75;
+      background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+
+    .btn-ghost-white {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: #fff;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.8); }
+
+    .emp-body {
+      display: flex;
+      flex: 1;
+      padding: 24px;
+      gap: 20px;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .emp-left { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
+    .emp-right { flex: 1; }
+
+    .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .card-body { padding: 18px 20px; }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-mute);
+      margin-bottom: 10px;
+    }
+
+    .welcome-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
 
     /* Timeline */
-    .timeline { position: relative; padding-left: 24px; }
-    .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:1px; background:var(--hairline-soft); }
-    .tl-item { position: relative; margin-bottom: 32px; }
-    .tl-marker {
-      position: absolute;
-      left: -20px;
-      top: 3px;
-      width: 16px; height: 16px;
+    .timeline-wrap { display: flex; align-items: flex-start; gap: 0; margin-top: 4px; }
+
+    .tl-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+
+    .tl-dot {
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      border: 2px solid var(--hairline);
-      background: var(--canvas);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px;
-    }
-    .tl-marker.done { background: var(--ink-deep); border-color: var(--ink-deep); color: var(--canvas); font-size: 9px; font-weight: 700; }
-    .tl-marker.active { background: var(--primary); border-color: var(--primary); }
-    .tl-week-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-    .tl-week { font-size: 16px; font-weight: 700; color: var(--ink-deep); letter-spacing: -0.3px; }
-    .tl-current-badge {
-      padding: 3px 10px;
-      border-radius: 100px;
-      font-size: 11px;
-      font-weight: 700;
+      border: 2px solid var(--primary);
       background: var(--primary);
-      color: var(--canvas);
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
     }
-    .tl-date { font-size: 12px; color: var(--slate); margin-bottom: 10px; letter-spacing: -0.14px; }
-    .tl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tl-chip {
-      padding: 5px 14px;
-      border-radius: 100px;
-      font-size: 12px;
+
+    .tl-dot.empty { background: var(--white); border-color: var(--border); }
+    .tl-dot.current { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,91,219,0.2); }
+
+    .tl-label { font-size: 10px; color: var(--text-sub); text-align: center; line-height: 1.3; }
+    .tl-date { font-size: 9px; color: var(--text-mute); }
+
+    .tl-line { flex: 1; height: 2px; background: var(--primary); margin-top: 7px; }
+    .tl-line.gray { background: var(--border); }
+
+    /* Info rows */
+    .info-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .info-name { font-size: 14px; font-weight: 600; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-primary { background: var(--primary-light); color: var(--primary); }
+
+    /* Progress */
+    .prog-row { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+    .prog-label { font-size: 13px; font-weight: 500; }
+    .prog-link { font-size: 12px; color: var(--primary); text-decoration: none; cursor: pointer; margin-left: auto; }
+    .prog-link:hover { text-decoration: underline; }
+
+    .progress-bar-track { height: 6px; border-radius: 3px; background: #e9ecef; margin-top: 8px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; border-radius: 3px; background: var(--primary); }
+
+    /* OJT */
+    .ojt-row { display: flex; align-items: center; justify-content: space-between; }
+    .ojt-left { font-size: 13px; font-weight: 600; }
+    .ojt-week-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+    .ojt-unwritten { font-size: 11px; padding: 2px 7px; background: var(--danger-bg); color: var(--danger); border-radius: 4px; font-weight: 600; }
+    .ojt-right { font-size: 12px; color: var(--text-mute); }
+
+    /* Menu grid */
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 100%; }
+
+    .menu-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 20px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      border: 1.5px solid transparent;
+      min-height: 140px;
+    }
+
+    .menu-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .menu-icon { font-size: 28px; line-height: 1; }
+    .menu-title { font-size: 15px; font-weight: 700; }
+    .menu-desc { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+    .menu-arrow { position: absolute; bottom: 16px; right: 16px; font-size: 18px; color: var(--text-mute); }
+
+    /* =========================================
+       VIEW 3: ADMIN
+    ========================================= */
+    #view-admin { min-height: 100vh; flex-direction: column; }
+
+    .admin-layout { display: flex; min-height: 100vh; width: 100%; }
+
+    .sidebar { width: 220px; background: #1e2026; display: flex; flex-direction: column; flex-shrink: 0; }
+
+    .sidebar-header { padding: 20px 16px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-logo-icon { font-size: 20px; margin-bottom: 6px; }
+    .sidebar-logo-title { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .sidebar-logo-sub { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    .sidebar-nav { padding: 12px 8px; flex: 1; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+    .nav-item.active { background: var(--primary); color: #fff; font-weight: 600; }
+    .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: -0.14px;
+      flex-shrink: 0;
     }
-    .tl-chip.done { background: var(--surface-soft); color: var(--charcoal); }
-    .tl-chip.active { background: var(--ink-deep); color: var(--canvas); }
-    .tl-chip.pending { background: var(--surface-soft); color: var(--steel); }
 
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 24px; right: 24px;
-      background: var(--ink-deep); color: var(--canvas);
-      padding: 14px 22px; border-radius: 100px;
-      font-size: 14px; font-weight: 700; letter-spacing: -0.14px;
-      box-shadow: rgba(20, 22, 26, 0.3) 0px 4px 12px 0px;
-      z-index: 9999;
-      opacity: 0; transition: opacity 0.25s;
-      pointer-events: none;
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .sidebar-user-role { font-size: 11px; color: rgba(255,255,255,0.45); }
+    .sidebar-logout { font-size: 11px; color: rgba(255,255,255,0.35); cursor: pointer; transition: color 0.15s; white-space: nowrap; }
+    .sidebar-logout:hover { color: rgba(255,255,255,0.7); }
+
+    .admin-main { flex: 1; background: #f5f6fa; display: flex; flex-direction: column; overflow: hidden; }
+
+    .admin-topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
     }
-    .toast.show { opacity: 1; }
 
-    /* Modal */
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:2000; display:flex; align-items:center; justify-content:center; padding:20px; }
-    .modal-box {
-      background: var(--canvas);
-      border-radius: 24px;
-      padding: 32px;
-      max-width: 380px;
-      width: 100%;
-      text-align: center;
-      box-shadow: rgba(20, 22, 26, 0.3) 0px 4px 24px 0px;
+    .admin-page-title { font-size: 18px; font-weight: 700; flex: 1; }
+
+    .topbar-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #f0f0f0;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
     }
-    .modal-box p { font-size: 16px; color: var(--charcoal); margin-bottom: 24px; line-height: 1.5; letter-spacing: -0.16px; }
 
-    /* Why-buy tiles */
-    .benefit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
-    .benefit-tile {
-      background: var(--canvas);
-      border: 1px solid var(--hairline-soft);
-      border-radius: 16px;
+    .topbar-icon-btn:hover { background: var(--primary-light); }
+
+    .btn-topbar-role {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-family: var(--font);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+
+    .btn-topbar-role:hover { background: var(--primary-dark); }
+
+    .admin-content { flex: 1; padding: 24px 28px; overflow-y: auto; }
+
+    /* Filter bar */
+    .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+
+    .filter-search {
+      flex: 1;
+      max-width: 280px;
+      padding: 8px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .filter-search:focus { border-color: var(--primary); }
+
+    .filter-btn {
+      padding: 7px 14px;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text-sub);
+    }
+
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+
+    .divider { height: 1px; background: var(--border); margin-bottom: 16px; }
+
+    /* Table */
+    .table-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      background: #f8f9fa;
+      padding: 11px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    thead th .sort-icon { opacity: 0.5; font-size: 10px; }
+
+    tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafbff; }
+
+    td { padding: 11px 14px; font-size: 13px; vertical-align: middle; }
+    td.name-cell { font-weight: 600; }
+    td.round-cell { color: var(--text-sub); }
+
+    /* Table buttons */
+    .tbl-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      font-family: var(--font);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .tbl-btn-success { background: var(--success-bg); color: var(--success); border-color: #a5d6a7; }
+    .tbl-btn-success:hover { background: #c8e6c9; }
+
+    .tbl-btn-outline { background: transparent; color: var(--text-sub); border-color: var(--border); }
+    .tbl-btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    .tbl-btn-run { background: transparent; color: var(--primary); border-color: #a5b4fc; }
+    .tbl-btn-run:hover { background: var(--primary-light); }
+
+    .tbl-text-mute { color: var(--text-mute); font-size: 12px; }
+
+    /* =========================================
+       MODALS
+    ========================================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
-      text-align: center;
     }
-    .benefit-icon { font-size: 28px; margin-bottom: 10px; }
-    .benefit-title { font-size: 14px; font-weight: 700; color: var(--ink-deep); margin-bottom: 4px; letter-spacing: -0.14px; }
-    .benefit-desc { font-size: 12px; color: var(--charcoal); line-height: 1.5; }
 
-    @media (max-width: 768px) {
-      .role-cards-section { grid-template-columns: 1fr; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-      .menu-grid { grid-template-columns: 1fr; }
-      .ojt-grid { grid-template-columns: 1fr; }
-      .benefit-grid { grid-template-columns: 1fr 1fr; }
-      .landing-hero-title { font-size: 36px; }
-      .sidebar { display: none; }
-      .admin-main { padding: 24px 16px; }
-      .nav-pills { display: none; }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.2s ease;
     }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: #f0f0f0;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      z-index: 10;
+    }
+
+    .modal-close:hover { background: #e0e0e0; }
+
+    /* ABSA Modal */
+    .absa-header { padding: 24px 28px 16px; border-bottom: 1px solid var(--border); }
+    .absa-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .absa-subtitle { font-size: 13px; color: var(--text-mute); }
+    .absa-body { padding: 24px 28px; }
+
+    .absa-section { margin-bottom: 24px; }
+    .absa-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .original-text-box {
+      background: #f8f9fa;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    .highlight-rows { display: flex; flex-direction: column; gap: 8px; }
+
+    .highlight-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: #f8f9fa;
+    }
+
+    .highlight-text { flex: 1; font-size: 13px; line-height: 1.6; color: var(--text); }
+
+    .highlight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .hb-positive { background: var(--success-bg); color: var(--success); }
+    .hb-negative { background: var(--danger-bg); color: var(--danger); }
+    .hb-neutral { background: #fff3e0; color: var(--warning); }
+
+    .absa-table { width: 100%; border-collapse: collapse; }
+    .absa-table th {
+      background: #f8f9fa;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .absa-table td { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+    .absa-table tr:last-child td { border-bottom: none; }
+
+    .insight-box {
+      background: var(--primary-light);
+      border: 1px solid #c5cae9;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+
+    .insight-title { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+
+    .insight-compare { display: flex; gap: 12px; }
+
+    .insight-col {
+      flex: 1;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+
+    .insight-col-label { font-size: 11px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+    .insight-col-result { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .insight-col-note { font-size: 12px; color: var(--text-mute); line-height: 1.4; }
+
+    /* Email Modal */
+    .email-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .email-header-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+    .email-header-sub { font-size: 12px; color: var(--text-mute); }
+    .email-meta { padding: 14px 24px; background: #f8f9fa; border-bottom: 1px solid var(--border); }
+    .email-meta-row { display: flex; gap: 8px; margin-bottom: 6px; font-size: 13px; }
+    .email-meta-row:last-child { margin-bottom: 0; }
+    .email-meta-key { font-weight: 600; color: var(--text-sub); min-width: 50px; }
+    .email-body { padding: 20px 24px; }
+    .email-body pre { font-family: var(--font); font-size: 13px; line-height: 1.8; color: var(--text); white-space: pre-wrap; }
+
+    /* Longitudinal Modal */
+    .long-header { padding: 22px 28px 14px; border-bottom: 1px solid var(--border); }
+    .long-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .long-sub { font-size: 13px; color: var(--text-mute); }
+    .long-body { padding: 24px 28px; }
+
+    .trend-message {
+      background: #f8f9fa;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .trend-message.warn { border-left-color: var(--warning); }
+    .trend-message.neutral { border-left-color: var(--text-mute); }
+
+    #chart-container { margin-bottom: 16px; }
+
+    .chart-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-sub); }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    .summary-boxes { display: flex; gap: 12px; }
+    .summary-box { flex: 1; background: #f8f9fa; border-radius: var(--radius); padding: 14px 16px; text-align: center; }
+    .summary-box-label { font-size: 11px; color: var(--text-mute); margin-bottom: 4px; }
+    .summary-box-value { font-size: 20px; font-weight: 700; color: var(--text); }
+    .summary-box-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+    .footer-link { text-align: center; padding: 16px; }
+    .footer-link a { color: var(--text-mute); font-size: 12px; text-decoration: none; }
+    .footer-link a:hover { color: var(--primary); }
   </style>
 </head>
 <body>
 
-<div id="app"></div>
-<div class="toast" id="toast"></div>
-
-<script>
-let currentView = 'landing';
-let adminPage = 'admin-dashboard';
-let adminTab = 'analysis';
-let employeePage = 'menu';
-let surveyPart = 1;
-let surveyDone = false;
-let ojtEntries = [
-  {
-    date: '2026-05-14',
-    learned: 'Supabase RLS 정책 설정 방법과 Edge Function 배포 과정을 학습했습니다.',
-    felt: '처음에는 어려웠지만 멘토님의 도움으로 이해할 수 있었습니다.',
-    plan: '내일은 프론트엔드 연동 작업을 진행할 예정입니다.'
-  }
-];
-
-const MENTORS = ['이민준', '최지영', '김태영', '박소연'];
-
-const PARTS = [
-  {
-    label: 'Part 1 / 4',
-    title: 'OJT 준비 및 멘토링 태도',
-    desc: '멘토/팀장님이 OJT를 위해 얼마나 체계적으로 준비하고 성실하게 임했는지 평가합니다.',
-    qs: [
-      'OJT 계획을 사전에 명확히 공유하고 체계적으로 준비했습니다.',
-      '바쁜 업무 중에도 교육을 위해 충분한 시간을 할애했습니다.',
-      '질문할 때 편안하게 이야기할 수 있도록 개방적인 태도를 보여주었습니다.',
-      '나를 팀의 일원으로 존중하며 인격적으로 대해주었습니다.',
-    ],
-    open: '멘토의 준비 상태나 태도에서 느낀 점을 작성해 주세요.',
-  },
-  {
-    label: 'Part 2 / 4',
-    title: '업무 지식 및 기술 전수',
-    desc: '담당 업무에 필요한 지식과 기술을 얼마나 명확하고 효과적으로 전달했는지 평가합니다.',
-    qs: [
-      '담당 업무의 핵심 내용과 목표를 이해하기 쉽게 설명해 주었습니다.',
-      '업무 절차와 시스템 활용법을 알기 쉬운 방식으로 알려주었습니다.',
-      '멘토의 지도가 업무 지식 습득에 실질적으로 도움이 되었습니다.',
-      '업무 수행에 필요한 지식과 정보를 충분히 제공받았습니다.',
-    ],
-    open: '업무 지식 전달에서 가장 도움이 됐거나 부족했던 부분을 작성해 주세요.',
-  },
-  {
-    label: 'Part 3 / 4',
-    title: '실무 지도 및 피드백',
-    desc: '실무 수행 과정에서 적절한 가이드와 건설적인 피드백을 제공했는지 평가합니다.',
-    qs: [
-      '배운 내용을 직접 실행할 수 있도록 적절한 업무 기회를 부여했습니다.',
-      '업무 결과에 대해 구체적이고 건설적인 피드백을 제공했습니다.',
-      '어려움이나 실수 시 비난하기보다 해결책을 함께 고민해 주었습니다.',
-      '스스로 생각하고 업무를 처리할 수 있도록 적절한 가이드를 제공했습니다.',
-    ],
-    open: '피드백 중 가장 도움이 된 내용이나 아쉬웠던 부분을 작성해 주세요.',
-  },
-  {
-    label: 'Part 4 / 4',
-    title: '조직 적응 지원 및 소통',
-    desc: '조직 적응을 위해 얼마나 지원하고 원활하게 소통했는지 평가합니다.',
-    qs: [
-      '팀 문화와 분위기를 이해할 수 있도록 도와주었습니다.',
-      '업무 외 고민이나 어려움도 편하게 이야기할 수 있는 분위기를 만들어 주었습니다.',
-      '동료 및 타 부서와의 관계 형성을 지원해 주었습니다.',
-      '나의 의견과 아이디어를 존중하고 반영하려 노력했습니다.',
-    ],
-    open: '조직 적응 과정에서 가장 도움이 됐거나 아쉬웠던 경험을 작성해 주세요.',
-  },
-];
-
-function renderApp() {
-  document.getElementById('app').innerHTML = currentView === 'landing' ? renderLanding()
-    : currentView === 'admin' ? renderAdminFull()
-    : renderEmployeeFull();
-}
-
-/* ── Landing ── */
-function renderLanding() {
-  return `
-  <div class="promo-banner">포트폴리오 체험 데모 — 저장되지 않으며 새로고침 시 초기화됩니다.</div>
-  <nav class="top-nav">
-    <div class="nav-logo">YURA <span>Onboarding</span></div>
-    <div class="nav-pills">
-      <div class="nav-pill active">홈</div>
-      <div class="nav-pill" onclick="goAdmin()">관리자</div>
-      <div class="nav-pill" onclick="goEmployee()">신입사원</div>
-    </div>
-    <div class="nav-right">
-      <a href="../../index.html" class="btn-back-nav">← 포트폴리오</a>
-    </div>
-  </nav>
-  <div class="landing">
-    <div class="landing-eyebrow">Demo Experience</div>
-    <h1 class="landing-hero-title">신입사원 온보딩, 체계적으로 시작하세요.</h1>
-    <p class="landing-hero-sub">HR 관리자와 신입사원 각각의 입장에서 시스템을 직접 체험해보세요. 별도 로그인 없이 바로 시작할 수 있습니다.</p>
-    <div class="landing-cta-row">
-      <button class="btn-primary" onclick="goAdmin()">관리자로 체험하기</button>
-      <button class="btn-secondary" onclick="goEmployee()">신입사원으로 체험하기</button>
-    </div>
-
-    <div class="role-cards-section">
-      <div class="role-card admin" onclick="goAdmin()">
-        <div class="role-card-badge">HR Admin</div>
-        <div class="role-card-icon">🏢</div>
-        <div class="role-card-title">관리자 대시보드</div>
-        <div class="role-card-desc">온보딩 현황을 한눈에 파악하고 AI 기반 설문 분석을 통해 멘토링 품질을 관리합니다.</div>
-        <ul class="role-card-features">
-          <li>온보딩 현황 대시보드</li>
-          <li>ABSA 감성 분석 결과</li>
-          <li>AI 메일 초안 작성</li>
-          <li>분석 리포트 생성</li>
-        </ul>
-        <button class="btn-primary" onclick="goAdmin()">관리자로 체험하기</button>
-      </div>
-      <div class="role-card employee" onclick="goEmployee()">
-        <div class="role-card-badge">신입사원</div>
-        <div class="role-card-icon">👤</div>
-        <div class="role-card-title">신입사원 포털</div>
-        <div class="role-card-desc">온보딩 프로그램 일정을 확인하고 OJT 일지를 작성하며 멘토링 평가 설문에 참여합니다.</div>
-        <ul class="role-card-features">
-          <li>OJT 멘토링 평가 설문</li>
-          <li>주간 OJT 일지 작성</li>
-          <li>온보딩 프로그램 확인</li>
-        </ul>
-        <button class="btn-cobalt" onclick="goEmployee()">신입사원으로 체험하기</button>
-      </div>
-    </div>
-
-    <div style="margin-top:48px; padding-top:48px; border-top:1px solid var(--hairline-soft);">
-      <div class="benefit-grid">
-        <div class="benefit-tile"><div class="benefit-icon">🤖</div><div class="benefit-title">AI 감성 분석</div><div class="benefit-desc">설문 응답 자동 분석</div></div>
-        <div class="benefit-tile"><div class="benefit-icon">📊</div><div class="benefit-title">실시간 대시보드</div><div class="benefit-desc">온보딩 현황 모니터링</div></div>
-        <div class="benefit-tile"><div class="benefit-icon">✉️</div><div class="benefit-title">자동 메일 생성</div><div class="benefit-desc">분석 기반 피드백 메일</div></div>
-        <div class="benefit-tile"><div class="benefit-icon">📋</div><div class="benefit-title">체계적 관리</div><div class="benefit-desc">멘토/버디 매칭 시스템</div></div>
-      </div>
-    </div>
-
-    <div class="landing-footer-note">* 데모 페이지입니다. 저장되지 않습니다. &nbsp;|&nbsp; <a href="../../index.html">← 포트폴리오로 돌아가기</a></div>
-  </div>`;
-}
-
-/* ── Admin ── */
-function renderAdminFull() {
-  return `
-  <nav class="top-nav">
-    <div class="nav-logo">YURA <span>Onboarding</span></div>
-    <div class="nav-pills">
-      <div class="nav-pill ${adminPage==='admin-dashboard'?'active':''}" onclick="setAdminPage('admin-dashboard')">온보딩 현황</div>
-      <div class="nav-pill ${adminPage==='admin-survey'?'active':''}" onclick="setAdminPage('admin-survey')">설문 관리 (ABSA)</div>
-    </div>
-    <div class="nav-right">
-      <button class="btn-ghost" onclick="goLanding()">← 역할 선택</button>
-    </div>
-  </nav>
-  <div class="admin-wrap">
-    <aside class="sidebar">
-      <div style="padding:0 20px 16px;"><div style="font-size:12px;color:var(--slate);letter-spacing:1px;text-transform:uppercase;font-weight:700;">관리 메뉴</div></div>
-      <div class="sidebar-item ${adminPage==='admin-dashboard'?'active':''}" onclick="setAdminPage('admin-dashboard')">📋 온보딩 현황</div>
-      <div class="sidebar-item ${adminPage==='admin-survey'?'active':''}" onclick="setAdminPage('admin-survey')">📝 설문조사 (ABSA)</div>
-      <div class="sidebar-user">
-        <div class="sidebar-user-name">데모 관리자</div>
-        <div class="sidebar-user-role">HR 관리자</div>
-        <button class="btn-ghost" style="font-size:12px;padding:6px 14px;" onclick="goLanding()">← 역할 선택</button>
-      </div>
-    </aside>
-    <main class="admin-main">
-      ${adminPage==='admin-dashboard' ? renderDashboard() : renderSurveyAdmin()}
-    </main>
-  </div>`;
-}
-
-function renderDashboard() {
-  const rows = [
-    { name:'김지수', join:'2026-04-01', dept:'영업팀', mentor:'이민준', pct:75 },
-    { name:'박준혁', join:'2026-04-15', dept:'개발팀', mentor:'최지영', pct:45 },
-    { name:'이수연', join:'2026-05-01', dept:'인사팀', mentor:'김태영', pct:10 },
-    { name:'정민서', join:'2026-03-01', dept:'마케팅팀', mentor:'박소연', pct:100 },
-  ].map(e => `<tr>
-    <td>${e.name}</td><td>${e.join}</td><td>${e.dept}</td><td>${e.mentor}</td>
-    <td>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="progress-wrap"><div class="progress-bar ${e.pct===100?'high':e.pct<20?'low':''}" style="width:${e.pct}%"></div></div>
-        <span style="font-size:13px;font-weight:700;color:var(--charcoal)">${e.pct}%</span>
-      </div>
-    </td>
-  </tr>`).join('');
-  return `
-  <div class="page-title"><strong>온보딩 현황</strong> 대시보드</div>
-  <div class="stat-grid">
-    <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">전체 신규입사자</div></div>
-    <div class="stat-card"><div class="stat-value" style="color:var(--success)">1</div><div class="stat-label">완료</div></div>
-    <div class="stat-card"><div class="stat-value" style="color:var(--primary)">2</div><div class="stat-label">진행 중</div></div>
-    <div class="stat-card"><div class="stat-value" style="color:var(--steel)">1</div><div class="stat-label">시작 전</div></div>
-  </div>
-  <div class="card-feature">
-    <table>
-      <thead><tr><th>이름</th><th>입사일</th><th>부서</th><th>멘토</th><th>진행률</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`;
-}
-
-function renderSurveyAdmin() {
-  return `
-  <div class="page-title"><strong>설문조사 관리</strong> — ABSA 분석</div>
-  <div class="tabs">
-    <button class="tab-btn ${adminTab==='analysis'?'active':''}" onclick="setTab('analysis')">📊 분석 결과</button>
-    <button class="tab-btn ${adminTab==='mail'?'active':''}" onclick="setTab('mail')">✉️ 메일 작성</button>
-    <button class="tab-btn ${adminTab==='report'?'active':''}" onclick="setTab('report')">📄 리포트</button>
-  </div>
-  ${adminTab==='analysis' ? renderAbsa() : adminTab==='mail' ? renderMail() : renderReport()}`;
-}
-
-function renderAbsa() {
-  return `
-  <div class="card-feature">
-    <div style="font-size:18px;font-weight:700;color:var(--ink-deep);margin-bottom:6px;letter-spacing:-0.3px">OJT 멘토링 평가 — AI 감성 분석 결과</div>
-    <div class="absa-meta">분석 기간: 2026년 4월 ~ 5월 &nbsp;|&nbsp; 응답자 4명</div>
-    <div class="alert-banner">⚠️ 1명의 신규입사자에서 업무 과부하 관련 부정 신호 감지</div>
-    <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:12px">전체 감성 분포</div>
-    <div class="sentiment-row">
-      <span class="sentiment-name">긍정</span>
-      <div class="sentiment-track"><div class="sentiment-fill" style="width:68%;background:var(--ink-deep)">68%</div></div>
-    </div>
-    <div class="sentiment-row">
-      <span class="sentiment-name">중립</span>
-      <div class="sentiment-track"><div class="sentiment-fill" style="width:20%;background:var(--steel)">20%</div></div>
-    </div>
-    <div class="sentiment-row">
-      <span class="sentiment-name">부정</span>
-      <div class="sentiment-track"><div class="sentiment-fill" style="width:12%;background:#e74c3c">12%</div></div>
-    </div>
-    <div style="margin-top:24px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:12px">부문별 평균 점수</div>
-    <div class="score-grid">
-      <div class="score-item"><span class="score-item-label">OJT 준비 및 태도</span><span class="score-item-value">4.2 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
-      <div class="score-item"><span class="score-item-label">업무 지식 전수</span><span class="score-item-value">3.8 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
-      <div class="score-item"><span class="score-item-label">실무 지도 및 피드백</span><span class="score-item-value">4.0 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
-      <div class="score-item"><span class="score-item-label">조직 적응 지원</span><span class="score-item-value">3.5 <span style="font-size:13px;color:var(--slate)">/5</span></span></div>
-    </div>
-    <div style="margin-top:20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);margin-bottom:10px">주요 키워드</div>
-    <div class="keyword-row">
-      <span class="keyword-chip">소통</span>
-      <span class="keyword-chip">체계적</span>
-      <span class="keyword-chip">피드백</span>
-      <span class="keyword-chip warn">업무량</span>
-      <span class="keyword-chip warn">개선필요</span>
-    </div>
-  </div>`;
-}
-
-function renderMail() {
-  return `
-  <div class="card-feature">
-    <div style="font-size:18px;font-weight:700;color:var(--ink-deep);margin-bottom:20px;letter-spacing:-0.3px">분석 기반 멘토 피드백 메일 작성</div>
-    <div class="form-label">받는 사람</div>
-    <select id="mailTo" onchange="updateMailBody()">${MENTORS.map(m=>`<option value="${m}">${m} 멘토</option>`).join('')}</select>
-    <div class="form-label">제목</div>
-    <input type="text" id="mailSubject" value="OJT 멘토링 피드백 안내 - 2026년 5월">
-    <div class="form-label">본문</div>
-    <textarea id="mailBody" rows="10">${getMailBody(MENTORS[0])}</textarea>
-    <div style="margin-top:16px">
-      <button class="btn-primary" onclick="sendMail()">메일 보내기</button>
-    </div>
-  </div>`;
-}
-
-function getMailBody(name) {
-  return `안녕하세요, ${name}님.\n\n이번 달 OJT 멘토링 평가 결과를 공유드립니다.\n\n[분석 결과 요약]\n• 전체 만족도: 3.9/5.0 (긍정 68%)\n• 강점: 소통 능력, 체계적인 OJT 준비\n• 개선 필요: 업무량 조율, 피드백 구체성\n\n더욱 발전된 온보딩 환경을 위해 지속적인 관심 부탁드립니다.\n\n인사기획팀 드림`;
-}
-
-function renderReport() {
-  return `
-  <div class="report-card">
-    <div class="report-header">
-      <div class="report-header-title">OJT 멘토링 평가 리포트</div>
-      <div class="report-header-sub">YURA Onboarding System · 2026년 5월</div>
-    </div>
-    <div class="report-body">
-      <div class="report-row"><span class="report-row-label">리포트명</span><span class="report-row-value">YURA 온보딩 OJT 평가 리포트 (2026년 5월)</span></div>
-      <div class="report-row"><span class="report-row-label">분석 기간</span><span class="report-row-value">2026.04.01 ~ 2026.05.14</span></div>
-      <div class="report-row"><span class="report-row-label">응답자 수</span><span class="report-row-value">4명</span></div>
-      <div class="report-row"><span class="report-row-label">전체 평균</span><span class="report-row-value">3.9 / 5.0</span></div>
-      <div class="report-row"><span class="report-row-label">생성일</span><span class="report-row-value">2026.05.15</span></div>
-      <div style="margin-top:20px">
-        <button class="btn-primary" onclick="showPdfModal()">PDF 다운로드</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-/* ── Employee ── */
-function renderEmployeeFull() {
-  return `
-  <nav class="top-nav">
-    <div class="nav-logo">YURA <span>Onboarding</span></div>
-    <div class="nav-pills">
-      <div class="nav-pill ${employeePage==='menu'?'active':''}" onclick="setEmpPage('menu')">홈</div>
-      <div class="nav-pill ${employeePage==='survey'?'active':''}" onclick="setEmpPage('survey')">설문조사</div>
-      <div class="nav-pill ${employeePage==='ojt'?'active':''}" onclick="setEmpPage('ojt')">OJT 일지</div>
-      <div class="nav-pill ${employeePage==='program'?'active':''}" onclick="setEmpPage('program')">온보딩 프로그램</div>
-    </div>
-    <div class="nav-right">
-      <button class="btn-ghost" onclick="goLanding()">← 역할 선택</button>
-    </div>
-  </nav>
-  <div class="emp-body">
-    ${employeePage==='menu' ? renderEmpMenu()
-      : employeePage==='survey' ? renderSurvey()
-      : employeePage==='ojt' ? renderOjt()
-      : renderProgram()}
-  </div>`;
-}
-
-function renderEmpMenu() {
-  return `
-  <div class="greeting-section">
-    <div class="greeting-eyebrow">Welcome</div>
-    <h2 class="greeting-title">안녕하세요, 데모 신입사원님 👋</h2>
-    <p class="greeting-sub">오늘도 좋은 하루 되세요. 아래 메뉴에서 원하는 기능을 선택해 체험해보세요.</p>
-  </div>
-  <div class="menu-grid">
-    <div class="menu-tile" onclick="setEmpPage('survey')">
-      <div class="menu-tile-icon">📝</div>
-      <div class="menu-tile-title">설문조사</div>
-      <div class="menu-tile-desc">OJT 멘토링 평가 설문에 참여하세요</div>
-    </div>
-    <div class="menu-tile" onclick="setEmpPage('ojt')">
-      <div class="menu-tile-icon">📓</div>
-      <div class="menu-tile-title">OJT 일지</div>
-      <div class="menu-tile-desc">주간 OJT 일지를 작성하고 기록하세요</div>
-    </div>
-    <div class="menu-tile" onclick="setEmpPage('program')">
-      <div class="menu-tile-icon">🗓️</div>
-      <div class="menu-tile-title">온보딩 프로그램</div>
-      <div class="menu-tile-desc">온보딩 일정과 진행 상황을 확인하세요</div>
-    </div>
-  </div>`;
-}
-
-function renderSurvey() {
-  if (surveyDone) return `
-  <div class="survey-complete">
-    <div class="survey-complete-icon">✅</div>
-    <h2 class="survey-complete-title">설문이 제출되었습니다</h2>
-    <p class="survey-complete-sub">참여해 주셔서 감사합니다. 소중한 의견을 반영하겠습니다.</p>
-    <button class="btn-primary" onclick="surveyDone=false;surveyPart=1;setEmpPage('menu')">홈으로 돌아가기</button>
-  </div>`;
-
-  const part = PARTS[surveyPart - 1];
-  const pips = PARTS.map((_, i) => `<div class="part-pip ${i < surveyPart-1?'done':i===surveyPart-1?'active':''}"></div>`).join('');
-  const qs = part.qs.map((q, qi) => `
-    <div class="question-block">
-      <div class="q-text">${qi+1}. ${q}</div>
-      <div class="scale-row">
-        <span class="scale-end">매우<br>불만족</span>
-        <div class="scale-options">
-          ${[1,2,3,4,5].map(n=>`<div class="scale-opt"><input type="radio" name="q${surveyPart}_${qi}" id="s${surveyPart}_${qi}_${n}" value="${n}"><label for="s${surveyPart}_${qi}_${n}">${n}</label></div>`).join('')}
+  <!-- =============================================
+       VIEW 1: LANDING
+  ============================================= -->
+  <div id="view-landing" class="view active">
+    <div class="landing-left">
+      <div class="landing-label">YURA 온보딩 시스템</div>
+      <div class="landing-title">유라코퍼레이션 입사를<br>진심으로 환영합니다!</div>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-card-title">🚀 온보딩 프로그램</div>
+          <div class="feature-card-desc">6가지 활동으로 빠르게 적응하세요.</div>
         </div>
-        <span class="scale-end">매우<br>만족</span>
-      </div>
-    </div>`).join('');
-  return `
-  <div class="part-progress">${pips}</div>
-  <div class="section-header">
-    <div class="part-label">${part.label}</div>
-    <h2 class="part-title">${part.title}</h2>
-    <p class="part-desc">${part.desc}</p>
-  </div>
-  <div class="card-feature">
-    ${qs}
-    <div class="question-block">
-      <div class="q-text">${part.qs.length+1}. ${part.open}</div>
-      <textarea class="q-textarea" rows="3" placeholder="자유롭게 작성해 주세요..."></textarea>
-    </div>
-    <div style="margin-top:20px">
-      <button class="btn-primary" onclick="nextPart()">${surveyPart<4?'다음 파트 →':'제출하기'}</button>
-    </div>
-  </div>`;
-}
-
-function renderOjt() {
-  const entries = ojtEntries.map(e => `
-    <div class="ojt-entry">
-      <div class="ojt-entry-date">${e.date}</div>
-      <div class="ojt-entry-label">오늘 배운 것</div>
-      <div class="ojt-entry-text">${e.learned}</div>
-      <div class="ojt-entry-label">느낀 점</div>
-      <div class="ojt-entry-text">${e.felt}</div>
-      <div class="ojt-entry-label">내일 계획</div>
-      <div class="ojt-entry-text">${e.plan}</div>
-    </div>`).join('');
-  return `
-  <div class="section-header">
-    <div class="part-label">My Journal</div>
-    <h2 class="part-title">OJT 일지</h2>
-  </div>
-  <div class="ojt-grid">
-    <div class="card-feature ojt-form-card">
-      <div style="font-size:16px;font-weight:700;color:var(--ink-deep);margin-bottom:20px;letter-spacing:-0.3px">새 일지 작성</div>
-      <div class="form-label">날짜</div>
-      <input type="date" id="ojtDate" value="${new Date().toISOString().slice(0,10)}">
-      <div class="form-label">오늘 배운 것</div>
-      <textarea id="ojtLearned" rows="3" placeholder="오늘 배운 내용을 기록하세요"></textarea>
-      <div class="form-label">느낀 점</div>
-      <textarea id="ojtFelt" rows="2" placeholder="오늘의 소감을 작성하세요"></textarea>
-      <div class="form-label">내일 계획</div>
-      <textarea id="ojtPlan" rows="2" placeholder="내일 할 일을 계획하세요"></textarea>
-      <div style="margin-top:16px"><button class="btn-primary" onclick="saveOjt()">일지 저장</button></div>
-    </div>
-    <div class="card-feature ojt-list-card">
-      <div style="font-size:16px;font-weight:700;color:var(--ink-deep);margin-bottom:16px;letter-spacing:-0.3px">일지 목록</div>
-      ${entries}
-    </div>
-  </div>`;
-}
-
-function renderProgram() {
-  return `
-  <div class="section-header">
-    <div class="part-label">Onboarding Schedule</div>
-    <h2 class="part-title">온보딩 프로그램</h2>
-    <p class="part-desc">현재 Week 2 진행 중입니다.</p>
-  </div>
-  <div class="card-feature">
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-marker done">✓</div>
-        <div class="tl-week-row"><div class="tl-week">Week 1</div></div>
-        <div class="tl-date">4월 1일 ~ 4월 5일</div>
-        <div class="tl-chips">
-          <span class="tl-chip done">오리엔테이션</span>
-          <span class="tl-chip done">회사 소개</span>
-          <span class="tl-chip done">부서 투어</span>
-          <span class="tl-chip done">시스템 계정 발급</span>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-marker active"></div>
-        <div class="tl-week-row"><div class="tl-week">Week 2</div><div class="tl-current-badge">진행 중</div></div>
-        <div class="tl-date">4월 8일 ~ 4월 12일</div>
-        <div class="tl-chips">
-          <span class="tl-chip active">업무 시스템 교육</span>
-          <span class="tl-chip active">멘토 미팅</span>
-          <span class="tl-chip active">첫 업무 배정</span>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-marker pending"></div>
-        <div class="tl-week-row"><div class="tl-week">Week 3</div></div>
-        <div class="tl-date">4월 15일 ~ 4월 19일</div>
-        <div class="tl-chips">
-          <span class="tl-chip pending">실무 투입</span>
-          <span class="tl-chip pending">OJT 중간 점검</span>
-          <span class="tl-chip pending">중간 설문조사</span>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-marker pending"></div>
-        <div class="tl-week-row"><div class="tl-week">Week 4</div></div>
-        <div class="tl-date">4월 22일 ~ 4월 26일</div>
-        <div class="tl-chips">
-          <span class="tl-chip pending">팀 프로젝트 참여</span>
-          <span class="tl-chip pending">최종 평가 설문</span>
-          <span class="tl-chip pending">수료식</span>
+        <div class="feature-card">
+          <div class="feature-card-title">👥 멘토 매칭</div>
+          <div class="feature-card-desc">전담 멘토와 함께 성장하세요.</div>
         </div>
       </div>
     </div>
-  </div>`;
-}
 
-/* ── Actions ── */
-function goAdmin() { currentView='admin'; adminPage='admin-dashboard'; renderApp(); }
-function goEmployee() { currentView='employee'; employeePage='menu'; renderApp(); }
-function goLanding() { currentView='landing'; renderApp(); }
-function setAdminPage(p) { adminPage=p; renderApp(); }
-function setTab(t) { adminTab=t; renderApp(); }
-function setEmpPage(p) { employeePage=p; renderApp(); }
-function nextPart() { surveyPart < 4 ? (surveyPart++, renderApp()) : (surveyDone=true, renderApp()); }
-function updateMailBody() {
-  const sel = document.getElementById('mailTo');
-  const body = document.getElementById('mailBody');
-  if (sel && body) body.value = getMailBody(sel.value);
-}
-function sendMail() { showToast('✓ 메일이 발송되었습니다.'); }
-function saveOjt() {
-  const d = document.getElementById('ojtDate').value;
-  const l = document.getElementById('ojtLearned').value.trim();
-  const f = document.getElementById('ojtFelt').value.trim();
-  const p = document.getElementById('ojtPlan').value.trim();
-  if (!l) return;
-  ojtEntries.unshift({ date:d, learned:l, felt:f, plan:p });
-  showToast('✓ 일지가 저장되었습니다.');
-  renderApp();
-}
-function showPdfModal() {
-  const ov = document.createElement('div');
-  ov.className = 'modal-overlay';
-  ov.innerHTML = `<div class="modal-box"><p>데모 환경에서는 PDF 다운로드가 지원되지 않습니다.</p><button class="btn-primary" onclick="this.closest('.modal-overlay').remove()">확인</button></div>`;
-  document.body.appendChild(ov);
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
+    <div class="landing-right">
+      <div class="yura-logo"><span class="yr">YR</span> <span class="yura-text">YURA</span></div>
 
-renderApp();
-</script>
+      <div class="demo-notice">
+        <strong>데모 체험 모드</strong><br>
+        실제 시스템 데이터가 아닌 샘플 데이터로 구성된 포트폴리오 데모입니다. 역할을 선택하여 체험해보세요.
+      </div>
+
+      <button class="role-btn primary" onclick="showView('view-employee')">
+        <span class="role-btn-icon">👤</span>
+        <div class="role-btn-info">
+          <div>신입사원으로 체험</div>
+          <div class="role-btn-sub">온보딩 대시보드 및 현황 확인</div>
+        </div>
+      </button>
+
+      <button class="role-btn outline" onclick="showView('view-admin')">
+        <span class="role-btn-icon">🏢</span>
+        <div class="role-btn-info">
+          <div>관리자(HR Admin)로 체험</div>
+          <div class="role-btn-sub">ABSA 분석 및 설문 관리 화면</div>
+        </div>
+      </button>
+
+      <div class="landing-back">
+        <a href="../../index.html">← 포트폴리오로 돌아가기</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       VIEW 2: EMPLOYEE DASHBOARD
+  ============================================= -->
+  <div id="view-employee" class="view" style="flex-direction:column; min-height:100vh;">
+
+    <div class="emp-header">
+      <div class="emp-header-logo">YURA 온보딩 시스템</div>
+      <div class="emp-header-info">
+        <span>인사기획팀 데모체험</span>
+        <div class="emp-header-date">📅 2026-04-01 ~ 2026-04-29</div>
+        <button class="btn-ghost-white">👤 프로필 ▼</button>
+      </div>
+      <button class="btn-ghost-white" onclick="showView('view-landing')">← 역할 선택</button>
+    </div>
+
+    <div class="emp-body">
+
+      <!-- LEFT PANEL -->
+      <div class="emp-left">
+
+        <!-- Card 1: Welcome + Timeline -->
+        <div class="card">
+          <div class="card-body">
+            <div class="welcome-title">데모체험님 환영합니다! 👋</div>
+            <div class="card-label">온보딩 진행 현황</div>
+            <div class="timeline-wrap">
+              <div class="tl-step">
+                <div class="tl-dot"></div>
+                <div class="tl-label">
+                  <div>입사일</div>
+                  <div class="tl-date">04/01</div>
+                </div>
+              </div>
+              <div class="tl-line"></div>
+              <div class="tl-step">
+                <div class="tl-dot current"></div>
+                <div class="tl-label">
+                  <div style="color:var(--primary);font-weight:600;">1차종료</div>
+                  <div class="tl-date">04/29</div>
+                </div>
+              </div>
+              <div class="tl-line gray"></div>
+              <div class="tl-step">
+                <div class="tl-dot empty"></div>
+                <div class="tl-label">
+                  <div>2차종료</div>
+                  <div class="tl-date">05/27</div>
+                </div>
+              </div>
+              <div class="tl-line gray"></div>
+              <div class="tl-step">
+                <div class="tl-dot empty"></div>
+                <div class="tl-label">
+                  <div>3차종료</div>
+                  <div class="tl-date">06/24</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Mentor -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-label">담당 멘토</div>
+            <div class="info-row">
+              <div class="info-name">이준혁 | 181023</div>
+              <span class="badge badge-success">승인 완료</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Onboarding Program -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-label">온보딩 프로그램</div>
+            <div class="info-row">
+              <div class="prog-label">0 / 6 완료</div>
+              <a class="prog-link" onclick="demoAlert()">바로가기 →</a>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Survey -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-label">설문조사 일정</div>
+            <div class="info-row">
+              <div class="info-name">2차 설문</div>
+              <span class="badge badge-primary">진행 중</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-mute); margin-top:6px;">2026-04-30 ~ 2026-05-27</div>
+          </div>
+        </div>
+
+        <!-- Card 5: OJT -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-label">OJT 일지</div>
+            <div class="ojt-row">
+              <div class="ojt-left">
+                <span class="ojt-week-badge">7주차 <span class="ojt-unwritten">미작성</span></span>
+              </div>
+              <div class="ojt-right">제출 완료 0 / 12주</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /emp-left -->
+
+      <!-- RIGHT PANEL -->
+      <div class="emp-right">
+        <div class="menu-grid">
+          <div class="menu-card" onclick="demoAlert()">
+            <div class="menu-icon">📢</div>
+            <div class="menu-title">공지사항</div>
+            <div class="menu-desc">중요 공지사항 및 자료 확인</div>
+            <div class="menu-arrow">→</div>
+          </div>
+          <div class="menu-card" onclick="demoAlert()">
+            <div class="menu-icon">📋</div>
+            <div class="menu-title">온보딩 프로그램</div>
+            <div class="menu-desc">6가지 온보딩 활동 수행</div>
+            <div class="menu-arrow">→</div>
+          </div>
+          <div class="menu-card" onclick="demoAlert()">
+            <div class="menu-icon">✏️</div>
+            <div class="menu-title">설문조사</div>
+            <div class="menu-desc">온보딩 과정 설문조사</div>
+            <div class="menu-arrow">→</div>
+          </div>
+          <div class="menu-card" onclick="demoAlert()">
+            <div class="menu-icon">📓</div>
+            <div class="menu-title">OJT 일지</div>
+            <div class="menu-desc">주간 학습 내용 기록 및 제출</div>
+            <div class="menu-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /emp-body -->
+
+    <div class="footer-link">
+      <a href="../../index.html">← 포트폴리오로 돌아가기</a>
+    </div>
+
+  </div><!-- /view-employee -->
+
+  <!-- =============================================
+       VIEW 3: ADMIN
+  ============================================= -->
+  <div id="view-admin" class="view" style="min-height:100vh; flex-direction:column;">
+    <div class="admin-layout">
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo-icon">🏢</div>
+          <div class="sidebar-logo-title">YURA 온보딩 시스템</div>
+          <div class="sidebar-logo-sub">HR ADMIN</div>
+        </div>
+        <div class="sidebar-nav">
+          <div class="nav-item" onclick="demoAlert()"><span class="nav-icon">🗂️</span> 온보딩 현황</div>
+          <div class="nav-item" onclick="demoAlert()"><span class="nav-icon">📢</span> 공지사항 관리</div>
+          <div class="nav-item" onclick="demoAlert()"><span class="nav-icon">👥</span> 신규입사자 등록</div>
+          <div class="nav-item" onclick="demoAlert()"><span class="nav-icon">🤝</span> 멘토/버디 관리</div>
+          <div class="nav-item" onclick="demoAlert()"><span class="nav-icon">📋</span> 멘토 등록 요청</div>
+          <div class="nav-item active"><span class="nav-icon">✏️</span> 설문조사 관리</div>
+        </div>
+        <div class="sidebar-footer">
+          <div class="avatar">교</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">교육담당</div>
+            <div class="sidebar-user-role">HR 관리자</div>
+          </div>
+          <div class="sidebar-logout" onclick="showView('view-landing')">로그아웃</div>
+        </div>
+      </div>
+
+      <!-- Admin Main -->
+      <div class="admin-main">
+        <div class="admin-topbar">
+          <div class="admin-page-title">설문조사 관리</div>
+          <button class="topbar-icon-btn" title="알림">🔔</button>
+          <button class="topbar-icon-btn" title="설정">⚙️</button>
+          <button class="btn-topbar-role" onclick="showView('view-landing')">← 역할 선택</button>
+        </div>
+
+        <div class="admin-content">
+          <div class="filter-bar">
+            <input class="filter-search" type="text" placeholder="🔍  이름으로 검색..." oninput="filterSearch(this.value)">
+            <button class="filter-btn active" onclick="filterTable('all', this)">전체</button>
+            <button class="filter-btn" onclick="filterTable('1차', this)">1차</button>
+            <button class="filter-btn" onclick="filterTable('2차', this)">2차</button>
+            <button class="filter-btn" onclick="filterTable('3차', this)">3차</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>이름 <span class="sort-icon">↑</span></th>
+                  <th>차수 <span class="sort-icon">↑↓</span></th>
+                  <th>제출일</th>
+                  <th>ABSA 분석</th>
+                  <th>멘토 이메일</th>
+                  <th>팀장 이메일</th>
+                  <th>종단 분석</th>
+                </tr>
+              </thead>
+              <tbody id="absa-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="footer-link" style="padding-top:20px;">
+            <a href="../../index.html">← 포트폴리오로 돌아가기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       MODAL: ABSA
+  ============================================= -->
+  <div id="modal-absa" class="modal-overlay" onclick="overlayClose(event,'modal-absa')">
+    <div class="modal" style="width:720px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('modal-absa')">✕</button>
+      <div class="absa-header">
+        <div class="absa-title" id="absa-modal-title">ABSA 분석 결과</div>
+        <div class="absa-subtitle">Aspect-Based Sentiment Analysis</div>
+      </div>
+      <div class="absa-body" id="absa-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       MODAL: EMAIL
+  ============================================= -->
+  <div id="modal-email" class="modal-overlay" onclick="overlayClose(event,'modal-email')">
+    <div class="modal" style="width:620px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('modal-email')">✕</button>
+      <div class="email-header">
+        <div class="email-header-title" id="email-modal-title">이메일 미리보기</div>
+        <div class="email-header-sub" id="email-modal-sub"></div>
+      </div>
+      <div class="email-meta" id="email-modal-meta"></div>
+      <div class="email-body"><pre id="email-modal-body"></pre></div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       MODAL: LONGITUDINAL
+  ============================================= -->
+  <div id="modal-longitudinal" class="modal-overlay" onclick="overlayClose(event,'modal-longitudinal')">
+    <div class="modal" style="width:680px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('modal-longitudinal')">✕</button>
+      <div class="long-header">
+        <div class="long-title" id="long-modal-title">종단 분석</div>
+        <div class="long-sub">차수별 감성 지표 추이 분석</div>
+      </div>
+      <div class="long-body">
+        <div id="long-trend-message" class="trend-message"></div>
+        <div id="chart-container"></div>
+        <div class="chart-legend" id="chart-legend"></div>
+        <div class="summary-boxes" id="summary-boxes"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =============================================
+       VIEW SYSTEM
+    ============================================= */
+    function showView(id) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }
+
+    function demoAlert() {
+      alert('이 기능은 실제 시스템에서 이용 가능합니다.');
+    }
+
+    /* =============================================
+       TABLE DATA
+    ============================================= */
+    const TABLE_ROWS = [
+      { name:'강태양', round:'1차', date:'2026-02-12', absa:'done', mentor:'done',   leader:'done',   long:'done' },
+      { name:'강태양', round:'2차', date:'2026-03-14', absa:'done', mentor:'mentor', leader:'leader', long:'done' },
+      { name:'강태양', round:'3차', date:'2026-04-14', absa:'done', mentor:'mentor', leader:'none',   long:'done' },
+      { name:'김유진', round:'1차', date:'2026-02-12', absa:'done', mentor:'done',   leader:'done',   long:'done' },
+      { name:'김유진', round:'2차', date:'2026-03-14', absa:'run',  mentor:'none',   leader:'none',   long:'done' },
+      { name:'김유진', round:'3차', date:'2026-04-14', absa:'run',  mentor:'none',   leader:'none',   long:'done' },
+      { name:'박소연', round:'1차', date:'2026-02-12', absa:'done', mentor:'mentor', leader:'none',   long:'done' },
+      { name:'박소연', round:'2차', date:'2026-03-14', absa:'run',  mentor:'none',   leader:'none',   long:'done' },
+      { name:'박소연', round:'3차', date:'2026-04-14', absa:'run',  mentor:'none',   leader:'none',   long:'done' },
+    ];
+
+    const runCompleted = {};
+
+    function buildTable() {
+      const tbody = document.getElementById('absa-tbody');
+      tbody.innerHTML = '';
+      TABLE_ROWS.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        tr.dataset.round = row.round;
+        tr.dataset.name = row.name;
+
+        tr.innerHTML =
+          `<td class="name-cell">${row.name}</td>` +
+          `<td class="round-cell">${row.round}</td>` +
+          `<td>${row.date}</td>` +
+          `<td id="absa-cell-${idx}">${renderAbsaCell(row, idx)}</td>` +
+          `<td>${renderEmailCell(row.mentor, row.name, row.round, 'mentor')}</td>` +
+          `<td>${renderEmailCell(row.leader, row.name, row.round, 'leader')}</td>` +
+          `<td>${renderLongCell(row.name)}</td>`;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAbsaCell(row, idx) {
+      const key = row.name + '_' + row.round;
+      const type = runCompleted[key] ? 'done' : row.absa;
+
+      if (type === 'done') {
+        return `<button class="tbl-btn tbl-btn-success" onclick="openAbsaModal('${row.name}','${row.round}')">완료(확인)</button>`;
+      }
+      if (type === 'run') {
+        return `<button class="tbl-btn tbl-btn-run" id="run-btn-${idx}" onclick="runAnalysis(${idx},'${row.name}','${row.round}')">분석 실행</button>`;
+      }
+      return '<span class="tbl-text-mute">미분석</span>';
+    }
+
+    function renderEmailCell(type, name, round, role) {
+      if (type === 'done') {
+        return `<button class="tbl-btn tbl-btn-success" onclick="openEmailModal('${name}','${round}','${role}')">완료(확인)</button>`;
+      }
+      if (type === 'mentor') {
+        return `<button class="tbl-btn tbl-btn-outline" onclick="openEmailModal('${name}','${round}','mentor')">멘토</button>`;
+      }
+      if (type === 'leader') {
+        return `<button class="tbl-btn tbl-btn-outline" onclick="openEmailModal('${name}','${round}','leader')">팀장</button>`;
+      }
+      return '<span class="tbl-text-mute">미분석</span>';
+    }
+
+    function renderLongCell(name) {
+      return `<button class="tbl-btn tbl-btn-success" onclick="openLongitudinalModal('${name}')">완료(확인)</button>`;
+    }
+
+    /* =============================================
+       FILTER
+    ============================================= */
+    function filterTable(round, btn) {
+      if (btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      document.querySelectorAll('#absa-tbody tr').forEach(tr => {
+        tr.style.display = (round === 'all' || tr.dataset.round === round) ? '' : 'none';
+      });
+    }
+
+    function filterSearch(val) {
+      const q = val.trim().toLowerCase();
+      document.querySelectorAll('#absa-tbody tr').forEach(tr => {
+        tr.style.display = tr.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    /* =============================================
+       RUN ANALYSIS
+    ============================================= */
+    function runAnalysis(idx, name, round) {
+      const btn = document.getElementById('run-btn-' + idx);
+      if (!btn) return;
+      btn.textContent = '분석 중...';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+
+      setTimeout(function() {
+        runCompleted[name + '_' + round] = true;
+        const cell = document.getElementById('absa-cell-' + idx);
+        if (cell) {
+          cell.innerHTML = `<button class="tbl-btn tbl-btn-success" onclick="openAbsaModal('${name}','${round}')">완료(확인)</button>`;
+        }
+      }, 1500);
+    }
+
+    /* =============================================
+       ABSA DATA
+    ============================================= */
+    const ABSA_DATA = {
+      '강태양_1차': {
+        original: '"멘토님이 너무 친절해서 좋습니다. 하지만 오히려 너무 친절하셔서 모든걸 다 해주십니다. 제가 직접 업무를 해볼수 있는 기회가 있으면 좋겠습니다."',
+        highlights: [
+          { text: '멘토님이 너무 친절해서 좋습니다.', aspect: '멘토 친절도', sent: 'positive', score: '89%' },
+          { text: '모든걸 다 해주십니다.', aspect: '자율적 업무수행', sent: 'negative', score: '72%' },
+          { text: '직접 업무를 해볼수 있는 기회가 있으면 좋겠습니다.', aspect: '업무 경험 기회', sent: 'negative', score: '68%' },
+        ],
+        rows: [
+          { aspect:'멘토 친절도', sentence:'"멘토님이 너무 친절해서 좋습니다"', sent:'positive', conf:'89%' },
+          { aspect:'자율적 업무수행', sentence:'"모든걸 다 해주십니다"', sent:'negative', conf:'72%' },
+          { aspect:'업무 경험 기회', sentence:'"직접 업무를 해볼 기회 부족"', sent:'negative', conf:'68%' },
+        ],
+        insight: {
+          title: '💡 ABSA의 강점: 한 문장 안에서 긍정과 부정을 동시에 속성별로 감지',
+          left: { label:'일반 감성 분석', result:'결과: "중립"', note:'→ 핵심 정보 손실' },
+          right: { label:'ABSA (속성 기반)', result:'결과: 친절도↑ 자율성↓', note:'→ 정밀한 개입 포인트 도출' },
+        }
+      },
+      '강태양_2차': {
+        original: '"이번 달에는 멘토님이 직접 해볼 수 있는 업무를 많이 주셨습니다. 처음에는 어렵기도 했지만 성취감이 있었습니다. 팀 분위기도 좋고 업무를 점점 이해하게 되는 것 같습니다."',
+        highlights: [
+          { text: '멘토님이 직접 해볼 수 있는 업무를 많이 주셨습니다.', aspect: '업무자율성', sent: 'positive', score: '84%' },
+          { text: '처음에는 어렵기도 했지만 성취감이 있었습니다.', aspect: '자기효능감', sent: 'positive', score: '78%' },
+          { text: '팀 분위기도 좋고 업무를 점점 이해하게 되는 것 같습니다.', aspect: '팀 분위기', sent: 'positive', score: '81%' },
+        ],
+        rows: [
+          { aspect:'업무자율성', sentence:'"직접 해볼 수 있는 업무를 많이 주셨습니다"', sent:'positive', conf:'84%' },
+          { aspect:'자기효능감', sentence:'"성취감이 있었습니다"', sent:'positive', conf:'78%' },
+          { aspect:'팀 분위기', sentence:'"팀 분위기도 좋고"', sent:'positive', conf:'81%' },
+        ],
+        insight: {
+          title: '💡 인사이트: 1차 대비 자율적 업무 수행 기회 증가 → 전반적 긍정 전환',
+          left: { label:'1차 ABSA 결과', result:'자율성 ❌ 부족', note:'→ 멘토 지도 방식 넛지 전송' },
+          right: { label:'2차 ABSA 결과', result:'자율성 ✅ 개선', note:'→ 성공적 개입 효과 확인' },
+        }
+      },
+      '강태양_3차': {
+        original: '"이제 업무에 완전히 적응된 것 같습니다. 멘토님과의 관계도 좋고, 팀원들과도 잘 어울리고 있습니다. 앞으로 더 어려운 업무에도 도전해보고 싶습니다."',
+        highlights: [
+          { text: '이제 업무에 완전히 적응된 것 같습니다.', aspect: '업무적응도', sent: 'positive', score: '92%' },
+          { text: '멘토님과의 관계도 좋고, 팀원들과도 잘 어울리고 있습니다.', aspect: '대인관계', sent: 'positive', score: '90%' },
+          { text: '앞으로 더 어려운 업무에도 도전해보고 싶습니다.', aspect: '성장의욕', sent: 'positive', score: '88%' },
+        ],
+        rows: [
+          { aspect:'업무적응도', sentence:'"업무에 완전히 적응된 것 같습니다"', sent:'positive', conf:'92%' },
+          { aspect:'대인관계', sentence:'"멘토님과의 관계도 좋고"', sent:'positive', conf:'90%' },
+          { aspect:'성장의욕', sentence:'"더 어려운 업무에도 도전해보고 싶습니다"', sent:'positive', conf:'88%' },
+        ],
+        insight: {
+          title: '💡 인사이트: 전 지표 최고치 달성 — 완전한 조직 적응 완료 단계',
+          left: { label:'1차', result:'전반적 보통 수준', note:'개선 포인트 다수' },
+          right: { label:'3차', result:'전 지표 최고치', note:'→ 성공적 온보딩 완료' },
+        }
+      },
+      '김유진_1차': {
+        original: '"전반적으로 입사 초기 분위기는 좋습니다. 멘토님도 잘 챙겨주십니다. 다만 업무가 기대했던 것과 조금 다른 부분이 있어서 적응 중입니다."',
+        highlights: [
+          { text: '전반적으로 입사 초기 분위기는 좋습니다.', aspect: '조직분위기', sent: 'positive', score: '76%' },
+          { text: '멘토님도 잘 챙겨주십니다.', aspect: '멘토지원', sent: 'positive', score: '79%' },
+          { text: '업무가 기대했던 것과 조금 다른 부분이 있어서 적응 중입니다.', aspect: '업무적합성', sent: 'neutral', score: '65%' },
+        ],
+        rows: [
+          { aspect:'조직분위기', sentence:'"입사 초기 분위기는 좋습니다"', sent:'positive', conf:'76%' },
+          { aspect:'멘토지원', sentence:'"멘토님도 잘 챙겨주십니다"', sent:'positive', conf:'79%' },
+          { aspect:'업무적합성', sentence:'"기대했던 것과 다른 부분 적응 중"', sent:'neutral', conf:'65%' },
+        ],
+        insight: {
+          title: '💡 인사이트: 조직/멘토 만족은 양호하나 업무 적합성 불일치 신호 감지',
+          left: { label:'주요 긍정 신호', result:'조직/멘토 ✅', note:'입사 초기 적응 양호' },
+          right: { label:'주의 신호', result:'업무적합성 ⚠️', note:'→ 직무 기대 조율 필요' },
+        }
+      },
+      '박소연_1차': {
+        original: '"업무 환경은 괜찮습니다. 멘토님도 성실하게 지도해 주십니다. 아직은 모든 것이 새롭고 배울 것이 많습니다."',
+        highlights: [
+          { text: '업무 환경은 괜찮습니다.', aspect: '업무환경', sent: 'neutral', score: '60%' },
+          { text: '멘토님도 성실하게 지도해 주십니다.', aspect: '멘토지도', sent: 'positive', score: '74%' },
+          { text: '아직은 모든 것이 새롭고 배울 것이 많습니다.', aspect: '적응단계', sent: 'neutral', score: '58%' },
+        ],
+        rows: [
+          { aspect:'업무환경', sentence:'"업무 환경은 괜찮습니다"', sent:'neutral', conf:'60%' },
+          { aspect:'멘토지도', sentence:'"멘토님도 성실하게 지도해 주십니다"', sent:'positive', conf:'74%' },
+          { aspect:'적응단계', sentence:'"모든 것이 새롭고 배울 것이 많습니다"', sent:'neutral', conf:'58%' },
+        ],
+        insight: {
+          title: '💡 인사이트: 전반적 중립 수준 — 초기 적응기 정상 범위 내',
+          left: { label:'현재 상태', result:'중립적 적응기', note:'특별한 위기 신호 없음' },
+          right: { label:'모니터링 포인트', result:'멘토 지도 효과', note:'→ 2차 추이 관찰 필요' },
+        }
+      },
+    };
+
+    const DEFAULT_ABSA = {
+      original: '"(분석 완료) 이번 차수 설문 응답을 분석하였습니다."',
+      highlights: [
+        { text: '분석이 완료되었습니다.', aspect: '분석완료', sent: 'positive', score: '85%' },
+      ],
+      rows: [
+        { aspect:'분석완료', sentence:'"이번 차수 분석 완료"', sent:'positive', conf:'85%' },
+      ],
+      insight: {
+        title: '💡 분석이 완료되었습니다.',
+        left: { label:'분석 상태', result:'완료', note:'데이터 처리 완료' },
+        right: { label:'결과', result:'정상 범위', note:'상세 결과 확인 가능' },
+      }
+    };
+
+    function sentClass(s) { return s === 'positive' ? 'hb-positive' : s === 'negative' ? 'hb-negative' : 'hb-neutral'; }
+    function sentIcon(s)  { return s === 'positive' ? '✅' : s === 'negative' ? '❌' : '⚠️'; }
+    function sentLabel(s) { return s === 'positive' ? '긍정' : s === 'negative' ? '부정' : '중립'; }
+    function sentColor(s) { return s === 'positive' ? 'var(--success)' : s === 'negative' ? 'var(--danger)' : 'var(--warning)'; }
+
+    function openAbsaModal(name, round) {
+      const key = name + '_' + round;
+      const d = ABSA_DATA[key] || DEFAULT_ABSA;
+
+      document.getElementById('absa-modal-title').textContent = 'ABSA 분석 결과 — ' + name + ' ' + round;
+
+      document.getElementById('absa-modal-body').innerHTML =
+        '<div class="absa-section">' +
+          '<div class="absa-section-title">1. 원문 텍스트</div>' +
+          '<div class="original-text-box">' + d.original + '</div>' +
+        '</div>' +
+
+        '<div class="absa-section">' +
+          '<div class="absa-section-title">2. 속성별 감성 하이라이트</div>' +
+          '<div class="highlight-rows">' +
+            d.highlights.map(function(h) {
+              return '<div class="highlight-row">' +
+                '<div class="highlight-text">' + h.text + '</div>' +
+                '<span class="highlight-badge ' + sentClass(h.sent) + '">[' + h.aspect + '] ' + sentIcon(h.sent) + ' ' + sentLabel(h.sent) + ' ' + h.score + '</span>' +
+              '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+
+        '<div class="absa-section">' +
+          '<div class="absa-section-title">3. 속성별 분석 테이블</div>' +
+          '<table class="absa-table">' +
+            '<thead><tr><th>속성</th><th>관련 문장</th><th>감성</th><th>신뢰도</th></tr></thead>' +
+            '<tbody>' +
+              d.rows.map(function(r) {
+                return '<tr>' +
+                  '<td><strong>' + r.aspect + '</strong></td>' +
+                  '<td style="color:var(--text-sub)">' + r.sentence + '</td>' +
+                  '<td>' + sentIcon(r.sent) + ' <span style="color:' + sentColor(r.sent) + ';font-weight:600">' + sentLabel(r.sent) + '</span></td>' +
+                  '<td><strong>' + r.conf + '</strong></td>' +
+                '</tr>';
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+
+        '<div class="absa-section">' +
+          '<div class="absa-section-title">4. 핵심 인사이트</div>' +
+          '<div class="insight-box">' +
+            '<div class="insight-title">' + d.insight.title + '</div>' +
+            '<div class="insight-compare">' +
+              '<div class="insight-col">' +
+                '<div class="insight-col-label">' + d.insight.left.label + '</div>' +
+                '<div class="insight-col-result">' + d.insight.left.result + '</div>' +
+                '<div class="insight-col-note">' + d.insight.left.note + '</div>' +
+              '</div>' +
+              '<div class="insight-col">' +
+                '<div class="insight-col-label">' + d.insight.right.label + '</div>' +
+                '<div class="insight-col-result">' + d.insight.right.result + '</div>' +
+                '<div class="insight-col-note">' + d.insight.right.note + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      openModal('modal-absa');
+    }
+
+    /* =============================================
+       EMAIL DATA
+    ============================================= */
+    const EMAIL_DATA = {
+      '강태양_1차_mentor': {
+        to: '이준혁 멘토 <lee.junhyuk@yura.co.kr>',
+        subject: '[온보딩 멘토링 참고] 강태양 사원 1차 설문 피드백',
+        body: `이준혁 멘토님, 안녕하세요.
+인사기획팀입니다.
+
+강태양 사원(사번 260001)의 1차 온보딩 설문 AI 분석 결과를 공유드립니다.
+
+■ 긍정 신호
+멘토님의 친절하고 적극적인 지원에 높은 만족도를 보이고 있습니다.
+
+■ 개선 제안 (넛지)
+설문 분석에서 사원이 직접 업무를 수행해볼 기회가 부족하다는 신호가 감지되었습니다.
+앞으로는 업무를 먼저 사원이 시도해보고, 막히는 부분에서 지원해주시는
+방식을 고려해보시면 어떨까요?
+사원의 자립적 성장과 자기효능감 향상에 도움이 될 것입니다.
+
+항상 좋은 멘토링 감사드립니다.
+
+인사기획팀 드림`
+      },
+      '강태양_1차_leader': {
+        to: '박민수 팀장 <park.minsu@yura.co.kr>',
+        subject: '[온보딩 현황 보고] 강태양 사원 1차 설문 결과',
+        body: `박민수 팀장님, 안녕하세요.
+인사기획팀입니다.
+
+소속 신규 입사자의 온보딩 현황을 보고드립니다.
+
+■ 대상: 강태양 사원 (260001) · 생산기획팀 · 입사 2026.02.01
+■ 분석 차수: 1차 (2026.02.12 제출)
+
+■ ABSA 분석 요약
+· 멘토 친절도: ✅ 긍정 (매우 만족)
+· 자율적 업무수행: ❌ 개선 필요 (직접 경험 기회 부족 감지)
+· 업무 경험 기회: ❌ 개선 필요
+
+■ 시사점
+현재 멘토의 적극적 지원으로 만족도는 높으나,
+직접 업무를 수행해볼 기회가 부족하다는 신호가 감지됩니다.
+멘토에게는 자율 수행 중심의 지도를 안내할 예정입니다.
+
+추가 문의가 있으시면 말씀해 주세요.
+
+인사기획팀 드림`
+      },
+      '강태양_2차_mentor': {
+        to: '이준혁 멘토 <lee.junhyuk@yura.co.kr>',
+        subject: '[온보딩 멘토링 참고] 강태양 사원 2차 설문 피드백',
+        body: `이준혁 멘토님, 안녕하세요.
+인사기획팀입니다.
+
+강태양 사원의 2차 설문 분석 결과를 공유드립니다.
+
+■ 긍정 변화
+1차 피드백 이후 사원이 자율적으로 업무를 수행하는 기회가 늘어
+전반적으로 긍정적인 감성 지표를 보이고 있습니다.
+멘토님의 지도 방식 변화가 효과를 발휘하고 있습니다.
+
+■ 지속 권장사항
+현재의 자율 수행 중심 지도 방식을 유지해 주시기 바랍니다.
+
+감사합니다.
+
+인사기획팀 드림`
+      },
+      '강태양_2차_leader': {
+        to: '박민수 팀장 <park.minsu@yura.co.kr>',
+        subject: '[온보딩 현황 보고] 강태양 사원 2차 설문 결과',
+        body: `박민수 팀장님, 안녕하세요.
+인사기획팀입니다.
+
+강태양 사원의 2차 온보딩 현황을 보고드립니다.
+
+■ ABSA 분석 요약 (2차)
+· 업무자율성: ✅ 긍정 (1차 개선 사항 해소)
+· 자기효능감: ✅ 긍정
+· 팀 분위기: ✅ 긍정
+
+■ 전반적으로 양호한 적응 상태를 보이고 있습니다.
+3차 설문 이후 최종 보고서를 발송 예정입니다.
+
+인사기획팀 드림`
+      },
+      '강태양_3차_mentor': {
+        to: '이준혁 멘토 <lee.junhyuk@yura.co.kr>',
+        subject: '[온보딩 멘토링 참고] 강태양 사원 3차 최종 피드백',
+        body: `이준혁 멘토님, 안녕하세요.
+인사기획팀입니다.
+
+강태양 사원의 3차(최종) 설문 분석 결과를 공유드립니다.
+
+■ 최종 결과
+전 지표에서 최고 수준의 긍정 신호가 감지되었습니다.
+업무적응, 대인관계, 성장의욕 모두 우수한 결과입니다.
+
+■ 멘토 평가
+3차에 걸친 탁월한 멘토링에 감사드립니다.
+사원의 성공적인 온보딩에 크게 기여해 주셨습니다.
+
+인사기획팀 드림`
+      },
+      '김유진_1차_mentor': {
+        to: '홍정민 멘토 <hong.jm@yura.co.kr>',
+        subject: '[온보딩 멘토링 참고] 김유진 사원 1차 설문 피드백',
+        body: `홍정민 멘토님, 안녕하세요.
+인사기획팀입니다.
+
+김유진 사원의 1차 설문 분석 결과를 공유드립니다.
+
+■ 긍정 신호
+조직 분위기 및 멘토 지원에 대한 만족도가 양호합니다.
+
+■ 주의 신호
+업무 내용이 입사 전 기대와 다소 차이가 있어 적응 과정 중인 것으로 감지됩니다.
+
+■ 제안
+직무에 대한 충분한 설명과 기대 조율 면담을 진행해 주시면
+빠른 적응에 도움이 될 것입니다.
+
+인사기획팀 드림`
+      },
+      '김유진_1차_leader': {
+        to: '최영준 팀장 <choi.yj@yura.co.kr>',
+        subject: '[온보딩 현황 보고] 김유진 사원 1차 설문 결과',
+        body: `최영준 팀장님, 안녕하세요.
+인사기획팀입니다.
+
+김유진 사원의 1차 온보딩 현황을 보고드립니다.
+
+■ ABSA 분석 요약
+· 조직분위기: ✅ 긍정
+· 멘토지원: ✅ 긍정
+· 업무적합성: ⚠️ 중립 (기대-현실 불일치 신호)
+
+■ 시사점
+업무 기대와 현실 간 격차 조율이 필요합니다.
+초기 직무 오리엔테이션 보강을 권장드립니다.
+
+인사기획팀 드림`
+      },
+      '박소연_1차_mentor': {
+        to: '김대현 멘토 <kim.dh@yura.co.kr>',
+        subject: '[온보딩 멘토링 참고] 박소연 사원 1차 설문 피드백',
+        body: `김대현 멘토님, 안녕하세요.
+인사기획팀입니다.
+
+박소연 사원의 1차 설문 분석 결과를 공유드립니다.
+
+■ 현황
+전반적으로 중립적인 적응 단계에 있으며,
+멘토님의 성실한 지도에 긍정적인 반응을 보이고 있습니다.
+
+■ 참고사항
+현재 특별한 위기 신호는 없으나,
+적극적인 업무 참여 기회를 늘려주시면 성장 촉진에 도움이 될 것입니다.
+
+인사기획팀 드림`
+      },
+    };
+
+    function openEmailModal(name, round, type) {
+      const key = name + '_' + round + '_' + type;
+      const d = EMAIL_DATA[key];
+      const typeLabel = type === 'mentor' ? '멘토' : '팀장';
+
+      document.getElementById('email-modal-title').textContent = name + ' ' + round + ' — ' + typeLabel + ' 이메일';
+      document.getElementById('email-modal-sub').textContent = 'AI 분석 기반 자동 생성 이메일 미리보기';
+
+      if (d) {
+        document.getElementById('email-modal-meta').innerHTML =
+          '<div class="email-meta-row"><span class="email-meta-key">수신</span><span>' + d.to + '</span></div>' +
+          '<div class="email-meta-row"><span class="email-meta-key">제목</span><span>' + d.subject + '</span></div>';
+        document.getElementById('email-modal-body').textContent = d.body;
+      } else {
+        document.getElementById('email-modal-meta').innerHTML =
+          '<div class="email-meta-row"><span class="email-meta-key">수신</span><span>담당 ' + typeLabel + '</span></div>' +
+          '<div class="email-meta-row"><span class="email-meta-key">제목</span><span>[온보딩 ' + typeLabel + ' 참고] ' + name + ' 사원 ' + round + ' 설문 결과</span></div>';
+        document.getElementById('email-modal-body').textContent =
+          name + ' 사원의 ' + round + ' 설문 분석 결과를 바탕으로 ' + typeLabel + '께 맞춤 피드백이 발송되었습니다.\n\n' +
+          '(이 항목의 상세 이메일 내용은 강태양 1차 이메일에서 확인하실 수 있습니다.)';
+      }
+
+      openModal('modal-email');
+    }
+
+    /* =============================================
+       LONGITUDINAL DATA & CHART
+    ============================================= */
+    const LONG_DATA = {
+      '강태양': {
+        rounds: ['1차', '2차', '3차'],
+        metrics: { '업무환경': [3.2,4.0,4.7], '멘토만족도': [3.0,4.2,4.6], '자기성장감': [2.8,3.8,4.5], '조직적응도': [3.1,4.0,4.6] },
+        trend: { type: 'up', msg: '📈 지속 성장 — 모든 지표가 1차 대비 크게 향상되었습니다.' }
+      },
+      '김유진': {
+        rounds: ['1차', '2차', '3차'],
+        metrics: { '업무환경': [3.5,2.1,3.2], '멘토만족도': [3.4,2.0,3.3], '자기성장감': [3.3,1.8,3.0], '조직적응도': [3.6,2.2,3.4] },
+        trend: { type: 'warn', msg: '⚠️ 2차 위기 감지 → 회복 중 — 2차 설문에서 전 지표 급락 후 3차에서 부분 회복' }
+      },
+      '박소연': {
+        rounds: ['1차', '2차', '3차'],
+        metrics: { '업무환경': [3.3,3.4,3.2], '멘토만족도': [3.2,3.3,3.1], '자기성장감': [3.0,3.1,3.0], '조직적응도': [3.4,3.3,3.3] },
+        trend: { type: 'neutral', msg: '➡️ 안정적 보통 수준 유지 — 특별한 위기 신호 없으나 성장 정체 모니터링 필요' }
+      },
+    };
+
+    const METRIC_KEYS = ['업무환경', '멘토만족도', '자기성장감', '조직적응도'];
+    const CHART_COLORS = ['#3b5bdb', '#2e7d32', '#e65100', '#9c27b0'];
+
+    function openLongitudinalModal(name) {
+      const d = LONG_DATA[name];
+      if (!d) return;
+
+      document.getElementById('long-modal-title').textContent = '종단 분석 — ' + name;
+
+      const trendEl = document.getElementById('long-trend-message');
+      trendEl.textContent = d.trend.msg;
+      trendEl.className = 'trend-message' + (d.trend.type === 'warn' ? ' warn' : d.trend.type === 'neutral' ? ' neutral' : '');
+
+      drawChart(d);
+
+      // Legend
+      document.getElementById('chart-legend').innerHTML = METRIC_KEYS.map(function(m, i) {
+        return '<div class="legend-item"><div class="legend-dot" style="background:' + CHART_COLORS[i] + '"></div><span>' + m + '</span></div>';
+      }).join('');
+
+      // Summaries
+      const avgs = d.rounds.map(function(_, ri) {
+        var sum = METRIC_KEYS.reduce(function(acc, m) { return acc + d.metrics[m][ri]; }, 0);
+        return (sum / METRIC_KEYS.length).toFixed(2);
+      });
+
+      document.getElementById('summary-boxes').innerHTML = d.rounds.map(function(r, i) {
+        var color = i === 1 && d.trend.type === 'warn' ? 'var(--danger)' : i === 0 ? 'var(--text-sub)' : 'var(--primary)';
+        return '<div class="summary-box">' +
+          '<div class="summary-box-label">' + r + ' 평균</div>' +
+          '<div class="summary-box-value" style="color:' + color + '">' + avgs[i] + '</div>' +
+          '<div class="summary-box-sub">/ 5.0</div>' +
+        '</div>';
+      }).join('');
+
+      openModal('modal-longitudinal');
+    }
+
+    function drawChart(d) {
+      var W = 580, H = 240;
+      var PL = 48, PR = 32, PT = 24, PB = 40;
+      var iW = W - PL - PR, iH = H - PT - PB;
+      var minY = 1.0, maxY = 5.0;
+      var n = d.rounds.length;
+
+      function xOf(i) { return PL + (i / (n - 1)) * iW; }
+      function yOf(v) { return PT + ((maxY - v) / (maxY - minY)) * iH; }
+
+      var grid = '';
+      [1.0, 2.0, 3.0, 4.0, 5.0].forEach(function(t) {
+        var y = yOf(t);
+        grid += '<line x1="' + PL + '" y1="' + y + '" x2="' + (W-PR) + '" y2="' + y + '" stroke="#e9ecef" stroke-width="1"/>';
+        grid += '<text x="' + (PL-6) + '" y="' + (y+4) + '" text-anchor="end" font-size="10" fill="#999">' + t.toFixed(1) + '</text>';
+      });
+
+      var xLabels = d.rounds.map(function(r, i) {
+        return '<text x="' + xOf(i) + '" y="' + (H-PB+18) + '" text-anchor="middle" font-size="11" fill="#666">' + r + '</text>';
+      }).join('');
+
+      var lines = '', pts = '';
+      METRIC_KEYS.forEach(function(m, mi) {
+        var vals = d.metrics[m];
+        var c = CHART_COLORS[mi];
+        var pathD = vals.map(function(v, i) { return (i===0?'M':'L') + ' ' + xOf(i) + ' ' + yOf(v); }).join(' ');
+        lines += '<path d="' + pathD + '" fill="none" stroke="' + c + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+        vals.forEach(function(v, i) {
+          var cx = xOf(i), cy = yOf(v);
+          pts += '<circle cx="' + cx + '" cy="' + cy + '" r="5" fill="' + c + '" stroke="white" stroke-width="2"/>';
+          pts += '<text x="' + cx + '" y="' + (cy-9) + '" text-anchor="middle" font-size="10" fill="' + c + '" font-weight="600">' + v + '</text>';
+        });
+      });
+
+      var axes =
+        '<line x1="' + PL + '" y1="' + PT + '" x2="' + PL + '" y2="' + (H-PB) + '" stroke="#ccc" stroke-width="1"/>' +
+        '<line x1="' + PL + '" y1="' + (H-PB) + '" x2="' + (W-PR) + '" y2="' + (H-PB) + '" stroke="#ccc" stroke-width="1"/>';
+
+      document.getElementById('chart-container').innerHTML =
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="font-family:Inter,sans-serif;display:block;">' +
+          grid + axes + lines + pts + xLabels +
+        '</svg>';
+    }
+
+    /* =============================================
+       MODAL HELPERS
+    ============================================= */
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function overlayClose(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(function(m) { m.classList.remove('open'); });
+      }
+    });
+
+    /* =============================================
+       INIT
+    ============================================= */
+    buildTable();
+  </script>
 </body>
 </html>
