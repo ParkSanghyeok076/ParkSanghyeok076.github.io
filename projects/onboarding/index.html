@@ -183,9 +183,11 @@
     .welcome-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
 
     /* Timeline */
-    .timeline-wrap { display: flex; align-items: flex-start; gap: 0; margin-top: 4px; }
+    .timeline-wrap { display: flex; align-items: stretch; gap: 0; margin-top: 12px; }
 
-    .tl-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+    .tl-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .tl-date-top { font-size: 10px; font-weight: 600; color: var(--text-sub); text-align: center; height: 18px; display: flex; align-items: center; }
+    .tl-label-bot { font-size: 10px; color: var(--text-sub); text-align: center; margin-top: 5px; }
 
     .tl-dot {
       width: 14px;
@@ -201,10 +203,8 @@
     .tl-dot.empty { background: var(--white); border-color: var(--border); }
     .tl-dot.current { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,91,219,0.2); }
 
-    .tl-label { font-size: 10px; color: var(--text-sub); text-align: center; line-height: 1.3; }
-    .tl-date { font-size: 9px; color: var(--text-mute); }
-
-    .tl-line { flex: 1; height: 2px; background: var(--primary); margin-top: 7px; }
+    /* line aligns to the dot row: margin-top = date-top height (18px) + (dot height / 2 - line height / 2) = 18 + 6 = 24px */
+    .tl-line { flex: 1; height: 2px; background: var(--primary); margin-top: 24px; align-self: flex-start; }
     .tl-line.gray { background: var(--border); }
 
     /* Info rows */
@@ -244,23 +244,23 @@
 
     .menu-card {
       background: var(--white);
-      border-radius: var(--radius);
+      border-radius: 16px;
       box-shadow: var(--shadow);
-      padding: 24px 20px;
+      padding: 40px 24px 32px;
       cursor: pointer;
       transition: all 0.18s ease;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      position: relative;
-      border: 1.5px solid transparent;
+      align-items: center;
+      text-align: center;
+      border: 2px solid transparent;
     }
 
-    .menu-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .menu-icon { font-size: 28px; line-height: 1; }
-    .menu-title { font-size: 15px; font-weight: 700; }
-    .menu-desc { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
-    .menu-arrow { position: absolute; bottom: 16px; right: 16px; font-size: 18px; color: var(--text-mute); }
+    .menu-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); }
+    .menu-icon { font-size: 56px; line-height: 1; margin-bottom: 16px; }
+    .menu-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .menu-desc { font-size: 13px; color: var(--text-sub); line-height: 1.5; flex: 1; }
+    .menu-arrow { font-size: 20px; color: var(--primary); margin-top: 20px; font-weight: 600; }
 
     /* =========================================
        VIEW 3: ADMIN
@@ -659,7 +659,7 @@
       overflow-y: auto;
       padding: 24px;
     }
-    .emp-modal-overlay.active { display: flex; gap: 16px; align-items: flex-start; }
+    .emp-modal-overlay.open { display: flex; gap: 16px; align-items: flex-start; }
 
     .modal-back-col { flex-shrink: 0; }
     .modal-back-btn {
@@ -707,7 +707,7 @@
        온보딩 프로그램 모달
     ========================================= */
     .prog-modal-overlay { display: none; position: fixed; inset: 0; background: #f0f2f5; z-index: 300; overflow-y: auto; padding: 24px; }
-    .prog-modal-overlay.active { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; max-width: 860px; margin: 0 auto; width: 100%; }
+    .prog-modal-overlay.open { display: flex; flex-direction: column; gap: 16px; padding: 24px; overflow-y: auto; }
 
     .prog-modal-inner { width: 100%; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
     .prog-modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
@@ -780,94 +780,83 @@
       <!-- LEFT PANEL -->
       <div class="emp-left">
 
-        <!-- Card 1: Welcome + Timeline -->
         <div class="card">
           <div class="card-body">
-            <div class="welcome-title">데모체험님 환영합니다! 👋</div>
-            <div class="card-label">온보딩 진행 현황</div>
+
+            <!-- Welcome -->
+            <div class="welcome-title">박상혁님 환영합니다! 👋</div>
+
+            <!-- Timeline -->
+            <div class="card-label" style="margin-top:16px;">온보딩 진행 현황</div>
             <div class="timeline-wrap">
               <div class="tl-step">
+                <div class="tl-date-top">04/01</div>
                 <div class="tl-dot"></div>
-                <div class="tl-label">
-                  <div>입사일</div>
-                  <div class="tl-date">04/01</div>
-                </div>
+                <div class="tl-label-bot">입사일</div>
               </div>
               <div class="tl-line"></div>
               <div class="tl-step">
+                <div class="tl-date-top" style="color:var(--primary);font-weight:600;">04/29</div>
                 <div class="tl-dot current"></div>
-                <div class="tl-label">
-                  <div style="color:var(--primary);font-weight:600;">1차종료</div>
-                  <div class="tl-date">04/29</div>
-                </div>
+                <div class="tl-label-bot" style="color:var(--primary);font-weight:600;">1차종료</div>
               </div>
               <div class="tl-line gray"></div>
               <div class="tl-step">
+                <div class="tl-date-top">05/27</div>
                 <div class="tl-dot empty"></div>
-                <div class="tl-label">
-                  <div>2차종료</div>
-                  <div class="tl-date">05/27</div>
-                </div>
+                <div class="tl-label-bot">2차종료</div>
               </div>
               <div class="tl-line gray"></div>
               <div class="tl-step">
+                <div class="tl-date-top">06/24</div>
                 <div class="tl-dot empty"></div>
-                <div class="tl-label">
-                  <div>3차종료</div>
-                  <div class="tl-date">06/24</div>
-                </div>
+                <div class="tl-label-bot">3차종료</div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Card 2: Mentor -->
-        <div class="card">
-          <div class="card-body">
+            <!-- Divider -->
+            <div style="border-top:1px solid var(--border); margin: 18px 0;"></div>
+
+            <!-- Mentor -->
             <div class="card-label">담당 멘토</div>
             <div class="info-row">
-              <div class="info-name">이준혁 | 181023</div>
+              <div class="info-name">김진기 | 211072</div>
               <span class="badge badge-success">승인 완료</span>
             </div>
-          </div>
-        </div>
 
-        <!-- Card 3: Onboarding Program -->
-        <div class="card">
-          <div class="card-body">
+            <div style="border-top:1px solid var(--border); margin: 18px 0;"></div>
+
+            <!-- Program -->
             <div class="card-label">온보딩 프로그램</div>
             <div class="info-row">
-              <div class="prog-label">0 / 6 완료</div>
-              <a class="prog-link" onclick="demoAlert()">바로가기 →</a>
+              <div class="prog-label"><strong>0</strong> / 6 완료</div>
+              <a class="prog-link" onclick="openModal('prog-modal')">바로가기 →</a>
             </div>
-            <div class="progress-bar-track">
+            <div class="progress-bar-track" style="margin-top:8px;">
               <div class="progress-bar-fill" style="width:0%"></div>
             </div>
-          </div>
-        </div>
 
-        <!-- Card 4: Survey -->
-        <div class="card">
-          <div class="card-body">
+            <div style="border-top:1px solid var(--border); margin: 18px 0;"></div>
+
+            <!-- Survey -->
             <div class="card-label">설문조사 일정</div>
             <div class="info-row">
               <div class="info-name">2차 설문</div>
               <span class="badge badge-primary">진행 중</span>
             </div>
             <div style="font-size:12px; color:var(--text-mute); margin-top:6px;">2026-04-30 ~ 2026-05-27</div>
-          </div>
-        </div>
 
-        <!-- Card 5: OJT -->
-        <div class="card">
-          <div class="card-body">
+            <div style="border-top:1px solid var(--border); margin: 18px 0;"></div>
+
+            <!-- OJT -->
             <div class="card-label">OJT 일지</div>
             <div class="ojt-row">
               <div class="ojt-left">
                 <span class="ojt-week-badge">7주차 <span class="ojt-unwritten">미작성</span></span>
               </div>
-              <div class="ojt-right">제출 완료 0 / 12주</div>
+              <div class="ojt-right">제출 완료 <strong>0</strong> / 12주</div>
             </div>
+
           </div>
         </div>
 
@@ -1198,16 +1187,6 @@
 
     function demoAlert() {
       alert('이 기능은 실제 시스템에서 이용 가능합니다.');
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = '';
     }
 
     let uploadedCount = 0;
