@@ -654,12 +654,17 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: #f0f2f5;
+      background: #f1f5f9;
       z-index: 300;
       overflow-y: auto;
-      padding: 24px;
     }
-    .emp-modal-overlay.open { display: flex; gap: 20px; align-items: flex-start; justify-content: center; padding: 32px 60px; }
+    .emp-modal-overlay.open {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+    }
 
     .modal-back-col { flex-shrink: 0; }
     .modal-back-btn {
@@ -670,38 +675,111 @@
     }
     .modal-back-btn:hover { background: var(--primary-light); }
 
-    .ojt-form-wrap { flex: 1; max-width: 820px; background: #fff; border: 1px solid #dde1e9; border-radius: 4px; overflow: hidden; }
-    .ojt-form-header { display: flex; align-items: stretch; border-bottom: 1px solid #dde1e9; }
-    .ojt-form-logo { padding: 12px 18px; border-right: 1px solid #dde1e9; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .ojt-logo-yr { font-size: 20px; font-weight: 900; color: #e31c25; letter-spacing: -1px; }
-    .ojt-logo-name { font-size: 13px; font-weight: 700; color: #222; }
-    .ojt-form-title { flex: 1; text-align: center; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 12px; }
-    .ojt-form-date { padding: 10px 16px; border-left: 1px solid #dde1e9; font-size: 12px; color: var(--text-sub); text-align: center; line-height: 1.7; display: flex; align-items: center; flex-shrink: 0; }
-    .ojt-form-status { padding: 10px 16px; border-left: 1px solid #dde1e9; display: flex; align-items: center; flex-shrink: 0; }
-    .ojt-status-badge { background: #f1f3f5; border: 1px solid #dde1e9; border-radius: 4px; padding: 4px 12px; font-size: 12px; color: var(--text-sub); }
+    /* form wrap — 실제 시스템과 동일: 고정 860px */
+    .ojt-form-wrap { width: 860px; flex-shrink: 0; padding: 0 0 48px; }
 
-    .ojt-detail-header { padding: 10px 16px; border-bottom: 1px solid #dde1e9; font-size: 13px; font-weight: 600; color: var(--text-sub); background: #fafbfc; }
-    .ojt-day-block { padding: 14px 16px; border-bottom: 1px solid #f0f2f5; }
-    .ojt-day-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
-    .ojt-day-colon { font-size: 13px; color: var(--text-mute); margin-bottom: 4px; }
-    .ojt-day-input {
-      width: 100%; border: none; outline: none; font-size: 13px;
-      color: var(--text); min-height: 28px; resize: none;
-      font-family: inherit; background: transparent; line-height: 1.5;
+    .ojt-form-card {
+      background: #fff;
+      border: 2px solid #1e293b;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
 
-    .ojt-summary-table { width: 100%; border-collapse: collapse; }
-    .ojt-summary-table td { border: 1px solid #dde1e9; padding: 14px 16px; vertical-align: middle; }
-    .ojt-summary-label { width: 130px; font-size: 13px; font-weight: 600; background: #fafbfc; color: var(--text); line-height: 1.5; }
-    .ojt-summary-label.mentor-label { color: var(--primary); }
-    .ojt-summary-input-cell textarea { width: 100%; border: none; outline: none; font-size: 13px; color: #aaa; font-family: inherit; resize: none; min-height: 44px; background: transparent; }
-    .ojt-mentor-text { font-size: 13px; color: #bbb; font-style: italic; }
+    /* 헤더 — 3컬럼 grid */
+    .ojt-form-header {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      align-items: center;
+      border-bottom: 2px solid #1e293b;
+    }
+    .ojt-form-logo {
+      padding: 10px 16px;
+      border-right: 1.5px solid #cbd5e1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ojt-logo-yr { font-size: 22px; font-weight: 900; color: #e31c25; letter-spacing: -1px; }
+    .ojt-logo-name { font-size: 14px; font-weight: 700; color: #1e293b; margin-left: 4px; }
 
-    .ojt-form-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 16px; border-top: 1px solid #dde1e9; background: #fafbfc; }
-    .btn-ojt-save { background: #fff; border: 1.5px solid #dde1e9; border-radius: 6px; padding: 8px 20px; font-size: 13px; cursor: pointer; color: var(--text); }
-    .btn-ojt-save:hover { border-color: var(--primary); color: var(--primary); }
-    .btn-ojt-submit { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 8px 24px; font-size: 13px; cursor: pointer; font-weight: 600; }
-    .btn-ojt-submit:hover { background: #1d4ed8; }
+    .ojt-form-title-block {
+      padding: 12px 16px;
+      border-right: 1.5px solid #cbd5e1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ojt-form-title-text { font-size: 15px; font-weight: 700; color: #1e293b; text-align: center; }
+
+    .ojt-form-daterange {
+      display: grid;
+      grid-template-columns: auto auto;
+      align-items: center;
+    }
+    .ojt-daterange-left {
+      padding: 10px 14px;
+      border-right: 1.5px solid #cbd5e1;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .ojt-daterange-value { font-size: 12px; font-weight: 600; color: #334155; line-height: 1.6; }
+    .ojt-daterange-right { padding: 10px 14px; display: flex; align-items: center; justify-content: center; }
+    .ojt-status-badge {
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+      background: #f1f5f9; color: #64748b;
+    }
+
+    /* 테이블 */
+    .ojt-table { width: 100%; border-collapse: collapse; }
+    .ojt-th {
+      background: #f8fafc; font-size: 12px; font-weight: 700;
+      color: #475569; padding: 8px 14px; text-align: left;
+      border-bottom: 1.5px solid #cbd5e1; letter-spacing: 0.03em;
+    }
+    .ojt-education-textarea {
+      width: 100%; border: none; outline: none; resize: none;
+      font-size: 14px; font-family: inherit; color: #1e293b;
+      line-height: 2.2; padding: 14px 16px; background: transparent;
+      box-sizing: border-box; min-height: 300px;
+    }
+    .ojt-td-section {
+      padding: 12px 14px; border-bottom: 1.5px solid #cbd5e1;
+      border-right: 1.5px solid #cbd5e1; border-top: 1.5px solid #cbd5e1;
+      font-size: 13px; font-weight: 700; color: #334155;
+      vertical-align: middle; background: #f8fafc; white-space: nowrap;
+      width: 120px;
+    }
+    .ojt-mentor-cell { color: #1e40af; }
+    .ojt-mentor-sub { font-size: 11px; font-weight: 400; color: #64748b; }
+    .ojt-td-content {
+      padding: 0; border-bottom: 1px solid #e2e8f0;
+      border-top: 1.5px solid #cbd5e1; vertical-align: top;
+    }
+    .ojt-cell-textarea {
+      width: 100%; border: none; outline: none; resize: none;
+      font-size: 13px; font-family: inherit; color: #1e293b;
+      line-height: 1.6; padding: 10px 14px; background: transparent;
+      box-sizing: border-box; min-height: 60px;
+    }
+    .ojt-cell-textarea::placeholder { color: #cbd5e1; }
+    .ojt-mentor-content { padding: 14px 16px; border-bottom: none; border-top: 1.5px solid #cbd5e1; }
+    .ojt-mentor-empty { font-size: 13px; color: #94a3b8; font-style: italic; margin: 0; }
+
+    /* 버튼 영역 */
+    .ojt-form-actions {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 10px; padding: 14px 16px;
+      border-top: 1.5px solid #e2e8f0; background: #f8fafc;
+    }
+    .btn-ojt-save {
+      background: #fff; color: #344dbe; border: 1.5px solid #344dbe;
+      border-radius: 8px; padding: 10px 22px; font-size: 14px;
+      font-weight: 600; cursor: pointer;
+    }
+    .btn-ojt-save:hover { background: #f0f4ff; }
+    .btn-ojt-submit {
+      background: #344dbe; color: #fff; border: none;
+      border-radius: 8px; padding: 10px 22px; font-size: 14px;
+      font-weight: 600; cursor: pointer;
+    }
+    .btn-ojt-submit:hover { background: #2a3ea8; }
 
     /* =========================================
        온보딩 프로그램 모달
@@ -906,66 +984,87 @@
         <button class="modal-back-btn" onclick="closeModal('ojt-modal')">← 목록으로</button>
       </div>
       <div class="ojt-form-wrap">
-        <div class="ojt-form-header">
-          <div class="ojt-form-logo">
-            <span class="ojt-logo-yr">YR</span>
-            <span class="ojt-logo-name">YURA</span>
+        <div class="ojt-form-card">
+
+          <!-- 헤더: 3컬럼 grid -->
+          <div class="ojt-form-header">
+            <div class="ojt-form-logo">
+              <span class="ojt-logo-yr">YR</span>
+              <span class="ojt-logo-name">YURA</span>
+            </div>
+            <div class="ojt-form-title-block">
+              <span class="ojt-form-title-text">박상혁 — 7주차 OJT 일지</span>
+            </div>
+            <div class="ojt-form-daterange">
+              <div class="ojt-daterange-left">
+                <span class="ojt-daterange-value">2026-05-13</span>
+                <span class="ojt-daterange-value">2026-05-19</span>
+              </div>
+              <div class="ojt-daterange-right">
+                <span class="ojt-status-badge">미작성</span>
+              </div>
+            </div>
           </div>
-          <div class="ojt-form-title">박상혁 — 7주차 OJT 일지</div>
-          <div class="ojt-form-date">2026-05-13<br>2026-05-19</div>
-          <div class="ojt-form-status"><span class="ojt-status-badge">미작성</span></div>
-        </div>
 
-        <div class="ojt-detail-header">세부 교육 내용</div>
+          <!-- 본문 테이블 -->
+          <table class="ojt-table">
+            <colgroup>
+              <col style="width:120px">
+              <col>
+            </colgroup>
+            <thead>
+              <tr><th class="ojt-th" colspan="2">세부 교육 내용</th></tr>
+            </thead>
+            <tbody>
+              <!-- 단일 textarea: 요일별 텍스트 미리 입력 -->
+              <tr>
+                <td colspan="2" style="padding:0; border-bottom:1px solid #e2e8f0;">
+                  <textarea class="ojt-education-textarea" id="ojt-edu-textarea">05월 13일(수)
+:
 
-        <div class="ojt-day-block">
-          <div class="ojt-day-label">05월 13일(수)</div>
-          <div class="ojt-day-colon">:</div>
-          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
-        </div>
-        <div class="ojt-day-block">
-          <div class="ojt-day-label">05월 14일(목)</div>
-          <div class="ojt-day-colon">:</div>
-          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
-        </div>
-        <div class="ojt-day-block">
-          <div class="ojt-day-label">05월 15일(금)</div>
-          <div class="ojt-day-colon">:</div>
-          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
-        </div>
-        <div class="ojt-day-block">
-          <div class="ojt-day-label">05월 18일(월)</div>
-          <div class="ojt-day-colon">:</div>
-          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
-        </div>
-        <div class="ojt-day-block">
-          <div class="ojt-day-label">05월 19일(화)</div>
-          <div class="ojt-day-colon">:</div>
-          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
-        </div>
+05월 14일(목)
+:
 
-        <table class="ojt-summary-table">
-          <tr>
-            <td class="ojt-summary-label">어려웠던 점</td>
-            <td class="ojt-summary-input-cell">
-              <textarea placeholder="업무나 적응 과정에서 어려웠던 점을 작성해 주세요."></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td class="ojt-summary-label">다음 주 목표</td>
-            <td class="ojt-summary-input-cell">
-              <textarea placeholder="다음 주에 달성하고 싶은 목표를 작성해 주세요."></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td class="ojt-summary-label mentor-label">지도의견<br><span style="font-weight:400;">(멘토)</span></td>
-            <td><span class="ojt-mentor-text">멘토가 코멘트를 작성하면 여기에 표시됩니다.</span></td>
-          </tr>
-        </table>
+05월 15일(금)
+:
 
-        <div class="ojt-form-footer">
-          <button class="btn-ojt-save" onclick="demoAlert()">임시 저장</button>
-          <button class="btn-ojt-submit" onclick="alert('제출이 완료되었습니다.')">제출하기</button>
+05월 18일(월)
+:
+
+05월 19일(화)
+: </textarea>
+                </td>
+              </tr>
+              <!-- 어려웠던 점 -->
+              <tr>
+                <td class="ojt-td-section">어려웠던 점</td>
+                <td class="ojt-td-content">
+                  <textarea class="ojt-cell-textarea" placeholder="업무나 적응 과정에서 어려웠던 점을 작성해 주세요."></textarea>
+                </td>
+              </tr>
+              <!-- 다음 주 목표 -->
+              <tr>
+                <td class="ojt-td-section">다음 주 목표</td>
+                <td class="ojt-td-content">
+                  <textarea class="ojt-cell-textarea" placeholder="다음 주에 달성하고 싶은 목표를 작성해 주세요."></textarea>
+                </td>
+              </tr>
+              <!-- 지도의견 -->
+              <tr>
+                <td class="ojt-td-section ojt-mentor-cell">지도의견<br><span class="ojt-mentor-sub">(멘토)</span></td>
+                <td class="ojt-mentor-content">
+                  <p class="ojt-mentor-empty">멘토가 코멘트를 작성하면 여기에 표시됩니다.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 버튼 -->
+          <div class="ojt-form-actions">
+            <button class="btn-ojt-save" onclick="demoAlert()">임시 저장</button>
+            <button class="btn-ojt-submit" onclick="alert('제출이 완료되었습니다.')">제출하기</button>
+          </div>
+
         </div>
       </div>
     </div>
