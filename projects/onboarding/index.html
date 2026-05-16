@@ -157,17 +157,16 @@
 
     .emp-body {
       display: flex;
-      flex: 1;
       padding: 24px;
       gap: 20px;
       max-width: 1280px;
       width: 100%;
       margin: 0 auto;
-      align-items: flex-start;
+      align-items: stretch;
     }
 
     .emp-left { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
-    .emp-right { flex: 1; }
+    .emp-right { flex: 1; display: flex; flex-direction: column; }
 
     .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
     .card-body { padding: 18px 20px; }
@@ -241,7 +240,7 @@
     .ojt-right { font-size: 12px; color: var(--text-mute); }
 
     /* Menu grid */
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; flex: 1; }
 
     .menu-card {
       background: var(--white);
@@ -255,7 +254,6 @@
       gap: 8px;
       position: relative;
       border: 1.5px solid transparent;
-      min-height: 160px;
     }
 
     .menu-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
@@ -648,6 +646,88 @@
     .footer-link { text-align: center; padding: 16px; }
     .footer-link a { color: var(--text-mute); font-size: 12px; text-decoration: none; }
     .footer-link a:hover { color: var(--primary); }
+
+    /* =========================================
+       OJT 일지 모달
+    ========================================= */
+    .emp-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #f0f2f5;
+      z-index: 300;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .emp-modal-overlay.active { display: flex; gap: 16px; align-items: flex-start; }
+
+    .modal-back-col { flex-shrink: 0; }
+    .modal-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1.5px solid var(--primary); color: var(--primary);
+      background: #fff; border-radius: 8px; padding: 8px 14px;
+      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .modal-back-btn:hover { background: var(--primary-light); }
+
+    .ojt-form-wrap { flex: 1; background: #fff; border: 1px solid #dde1e9; border-radius: 4px; overflow: hidden; }
+    .ojt-form-header { display: flex; align-items: stretch; border-bottom: 1px solid #dde1e9; }
+    .ojt-form-logo { padding: 12px 18px; border-right: 1px solid #dde1e9; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .ojt-logo-yr { font-size: 20px; font-weight: 900; color: #e31c25; letter-spacing: -1px; }
+    .ojt-logo-name { font-size: 13px; font-weight: 700; color: #222; }
+    .ojt-form-title { flex: 1; text-align: center; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 12px; }
+    .ojt-form-date { padding: 10px 16px; border-left: 1px solid #dde1e9; font-size: 12px; color: var(--text-sub); text-align: center; line-height: 1.7; display: flex; align-items: center; flex-shrink: 0; }
+    .ojt-form-status { padding: 10px 16px; border-left: 1px solid #dde1e9; display: flex; align-items: center; flex-shrink: 0; }
+    .ojt-status-badge { background: #f1f3f5; border: 1px solid #dde1e9; border-radius: 4px; padding: 4px 12px; font-size: 12px; color: var(--text-sub); }
+
+    .ojt-detail-header { padding: 10px 16px; border-bottom: 1px solid #dde1e9; font-size: 13px; font-weight: 600; color: var(--text-sub); background: #fafbfc; }
+    .ojt-day-block { padding: 14px 16px; border-bottom: 1px solid #f0f2f5; }
+    .ojt-day-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+    .ojt-day-colon { font-size: 13px; color: var(--text-mute); margin-bottom: 4px; }
+    .ojt-day-input {
+      width: 100%; border: none; outline: none; font-size: 13px;
+      color: var(--text); min-height: 28px; resize: none;
+      font-family: inherit; background: transparent; line-height: 1.5;
+    }
+
+    .ojt-summary-table { width: 100%; border-collapse: collapse; }
+    .ojt-summary-table td { border: 1px solid #dde1e9; padding: 14px 16px; vertical-align: middle; }
+    .ojt-summary-label { width: 130px; font-size: 13px; font-weight: 600; background: #fafbfc; color: var(--text); line-height: 1.5; }
+    .ojt-summary-label.mentor-label { color: var(--primary); }
+    .ojt-summary-input-cell textarea { width: 100%; border: none; outline: none; font-size: 13px; color: #aaa; font-family: inherit; resize: none; min-height: 44px; background: transparent; }
+    .ojt-mentor-text { font-size: 13px; color: #bbb; font-style: italic; }
+
+    .ojt-form-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 16px; border-top: 1px solid #dde1e9; background: #fafbfc; }
+    .btn-ojt-save { background: #fff; border: 1.5px solid #dde1e9; border-radius: 6px; padding: 8px 20px; font-size: 13px; cursor: pointer; color: var(--text); }
+    .btn-ojt-save:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-ojt-submit { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 8px 24px; font-size: 13px; cursor: pointer; font-weight: 600; }
+    .btn-ojt-submit:hover { background: #1d4ed8; }
+
+    /* =========================================
+       온보딩 프로그램 모달
+    ========================================= */
+    .prog-modal-overlay { display: none; position: fixed; inset: 0; background: #f0f2f5; z-index: 300; overflow-y: auto; padding: 24px; }
+    .prog-modal-overlay.active { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; max-width: 860px; margin: 0 auto; width: 100%; }
+
+    .prog-modal-inner { width: 100%; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+    .prog-modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .prog-modal-title { font-size: 17px; font-weight: 700; }
+    .prog-modal-sub { font-size: 13px; color: var(--text-sub); }
+    .prog-activity-list { padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .prog-activity-item { border: 1.5px solid var(--border); border-radius: 10px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+    .prog-activity-item.done { border-color: #22c55e; background: #f0fdf4; }
+    .prog-activity-num { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .prog-activity-item.done .prog-activity-num { background: #dcfce7; color: #16a34a; }
+    .prog-activity-info { flex: 1; }
+    .prog-activity-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .prog-activity-desc { font-size: 12px; color: var(--text-sub); }
+    .prog-activity-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; flex-shrink: 0; }
+    .prog-activity-badge.done { background: #dcfce7; color: #16a34a; }
+    .prog-activity-badge.pending { background: var(--primary-light); color: var(--primary); }
+    .prog-upload-btn { flex-shrink: 0; display: flex; align-items: center; gap: 6px; border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; cursor: pointer; background: #fff; color: var(--text); transition: all 0.15s; }
+    .prog-upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .prog-upload-btn.uploaded { border-color: #22c55e; color: #16a34a; background: #f0fdf4; }
+    .prog-photo-preview { margin-top: 10px; padding: 10px; border: 1.5px dashed var(--border); border-radius: 8px; text-align: center; font-size: 12px; color: var(--text-mute); }
   </style>
 </head>
 <body>
@@ -802,7 +882,7 @@
             <div class="menu-desc">중요 공지사항 및 자료 확인</div>
             <div class="menu-arrow">→</div>
           </div>
-          <div class="menu-card" onclick="demoAlert()">
+          <div class="menu-card" onclick="openModal('prog-modal')">
             <div class="menu-icon">📋</div>
             <div class="menu-title">온보딩 프로그램</div>
             <div class="menu-desc">6가지 온보딩 활동 수행</div>
@@ -814,7 +894,7 @@
             <div class="menu-desc">온보딩 과정 설문조사</div>
             <div class="menu-arrow">→</div>
           </div>
-          <div class="menu-card" onclick="demoAlert()">
+          <div class="menu-card" onclick="openModal('ojt-modal')">
             <div class="menu-icon">📓</div>
             <div class="menu-title">OJT 일지</div>
             <div class="menu-desc">주간 학습 내용 기록 및 제출</div>
@@ -827,6 +907,157 @@
 
     <div class="footer-link">
       <a href="../../index.html">← 포트폴리오로 돌아가기</a>
+    </div>
+
+    <!-- =============================================
+         OJT 일지 모달
+    ============================================= -->
+    <div id="ojt-modal" class="emp-modal-overlay">
+      <div class="modal-back-col">
+        <button class="modal-back-btn" onclick="closeModal('ojt-modal')">← 목록으로</button>
+      </div>
+      <div class="ojt-form-wrap">
+        <div class="ojt-form-header">
+          <div class="ojt-form-logo">
+            <span class="ojt-logo-yr">YR</span>
+            <span class="ojt-logo-name">YURA</span>
+          </div>
+          <div class="ojt-form-title">박상혁 — 7주차 OJT 일지</div>
+          <div class="ojt-form-date">2026-05-13<br>2026-05-19</div>
+          <div class="ojt-form-status"><span class="ojt-status-badge">미작성</span></div>
+        </div>
+
+        <div class="ojt-detail-header">세부 교육 내용</div>
+
+        <div class="ojt-day-block">
+          <div class="ojt-day-label">05월 13일(수)</div>
+          <div class="ojt-day-colon">:</div>
+          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
+        </div>
+        <div class="ojt-day-block">
+          <div class="ojt-day-label">05월 14일(목)</div>
+          <div class="ojt-day-colon">:</div>
+          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
+        </div>
+        <div class="ojt-day-block">
+          <div class="ojt-day-label">05월 15일(금)</div>
+          <div class="ojt-day-colon">:</div>
+          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
+        </div>
+        <div class="ojt-day-block">
+          <div class="ojt-day-label">05월 18일(월)</div>
+          <div class="ojt-day-colon">:</div>
+          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
+        </div>
+        <div class="ojt-day-block">
+          <div class="ojt-day-label">05월 19일(화)</div>
+          <div class="ojt-day-colon">:</div>
+          <textarea class="ojt-day-input" placeholder="학습 내용을 입력하세요."></textarea>
+        </div>
+
+        <table class="ojt-summary-table">
+          <tr>
+            <td class="ojt-summary-label">어려웠던 점</td>
+            <td class="ojt-summary-input-cell">
+              <textarea placeholder="업무나 적응 과정에서 어려웠던 점을 작성해 주세요."></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td class="ojt-summary-label">다음 주 목표</td>
+            <td class="ojt-summary-input-cell">
+              <textarea placeholder="다음 주에 달성하고 싶은 목표를 작성해 주세요."></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td class="ojt-summary-label mentor-label">지도의견<br><span style="font-weight:400;">(멘토)</span></td>
+            <td><span class="ojt-mentor-text">멘토가 코멘트를 작성하면 여기에 표시됩니다.</span></td>
+          </tr>
+        </table>
+
+        <div class="ojt-form-footer">
+          <button class="btn-ojt-save" onclick="demoAlert()">임시 저장</button>
+          <button class="btn-ojt-submit" onclick="alert('제출이 완료되었습니다.')">제출하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================
+         온보딩 프로그램 모달
+    ============================================= -->
+    <div id="prog-modal" class="prog-modal-overlay">
+      <button class="modal-back-btn" onclick="closeModal('prog-modal')">← 대시보드로</button>
+      <div class="prog-modal-inner">
+        <div class="prog-modal-header">
+          <div>
+            <div class="prog-modal-title">📋 온보딩 프로그램</div>
+            <div class="prog-modal-sub">6가지 활동을 완료하고 사진을 제출하세요.</div>
+          </div>
+          <span class="badge badge-primary">0 / 6 완료</span>
+        </div>
+        <div class="prog-activity-list">
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">1</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">팀 소개 미팅 참석</div>
+              <div class="prog-activity-desc">소속 팀원과 인사 및 업무 소개 미팅 참석</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">2</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">멘토 미팅 1회차</div>
+              <div class="prog-activity-desc">담당 멘토와 첫 번째 1:1 미팅 진행</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">3</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">사내 시스템 교육 수료</div>
+              <div class="prog-activity-desc">ERP, 그룹웨어 등 사내 시스템 교육 이수</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">4</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">현장 투어 참여</div>
+              <div class="prog-activity-desc">생산 현장 및 주요 부서 견학</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">5</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">안전 교육 이수</div>
+              <div class="prog-activity-desc">산업안전보건 기본 교육 수료</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+          <div class="prog-activity-item">
+            <div class="prog-activity-num">6</div>
+            <div class="prog-activity-info">
+              <div class="prog-activity-name">팀장 면담</div>
+              <div class="prog-activity-desc">팀장과의 온보딩 마무리 면담 진행</div>
+            </div>
+            <span class="prog-activity-badge pending">미완료</span>
+            <button class="prog-upload-btn" onclick="uploadPhoto(this)">📷 사진 제출</button>
+          </div>
+
+        </div>
+      </div>
     </div>
 
   </div><!-- /view-employee -->
@@ -967,6 +1198,29 @@
 
     function demoAlert() {
       alert('이 기능은 실제 시스템에서 이용 가능합니다.');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    let uploadedCount = 0;
+    function uploadPhoto(btn) {
+      if (btn.classList.contains('uploaded')) return;
+      btn.classList.add('uploaded');
+      btn.textContent = '✓ 제출 완료';
+      const item = btn.closest('.prog-activity-item');
+      item.classList.add('done');
+      item.querySelector('.prog-activity-badge').className = 'prog-activity-badge done';
+      item.querySelector('.prog-activity-badge').textContent = '완료';
+      uploadedCount++;
+      document.querySelector('#prog-modal .badge-primary').textContent = uploadedCount + ' / 6 완료';
     }
 
     /* =============================================
