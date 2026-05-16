@@ -48,99 +48,59 @@
     ========================================= */
     #view-landing {
       min-height: 100vh;
-      flex-direction: row;
-    }
-
-    .landing-left {
-      flex: 1;
-      background: linear-gradient(135deg, #3b5bdb, #5c7cfa);
-      display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 60px 56px;
-      color: #fff;
-    }
-
-    .landing-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.8;
-      margin-bottom: 20px;
-    }
-
-    .landing-title {
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 48px;
-    }
-
-    .feature-cards { display: flex; flex-direction: column; gap: 16px; }
-
-    .feature-card {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      backdrop-filter: blur(4px);
-    }
-
-    .feature-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .feature-card-desc { font-size: 13px; opacity: 0.82; line-height: 1.5; }
-
-    .landing-right {
-      width: 460px;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 60px 56px;
-    }
-
-    .yura-logo { font-size: 26px; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.5px; }
-    .yura-logo .yr { color: #e53935; }
-    .yura-logo .yura-text { color: var(--text); }
-
-    .demo-notice {
-      background: #fff8e1;
-      border: 1px solid #ffe082;
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #7b4f00;
-      margin-bottom: 32px;
-      line-height: 1.5;
-    }
-
-    .role-btn {
-      display: flex;
       align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: var(--radius);
-      font-family: var(--font);
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.18s ease;
-      margin-bottom: 12px;
+      justify-content: center;
+      background: var(--bg);
+      padding: 40px 20px;
     }
 
-    .role-btn-icon { font-size: 20px; line-height: 1; }
-    .role-btn-info { text-align: left; }
-    .role-btn-sub { font-size: 12px; font-weight: 400; opacity: 0.75; margin-top: 2px; }
+    .landing-header { text-align: center; margin-bottom: 48px; }
+    .landing-header-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px; font-weight: 700;
+      padding: 4px 14px; border-radius: 100px;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .landing-header-title {
+      font-size: 28px; font-weight: 700; color: var(--text);
+      letter-spacing: -0.5px; margin-bottom: 8px;
+    }
+    .landing-header-sub { font-size: 14px; color: var(--text-sub); }
 
-    .role-btn.primary { background: var(--primary); color: #fff; }
-    .role-btn.primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .role-cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
 
-    .role-btn.outline { background: transparent; border-color: var(--border); color: var(--text); }
-    .role-btn.outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .role-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 280px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+      box-shadow: var(--shadow);
+    }
+    .role-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+    .role-card-icon { font-size: 48px; margin-bottom: 16px; }
+    .role-card-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .role-card-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 24px; }
+    .role-card-btn {
+      padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; font-family: var(--font);
+      transition: opacity 0.15s;
+    }
+    .role-card-btn:hover { opacity: 0.85; }
+    .role-card-btn.btn-primary { background: var(--primary); color: #fff; }
+    .role-card-btn.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
 
-    .landing-back { margin-top: 28px; text-align: center; }
+    .landing-back { text-align: center; }
     .landing-back a { color: var(--text-mute); font-size: 13px; text-decoration: none; transition: color 0.15s; }
     .landing-back a:hover { color: var(--primary); }
 
@@ -695,48 +655,27 @@
        VIEW 1: LANDING
   ============================================= -->
   <div id="view-landing" class="view active">
-    <div class="landing-left">
-      <div class="landing-label">YURA 온보딩 시스템</div>
-      <div class="landing-title">유라코퍼레이션 입사를<br>진심으로 환영합니다!</div>
-      <div class="feature-cards">
-        <div class="feature-card">
-          <div class="feature-card-title">🚀 온보딩 프로그램</div>
-          <div class="feature-card-desc">6가지 활동으로 빠르게 적응하세요.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-card-title">👥 멘토 매칭</div>
-          <div class="feature-card-desc">전담 멘토와 함께 성장하세요.</div>
-        </div>
+    <div class="landing-header">
+      <div class="landing-header-badge">YURA 온보딩 시스템 데모</div>
+      <div class="landing-header-title">어떤 역할로 체험하시겠습니까?</div>
+      <div class="landing-header-sub">실제 시스템의 주요 기능을 체험해보세요</div>
+    </div>
+    <div class="role-cards">
+      <div class="role-card" onclick="showView('view-employee')">
+        <div class="role-card-icon">👤</div>
+        <div class="role-card-title">신입사원</div>
+        <div class="role-card-desc">온보딩 대시보드, 설문조사, OJT 일지 등 신입사원 화면을 체험합니다</div>
+        <button class="role-card-btn btn-primary">신입사원으로 체험</button>
+      </div>
+      <div class="role-card" onclick="showView('view-admin')">
+        <div class="role-card-icon">🏢</div>
+        <div class="role-card-title">관리자 (HR Admin)</div>
+        <div class="role-card-desc">ABSA 분석, 설문 관리, 넛지 메일 발송 등 관리자 화면을 체험합니다</div>
+        <button class="role-card-btn btn-outline">관리자로 체험</button>
       </div>
     </div>
-
-    <div class="landing-right">
-      <div class="yura-logo"><span class="yr">YR</span> <span class="yura-text">YURA</span></div>
-
-      <div class="demo-notice">
-        <strong>데모 체험 모드</strong><br>
-        실제 시스템 데이터가 아닌 샘플 데이터로 구성된 포트폴리오 데모입니다. 역할을 선택하여 체험해보세요.
-      </div>
-
-      <button class="role-btn primary" onclick="showView('view-employee')">
-        <span class="role-btn-icon">👤</span>
-        <div class="role-btn-info">
-          <div>신입사원으로 체험</div>
-          <div class="role-btn-sub">온보딩 대시보드 및 현황 확인</div>
-        </div>
-      </button>
-
-      <button class="role-btn outline" onclick="showView('view-admin')">
-        <span class="role-btn-icon">🏢</span>
-        <div class="role-btn-info">
-          <div>관리자(HR Admin)로 체험</div>
-          <div class="role-btn-sub">ABSA 분석 및 설문 관리 화면</div>
-        </div>
-      </button>
-
-      <div class="landing-back">
-        <a href="../../index.html">← 포트폴리오로 돌아가기</a>
-      </div>
+    <div class="landing-back">
+      <a href="../../index.html">← 포트폴리오로 돌아가기</a>
     </div>
   </div>
 
