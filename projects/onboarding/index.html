@@ -784,10 +784,10 @@
     /* =========================================
        온보딩 프로그램 모달
     ========================================= */
-    .prog-modal-overlay { display: none; position: fixed; inset: 0; background: #f0f2f5; z-index: 300; overflow-y: auto; padding: 24px; }
-    .prog-modal-overlay.open { display: flex; flex-direction: column; gap: 16px; padding: 24px; overflow-y: auto; }
+    .prog-modal-overlay { display: none; position: fixed; inset: 0; background: #f1f5f9; z-index: 300; overflow-y: auto; }
+    .prog-modal-overlay.open { display: flex; gap: 16px; align-items: flex-start; justify-content: center; padding: 20px; }
 
-    .prog-modal-inner { width: 100%; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+    .prog-modal-inner { width: 860px; flex-shrink: 0; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
     .prog-modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .prog-modal-title { font-size: 17px; font-weight: 700; }
     .prog-modal-sub { font-size: 13px; color: var(--text-sub); }
@@ -1072,7 +1072,9 @@
          온보딩 프로그램 모달
     ============================================= -->
     <div id="prog-modal" class="prog-modal-overlay">
-      <button class="modal-back-btn" onclick="closeModal('prog-modal')">← 대시보드로</button>
+      <div class="modal-back-col">
+        <button class="modal-back-btn" onclick="closeModal('prog-modal')">← 대시보드로</button>
+      </div>
       <div class="prog-modal-inner">
         <div class="prog-modal-header">
           <div>
